@@ -1,0 +1,680 @@
+
+> dajaj-flowart@1.0.0 dev
+> next dev
+
+   ▲ Next.js 15.5.18
+   - Local:        http://localhost:3000
+   - Network:      http://10.2.0.67:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 5.5s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 628ms (221 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 4.8s (1234 modules)
+ GET / 200 in 2839ms
+ GET / 200 in 7438ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 22.1s (1253 modules)
+ GET /hero-bg.jpeg 404 in 24083ms
+ ○ Compiling /sign-up/[[...rest]] ...
+ ✓ Compiled /sign-up/[[...rest]] in 2.5s (1244 modules)
+ GET /sign-up 200 in 6255ms
+ GET /sign-up/SignUp_clerk_catchall_check_1778778429503 200 in 349ms
+ GET /sign-up/sso-callback?sign_up_force_redirect_url=http%3A%2F%2Flocalhost%3A3000%2Fdashboard&sign_in_force_redirect_url=http%3A%2F%2Flocalhost%3A3000%2Fdashboard 200 in 267ms
+ GET /sign-up/sso-callback/SignUp_clerk_catchall_check_1778778447455 200 in 216ms
+ POST /sign-up/sso-callback?sign_up_force_redirect_url=http%3A%2F%2Flocalhost%3A3000%2Fdashboard&sign_in_force_redirect_url=http%3A%2F%2Flocalhost%3A3000%2Fdashboard 200 in 400ms
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 2.9s (1428 modules)
+ GET /dashboard 200 in 3317ms
+ ○ Compiling /api/flock ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (205kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled /api/flock in 8.5s (1870 modules)
+ GET /api/flock 200 in 10379ms
+ GET /api/predictions 200 in 11839ms
+ GET /api/predictions/alerts 200 in 11904ms
+ GET /api/dashboard/insights 200 in 11950ms
+ GET /api/dashboard/financial 200 in 12001ms
+ GET /dashboard 200 in 13136ms
+ GET /api/flock 200 in 407ms
+ ○ Compiling /api/stream ...
+ ✓ Compiled /api/stream in 5.7s (1875 modules)
+ GET /api/predictions 200 in 6309ms
+ GET /api/predictions/alerts 200 in 6243ms
+ GET /api/dashboard/insights 200 in 6218ms
+ GET /api/dashboard 200 in 6364ms
+ GET /api/dashboard/financial 200 in 5777ms
+ GET /api/dashboard 200 in 89ms
+ GET /api/stream 200 in 77455ms
+ GET /api/flock 200 in 1546ms
+ ○ Compiling /api/dashboard/insights ...
+ ✓ Compiled /api/dashboard/insights in 14.9s (1453 modules)
+ GET /api/dashboard/financial 200 in 5747ms
+ GET /api/predictions/alerts 200 in 5810ms
+ GET /api/predictions 200 in 5831ms
+ GET /api/dashboard/insights 200 in 5912ms
+ GET /api/dashboard 200 in 6090ms
+ GET /dashboard 200 in 781ms
+ GET /api/stream 200 in 4784ms
+ GET /api/flock 200 in 825ms
+ GET /api/dashboard/financial 200 in 797ms
+ GET /api/predictions 200 in 825ms
+ GET /api/predictions/alerts 200 in 837ms
+ GET /api/dashboard/insights 200 in 117ms
+ GET /api/dashboard 200 in 129ms
+ ○ Compiling /api/chat ...
+ ✓ Compiled /api/chat in 2.6s (1453 modules)
+ ✓ Compiled in 3.2s (1674 modules)
+ GET /dashboard 200 in 7752ms
+ GET /dashboard 200 in 114ms
+ ✓ Compiled in 2.3s (1674 modules)
+ GET /dashboard 200 in 377ms
+ ○ Compiling /api/auth ...
+ ✓ Compiled /api/auth in 1153ms (1662 modules)
+ POST /api/auth 200 in 1626ms
+ GET /api/dashboard 200 in 46ms
+ POST /api/chat 200 in 25211ms
+ ✓ Compiled in 2.4s (1676 modules)
+ GET /dashboard 200 in 492ms
+ ✓ Compiled in 1551ms (1676 modules)
+ GET /dashboard 200 in 693ms
+ ○ Compiling /dashboard/chickens ...
+ ✓ Compiled /dashboard/chickens in 1399ms (1675 modules)
+ GET /api/stream 200 in 56146ms
+ GET /dashboard/chickens 200 in 3364ms
+ ✓ Compiled in 2.4s (1689 modules)
+ GET /api/flock 200 in 406ms
+ GET /api/flock 200 in 10ms
+ ✓ Compiled in 1194ms (1681 modules)
+ GET /dashboard/chickens 200 in 1368ms
+ GET /dashboard 200 in 1505ms
+ GET /api/flock 200 in 1599ms
+ GET /api/dashboard 200 in 1666ms
+ GET /api/flock 200 in 25ms
+ ○ Compiling /api/dashboard/financial ...
+ ✓ Compiled /api/dashboard/financial in 935ms (1102 modules)
+ ✓ Compiled (1108 modules)
+ GET /api/dashboard/insights 200 in 3464ms
+ GET /api/predictions/alerts 200 in 3495ms
+ GET /api/predictions 200 in 3523ms
+ GET /api/dashboard/financial 200 in 1858ms
+ GET /api/dashboard 200 in 1803ms
+ GET /api/dashboard/insights 200 in 77ms
+ GET /api/predictions/alerts 200 in 129ms
+ GET /api/predictions 200 in 160ms
+ GET /api/dashboard/financial 200 in 177ms
+ ✓ Compiled in 2.1s (1689 modules)
+ GET /dashboard 200 in 335ms
+ ✓ Compiled in 2.6s (1689 modules)
+ GET /dashboard 200 in 428ms
+ ✓ Compiled in 2.9s (1468 modules)
+ GET /dashboard 200 in 347ms
+ GET /dashboard 200 in 923ms
+ GET /dashboard 200 in 160ms
+ GET / 200 in 1476ms
+ GET /api/stream 200 in 316762ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 8.4s (1442 modules)
+ GET /hero-bg.jpeg 404 in 11014ms
+ GET /sign-up 200 in 431ms
+ GET /sign-up/SignUp_clerk_catchall_check_1778778966932 200 in 165ms
+ GET /dashboard 200 in 109ms
+ ○ Compiling /api/predictions/alerts ...
+ ✓ Compiled /api/predictions/alerts in 726ms (878 modules)
+ ✓ Compiled (886 modules)
+ GET /api/predictions 200 in 2989ms
+ GET /api/dashboard 200 in 3014ms
+ GET /api/dashboard/insights 200 in 3039ms
+ GET /api/predictions/alerts 200 in 3064ms
+ GET /api/dashboard/financial 200 in 3090ms
+ GET /api/flock 200 in 590ms
+ GET /api/predictions 200 in 694ms
+ GET /api/dashboard/insights 200 in 706ms
+ GET /api/predictions/alerts 200 in 720ms
+ GET /api/dashboard 200 in 741ms
+ GET /api/flock 200 in 29ms
+ GET /api/dashboard/financial 200 in 93ms
+ GET /dashboard/finance 404 in 1470ms
+ GET /api/stream 200 in 19127ms
+ GET /dashboard 200 in 914ms
+ GET /api/flock 200 in 273ms
+ GET /api/dashboard 200 in 305ms
+ GET /api/dashboard/financial 200 in 319ms
+ GET /api/predictions 200 in 330ms
+ GET /api/predictions/alerts 200 in 337ms
+ GET /api/flock 200 in 45ms
+ GET /api/dashboard/insights 200 in 62ms
+ GET /api/dashboard/financial 200 in 224ms
+ GET /api/predictions 200 in 240ms
+ GET /api/dashboard 200 in 272ms
+ GET /api/predictions/alerts 200 in 35ms
+ GET /api/dashboard/insights 200 in 46ms
+ GET /api/stream 200 in 30287ms
+ GET / 200 in 1014ms
+ GET /hero-bg.jpeg 404 in 174ms
+ GET /sign-up 200 in 947ms
+ GET /sign-up/SignUp_clerk_catchall_check_1778779397634 200 in 240ms
+ GET /dashboard 200 in 105ms
+ GET /api/flock 200 in 169ms
+ GET /api/dashboard/insights 200 in 250ms
+ GET /api/predictions/alerts 200 in 268ms
+ GET /api/predictions 200 in 165ms
+ GET /api/dashboard 200 in 201ms
+ GET /api/flock 200 in 43ms
+ GET /api/dashboard/financial 200 in 111ms
+ GET /api/dashboard/insights 200 in 116ms
+ GET /api/predictions/alerts 200 in 137ms
+ GET /api/predictions 200 in 151ms
+ GET /api/dashboard/financial 200 in 69ms
+ GET /api/dashboard 200 in 93ms
+ ✓ Compiled in 14.6s (1451 modules)
+ GET /dashboard 200 in 2454ms
+ ✓ Compiled in 2.7s (1451 modules)
+ GET /dashboard 200 in 389ms
+ ✓ Compiled in 4.6s (1451 modules)
+ GET /dashboard 200 in 1117ms
+ ✓ Compiled in 2.6s (1451 modules)
+ GET /dashboard 200 in 214ms
+ ✓ Compiled in 2.3s (1451 modules)
+ GET /dashboard 200 in 224ms
+ ✓ Compiled in 971ms (1451 modules)
+ GET /dashboard 200 in 646ms
+ ✓ Compiled in 3.1s (1451 modules)
+ GET /dashboard 200 in 396ms
+ ✓ Compiled in 2.1s (1451 modules)
+ GET /dashboard 200 in 239ms
+ ✓ Compiled in 22.1s (1451 modules)
+ GET /dashboard 200 in 970ms
+ GET /dashboard 200 in 1038ms
+ ○ Compiling /api/chat ...
+ ✓ Compiled /api/chat in 4.3s (1096 modules)
+ ○ Compiling /api/auth ...
+ ✓ Compiled /api/auth in 1450ms (1098 modules)
+ POST /api/auth 200 in 2221ms
+ GET /api/stream 200 in 267603ms
+ POST /api/chat 200 in 15306ms
+ GET /dashboard/chickens 200 in 4419ms
+ ○ Compiling /api/dashboard ...
+ ✓ Compiled /api/dashboard in 2.4s (1100 modules)
+ GET /api/dashboard 200 in 2698ms
+ GET /api/flock 200 in 526ms
+ GET /api/flock 200 in 13ms
+ ○ Compiling /dashboard/eggs ...
+ ✓ Compiled /dashboard/eggs in 5.3s (1676 modules)
+ GET /dashboard/chickens 200 in 769ms
+ GET /api/flock 200 in 240ms
+ GET /api/flock 200 in 12ms
+ ✓ Compiled in 1560ms (1690 modules)
+ GET /dashboard/chickens 200 in 354ms
+ ✓ Compiled in 3.4s (1690 modules)
+ GET /dashboard/chickens 200 in 297ms
+ ✓ Compiled in 1831ms (1690 modules)
+ GET /dashboard/chickens 200 in 755ms
+ ✓ Compiled in 1513ms (1690 modules)
+ GET /dashboard/chickens 200 in 228ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 3.5s (1695 modules)
+ GET /dashboard/analytics 404 in 4107ms
+ GET /dashboard/chickens 200 in 261ms
+ GET /api/flock 200 in 282ms
+ GET /api/flock 200 in 18ms
+ ✓ Compiled in 2.9s (1474 modules)
+ GET /dashboard/chickens 200 in 168ms
+ ✓ Compiled in 1379ms (1472 modules)
+ GET /dashboard/chickens 200 in 297ms
+ GET /dashboard/chickens/batches/0 404 in 234ms
+ GET /dashboard/chickens 200 in 227ms
+ ✓ Compiled in 5.9s (1465 modules)
+ GET /dashboard/chickens 200 in 4447ms
+ ✓ Compiled in 3.9s (1459 modules)
+ GET /dashboard/chickens 200 in 421ms
+ ✓ Compiled in 1618ms (1455 modules)
+ GET /dashboard/chickens 200 in 521ms
+ GET /api/flock 200 in 160ms
+ GET /api/flock 200 in 13ms
+ ⨯ ./src/components/ai-chat/chat-button.tsx
+Error:   [31mx[0m Expected ',', got 'className'
+    ,-[[36;1;4mC:\Users\zizserveur\Desktop\20266\OPENPROJECT\src\components\ai-chat\chat-button.tsx[0m:75:1]
+ [2m72[0m |   const [messages, setMessages] = useState<ChatMessage[]>([
+ [2m73[0m |     { role: "assistant", content: "مرحباً! أنا مساعد POULTRIX AI. كيقدر تسألني أي سؤال على ضيعتك. مثلاً: شنو معدل النفوق؟ ويمكن تبعث الصور والفيديو والصوت." },
+ [2m74[0m | ...streaming
+ [2m75[0m |                  <p className="text-sm font-bold text-white">POULTRIX AI</p>
+    : [35;1m                    ^^^^^^^^^[0m
+ [2m76[0m | ...
+ [2m77[0m |                      <Renderer library={poultrixLibrary} code={code} />
+ [2m78[0m | ...
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/ai-chat/chat-button.tsx
+./src/app/(marketing)/page.tsx
+ ⨯ ./src/components/ai-chat/chat-button.tsx
+Error:   [31mx[0m Expected ',', got 'className'
+    ,-[[36;1;4mC:\Users\zizserveur\Desktop\20266\OPENPROJECT\src\components\ai-chat\chat-button.tsx[0m:75:1]
+ [2m72[0m |   const [messages, setMessages] = useState<ChatMessage[]>([
+ [2m73[0m |     { role: "assistant", content: "مرحباً! أنا مساعد POULTRIX AI. كيقدر تسألني أي سؤال على ضيعتك. مثلاً: شنو معدل النفوق؟ ويمكن تبعث الصور والفيديو والصوت." },
+ [2m74[0m | ...streaming
+ [2m75[0m |                  <p className="text-sm font-bold text-white">POULTRIX AI</p>
+    : [35;1m                    ^^^^^^^^^[0m
+ [2m76[0m | ...
+ [2m77[0m |                      <Renderer library={poultrixLibrary} code={code} />
+ [2m78[0m | ...
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/ai-chat/chat-button.tsx
+./src/app/(marketing)/page.tsx
+ GET / 500 in 15047ms
+ ○ Compiling /_error ...
+ GET /dashboard 500 in 13938ms
+ ⨯ ./src/components/ai-chat/chat-button.tsx
+Error:   [31mx[0m Expected ',', got 'className'
+    ,-[[36;1;4mC:\Users\zizserveur\Desktop\20266\OPENPROJECT\src\components\ai-chat\chat-button.tsx[0m:75:1]
+ [2m72[0m |   const [messages, setMessages] = useState<ChatMessage[]>([
+ [2m73[0m |     { role: "assistant", content: "مرحباً! أنا مساعد POULTRIX AI. كيقدر تسألني أي سؤال على ضيعتك. مثلاً: شنو معدل النفوق؟ ويمكن تبعث الصور والفيديو والصوت." },
+ [2m74[0m | ...streaming
+ [2m75[0m |                  <p className="text-sm font-bold text-white">POULTRIX AI</p>
+    : [35;1m                    ^^^^^^^^^[0m
+ [2m76[0m | ...
+ [2m77[0m |                      <Renderer library={poultrixLibrary} code={code} />
+ [2m78[0m | ...
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/ai-chat/chat-button.tsx
+./src/app/(marketing)/page.tsx
+ GET /dashboard/chickens 500 in 17082ms
+ GET /dashboard/chickens 500 in 38ms
+ GET /dashboard/chickens 500 in 47ms
+ GET / 500 in 140ms
+ GET /dashboard 500 in 35ms
+ ⨯ ./src/components/ai-chat/chat-button.tsx
+Error:   [31mx[0m Expected ',', got 'className'
+    ,-[[36;1;4mC:\Users\zizserveur\Desktop\20266\OPENPROJECT\src\components\ai-chat\chat-button.tsx[0m:75:1]
+ [2m72[0m |   const [messages, setMessages] = useState<ChatMessage[]>([
+ [2m73[0m |     { role: "assistant", content: "مرحباً! أنا مساعد POULTRIX AI. كيقدر تسألني أي سؤال على ضيعتك. مثلاً: شنو معدل النفوق؟ ويمكن تبعث الصور والفيديو والصوت." },
+ [2m74[0m | ...streaming
+ [2m75[0m |                  <p className="text-sm font-bold text-white">POULTRIX AI</p>
+    : [35;1m                    ^^^^^^^^^[0m
+ [2m76[0m | ...
+ [2m77[0m |                      <Renderer library={poultrixLibrary} code={code} />
+ [2m78[0m | ...
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/ai-chat/chat-button.tsx
+./src/app/(marketing)/page.tsx
+ ⨯ ./src/components/ai-chat/chat-button.tsx
+Error:   [31mx[0m Expected ',', got 'className'
+    ,-[[36;1;4mC:\Users\zizserveur\Desktop\20266\OPENPROJECT\src\components\ai-chat\chat-button.tsx[0m:75:1]
+ [2m72[0m |   const [messages, setMessages] = useState<ChatMessage[]>([
+ [2m73[0m |     { role: "assistant", content: "مرحباً! أنا مساعد POULTRIX AI. كيقدر تسألني أي سؤال على ضيعتك. مثلاً: شنو معدل النفوق؟ ويمكن تبعث الصور والفيديو والصوت." },
+ [2m74[0m | ...streaming
+ [2m75[0m |                  <p className="text-sm font-bold text-white">POULTRIX AI</p>
+    : [35;1m                    ^^^^^^^^^[0m
+ [2m76[0m | ...
+ [2m77[0m |                      <Renderer library={poultrixLibrary} code={code} />
+ [2m78[0m | ...
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/ai-chat/chat-button.tsx
+./src/app/(marketing)/page.tsx
+ GET /login 500 in 5489ms
+ ⨯ ./src/components/ai-chat/chat-button.tsx
+Error:   [31mx[0m Unterminated regexp literal
+    ,-[[36;1;4mC:\Users\zizserveur\Desktop\20266\OPENPROJECT\src\components\ai-chat\chat-button.tsx[0m:89:1]
+ [2m86[0m |             )}
+ [2m87[0m | 
+ [2m88[0m |             <div ref={chatEnd} />
+ [2m89[0m |           </div>
+    : [35;1m           ^^^^^[0m
+ [2m90[0m | 
+ [2m91[0m |           {/* Pending images preview */}
+ [2m92[0m |           {pendingImages.length > 0 && (
+    `----
+  [31mx[0m Expression expected
+    ,-[[36;1;4mC:\Users\zizserveur\Desktop\20266\OPENPROJECT\src\components\ai-chat\chat-button.tsx[0m:89:1]
+ [2m86[0m |             )}
+ [2m87[0m | 
+ [2m88[0m |             <div ref={chatEnd} />
+ [2m89[0m |           </div>
+    : [35;1m            ^^^^[0m
+ [2m90[0m | 
+ [2m91[0m |           {/* Pending images preview */}
+ [2m92[0m |           {pendingImages.length > 0 && (
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/ai-chat/chat-button.tsx
+./src/app/(marketing)/page.tsx
+ ⨯ ./src/components/ai-chat/chat-button.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4mC:\Users\zizserveur\Desktop\20266\OPENPROJECT\src\components\ai-chat\chat-button.tsx[0m:154:1]
+ [2m151[0m |                   </div>
+ [2m152[0m |                 </div>
+ [2m153[0m |               </div>
+ [2m154[0m |             )}
+     : [35;1m             ^[0m
+ [2m155[0m | 
+ [2m156[0m |             <div ref={chatEnd} />
+ [2m157[0m |           </div>
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/ai-chat/chat-button.tsx
+./src/app/(marketing)/page.tsx
+ ⨯ ./src/components/ai-chat/chat-button.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4mC:\Users\zizserveur\Desktop\20266\OPENPROJECT\src\components\ai-chat\chat-button.tsx[0m:154:1]
+ [2m151[0m |                   </div>
+ [2m152[0m |                 </div>
+ [2m153[0m |               </div>
+ [2m154[0m |             )}
+     : [35;1m             ^[0m
+ [2m155[0m | 
+ [2m156[0m |             <div ref={chatEnd} />
+ [2m157[0m |           </div>
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/ai-chat/chat-button.tsx
+./src/app/(marketing)/page.tsx
+ GET / 500 in 1512ms
+ ⨯ ./src/components/ai-chat/chat-button.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4mC:\Users\zizserveur\Desktop\20266\OPENPROJECT\src\components\ai-chat\chat-button.tsx[0m:154:1]
+ [2m151[0m |                   </div>
+ [2m152[0m |                 </div>
+ [2m153[0m |               </div>
+ [2m154[0m |             )}
+     : [35;1m             ^[0m
+ [2m155[0m | 
+ [2m156[0m |             <div ref={chatEnd} />
+ [2m157[0m |           </div>
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/ai-chat/chat-button.tsx
+./src/app/(marketing)/page.tsx
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ✓ Compiled /_error in 22.7s (1704 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ✓ Compiled in 545ms (735 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /dashboard/chickens 200 in 3822ms
+ ✓ Compiled in 1091ms (1704 modules)
+ GET /api/flock 200 in 332ms
+ GET /api/flock 200 in 8ms
+ ✓ Compiled in 66.2s (1690 modules)
+ GET / 200 in 1238ms
+ GET /dashboard 200 in 129ms
+ ○ Compiling /login/[[...rest]] ...
+ ✓ Compiled /login/[[...rest]] in 2.1s (971 modules)
+ GET /login 200 in 4842ms
+ ✓ Compiled in 17.5s (1706 modules)
+ GET / 200 in 2986ms
+ GET /dashboard/chickens 200 in 365ms
+ GET /api/flock 200 in 1464ms
+ GET /api/flock 200 in 27ms
+ GET /api/flock 200 in 437ms
+ ✓ Compiled in 81.2s (1678 modules)
+ GET /dashboard/chickens 200 in 577ms
+ GET /dashboard 200 in 684ms
+ GET /dashboard 200 in 562ms
+ GET /api/flock 200 in 1378ms
+ ○ Compiling /api/dashboard ...
+ ✓ Compiled /api/dashboard/insights in 35.9s (963 modules)
+ ✓ Compiled (971 modules)
+ GET /api/predictions 200 in 37822ms
+ ⚠ Server is approaching the used memory threshold, restarting...
+   ▲ Next.js 15.5.18
+   - Local:        http://localhost:3000
+   - Network:      http://10.2.0.67:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 6.9s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 1800ms (221 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (205kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ○ Compiling /dashboard/chickens ...
+ ✓ Compiled /api/dashboard/insights in 10s (1743 modules)
+ GET /api/flock 200 in 10257ms
+ GET /api/predictions 200 in 10760ms
+ GET /api/dashboard 200 in 10779ms
+ GET /api/dashboard/financial 200 in 10747ms
+ GET /api/dashboard/insights 200 in 9277ms
+ GET /api/predictions/alerts 200 in 10839ms
+ GET /dashboard/chickens 200 in 351ms
+ ○ Compiling /dashboard ...
+ GET /api/flock 200 in 133ms
+ GET /api/flock 200 in 94ms
+ ✓ Compiled /dashboard in 12.7s (1354 modules)
+ GET /dashboard 200 in 15531ms
+ GET /dashboard/chickens 200 in 596ms
+ GET /api/flock 200 in 334ms
+ GET /api/dashboard 200 in 473ms
+ GET /api/dashboard/financial 200 in 505ms
+ GET /api/predictions/alerts 200 in 523ms
+ GET /api/dashboard/insights 200 in 542ms
+ ○ Compiling /api/stream ...
+ ✓ Compiled /api/stream in 1418ms (945 modules)
+ GET /api/flock 200 in 174ms
+ GET /api/dashboard/financial 200 in 205ms
+ GET /api/predictions/alerts 200 in 213ms
+ GET /api/dashboard 200 in 231ms
+ GET /api/predictions 200 in 320ms
+ GET /api/dashboard/insights 200 in 62ms
+ GET /api/predictions 200 in 55ms
+ ✓ Compiled in 524ms (528 modules)
+ GET /dashboard 200 in 85ms
+ GET /api/stream 200 in 47005ms
+ GET /dashboard/chickens 200 in 348ms
+ GET /api/flock 200 in 168ms
+ GET /api/flock 200 in 12ms
+ ✓ Compiled in 3s (1347 modules)
+ GET /dashboard/chickens 200 in 835ms
+ ○ Compiling /dashboard/eggs ...
+ ✓ Compiled /dashboard/eggs in 1796ms (1342 modules)
+ GET /dashboard/eggs 200 in 3257ms
+ GET /dashboard 200 in 212ms
+ GET /dashboard 200 in 281ms
+ GET /api/flock 200 in 425ms
+ ○ Compiling /api/predictions/alerts ...
+ ✓ Compiled /api/dashboard/insights in 998ms (828 modules)
+ ✓ Compiled (836 modules)
+ GET /api/dashboard/financial 200 in 1974ms
+ GET /api/predictions 200 in 1996ms
+ GET /api/predictions/alerts 200 in 2019ms
+ GET /api/dashboard/insights 200 in 1530ms
+ GET /api/dashboard 200 in 2077ms
+ GET /api/flock 200 in 351ms
+ GET /api/dashboard/financial 200 in 658ms
+ GET /api/predictions 200 in 669ms
+ GET /api/predictions/alerts 200 in 677ms
+ GET /api/dashboard/insights 200 in 677ms
+ GET /api/dashboard 200 in 36ms
+ GET /dashboard 200 in 933ms
+ GET /api/stream 200 in 31929ms
+ GET /api/flock 200 in 77ms
+ GET /api/dashboard 200 in 131ms
+ GET /api/dashboard/financial 200 in 155ms
+ GET /api/predictions 200 in 164ms
+ GET /api/predictions/alerts 200 in 178ms
+ GET /api/dashboard/insights 200 in 192ms
+ GET /api/flock 200 in 443ms
+ GET /api/dashboard 200 in 437ms
+ GET /api/dashboard/financial 200 in 445ms
+ GET /api/predictions 200 in 457ms
+ GET /api/predictions/alerts 200 in 84ms
+ GET /api/dashboard/insights 200 in 327ms
+ GET /api/stream 200 in 15832ms
+ GET /dashboard/chickens 200 in 176ms
+ GET /api/flock 200 in 54ms
+ GET /api/flock 200 in 64ms
+ GET /dashboard 200 in 179ms
+ GET /api/flock 200 in 55ms
+ GET /api/dashboard 200 in 74ms
+ GET /api/dashboard/financial 200 in 67ms
+ GET /api/predictions/alerts 200 in 77ms
+ GET /api/predictions 200 in 83ms
+ GET /api/flock 200 in 76ms
+ GET /api/dashboard/insights 200 in 99ms
+ GET /api/dashboard 200 in 135ms
+ GET /api/dashboard/financial 200 in 128ms
+ GET /api/predictions/alerts 200 in 147ms
+ GET /api/predictions 200 in 236ms
+ GET /api/dashboard/insights 200 in 274ms
+ GET /api/stream 200 in 1176ms
+ GET /dashboard 200 in 135ms
+ GET /api/flock 200 in 60ms
+ GET /api/dashboard 200 in 102ms
+ GET /api/dashboard/financial 200 in 110ms
+ GET /api/predictions 200 in 104ms
+ GET /api/predictions/alerts 200 in 111ms
+ GET /api/flock 200 in 40ms
+ GET /api/dashboard/insights 200 in 117ms
+ GET /api/dashboard 200 in 201ms
+ GET /api/dashboard/financial 200 in 209ms
+ GET /api/predictions 200 in 225ms
+ GET /api/predictions/alerts 200 in 36ms
+ GET /api/dashboard/insights 200 in 47ms
+ ✓ Compiled in 5.6s (1375 modules)
+ GET /dashboard 200 in 652ms
+ ✓ Compiled in 2.3s (1362 modules)
+ GET /dashboard 200 in 1093ms
+ ✓ Compiled in 1329ms (538 modules)
+ GET /dashboard 200 in 115ms
+ GET /dashboard 200 in 798ms
+ GET /dashboard/chickens 200 in 153ms
+ GET /dashboard/eggs 200 in 363ms
+ ○ Compiling /dashboard/meat ...
+ ✓ Compiled /dashboard/meat in 2.1s (1361 modules)
+ GET /dashboard/meat 200 in 3624ms
+ GET /dashboard/chickens 200 in 167ms
+ GET /api/stream 200 in 149618ms
+ GET /api/flock 200 in 396ms
+ GET /api/flock 200 in 14ms
+ GET /dashboard/eggs 200 in 138ms
+ GET /dashboard/meat 200 in 120ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1263ms (1366 modules)
+ GET /dashboard/settings 404 in 1989ms
+ GET /dashboard/meat 200 in 204ms
+ ✓ Compiled in 9.5s (543 modules)
+ GET /dashboard/meat 200 in 128ms
+ ✓ Compiled in 7.2s (1582 modules)
+ GET /dashboard/meat 200 in 7621ms
+ GET /dashboard/meat 200 in 60ms
+ ✓ Compiled in 3.9s (1582 modules)
+ GET /dashboard/meat 200 in 3586ms
+ GET /dashboard/meat 200 in 73ms
+ ⚠ Failed to reload dynamic routes: [Error: Optional route parameters are not yet supported ("[[id]]").]
+ ✓ Compiled in 1999ms (1582 modules)
+[Error: Optional route parameters are not yet supported ("[[id]]").]
+ ⨯ unhandledRejection: [Error: Optional route parameters are not yet supported ("[[id]]").]
+ ⨯ unhandledRejection:  [Error: Optional route parameters are not yet supported ("[[id]]").]
+ GET /dashboard/meat 200 in 374ms
+ ✓ Compiled in 313ms (543 modules)
+ ✓ Compiled in 355ms (543 modules)
+ GET /dashboard/meat 200 in 426ms
+ ✓ Compiled in 390ms (543 modules)
+ ⚠ Failed to reload dynamic routes: [Error: Optional route parameters are not yet supported ("[[id]]").]
+ ✓ Compiled in 1303ms (1582 modules)
+ ⚠ Failed to reload dynamic routes: [Error: Optional route parameters are not yet supported ("[[id]]").]
+ ✓ Compiled in 2.1s (1582 modules)
+ ✓ Compiled in 435ms (543 modules)
+ ✓ Compiled in 700ms (543 modules)
+ ⚠ Failed to reload dynamic routes: [Error: Optional route parameters are not yet supported ("[[id]]").]
+ ✓ Compiled in 1971ms (1582 modules)
+[Error: Optional route parameters are not yet supported ("[[id]]").]
+ ⨯ unhandledRejection: [Error: Optional route parameters are not yet supported ("[[id]]").]
+ ⨯ unhandledRejection:  [Error: Optional route parameters are not yet supported ("[[id]]").]
+ GET /dashboard/meat 200 in 1327ms
+ ⚠ Failed to reload dynamic routes: [Error: Optional route parameters are not yet supported ("[[id]]").]
+ ✓ Compiled in 3.5s (1582 modules)
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 3.8s (1366 modules)
+ GET /dashboard/feed 404 in 2341ms
+[Error: Optional route parameters are not yet supported ("[[id]]").]
+ ⨯ unhandledRejection: [Error: Optional route parameters are not yet supported ("[[id]]").]
+ ⨯ unhandledRejection:  [Error: Optional route parameters are not yet supported ("[[id]]").]
+ GET /dashboard/meat 200 in 604ms
+ GET /dashboard/eggs 200 in 211ms
+ ⚠ Failed to reload dynamic routes: [Error: Optional route parameters are not yet supported ("[[id]]").]
+ ✓ Compiled in 4.3s (1384 modules)
+ GET /dashboard/chickens 200 in 1287ms
+ ○ Compiling /api/flock ...
+ ✓ Compiled /api/flock in 1581ms (428 modules)
+ GET /api/flock 200 in 2184ms
+ GET /api/flock 200 in 23ms
+ GET /dashboard 200 in 1125ms
+ ○ Compiling /dashboard/breeds ...
+ ✓ Compiled /dashboard/breeds in 3.6s (1393 modules)
+ GET /dashboard/breeds 200 in 4178ms
+ GET /dashboard/chickens 200 in 4301ms
+ ○ Compiling /dashboard/articles ...
+ GET /api/flock 200 in 347ms
+ ✓ Compiled /dashboard/articles in 1843ms (1383 modules)
+ GET /dashboard/articles 200 in 2081ms
+ ○ Compiling /dashboard/ai-vet ...
+ ✓ Compiled /dashboard/ai-vet in 1660ms (1400 modules)
+ GET /dashboard/ai-vet 200 in 2038ms
+ ○ Compiling /api/breeds ...
+ ✓ Compiled /api/breeds in 2.5s (1407 modules)
+ GET /dashboard/breeds 200 in 3544ms
+ GET /api/breeds 200 in 4537ms
+ GET /api/breeds 200 in 37ms
+ GET /api/breeds 200 in 31ms
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (205kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 909ms (1412 modules)
+ GET /dashboard/breeds/28 404 in 1334ms
+ GET /dashboard/breeds 200 in 133ms
+ GET /api/breeds 200 in 124ms
+ GET /api/breeds 200 in 89ms
+ GET /dashboard/breeds/25 404 in 97ms
+ GET /dashboard/breeds 200 in 148ms
+ GET /api/breeds 200 in 77ms
+ GET /api/breeds 200 in 119ms
+ GET /dashboard/articles 200 in 172ms
+ GET /dashboard/articles/1 404 in 82ms
+ GET /dashboard/articles 200 in 128ms
+ GET /dashboard/articles/9 404 in 110ms
+ GET /dashboard/articles 200 in 197ms
+ GET /dashboard/analytics 404 in 121ms
+ GET /dashboard/articles 200 in 119ms
+ GET /dashboard/ai-vet 200 in 185ms
+ ○ Compiling /api/diagnose ...
+ ✓ Compiled /api/diagnose in 2.6s (1387 modules)
+ POST /api/diagnose 503 in 2931ms
+ POST /api/diagnose 503 in 532ms

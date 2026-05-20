@@ -1,0 +1,516 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ChikenSteeak';
+  src: url('/fonts/ChikenSteeak.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Masko';
+  src: url('/fonts/Masko-Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Masko';
+  src: url('/fonts/Masko-ExtraLight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Masko';
+  src: url('/fonts/Masko-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Masko';
+  src: url('/fonts/Masko-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Masko';
+  src: url('/fonts/Masko-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Masko';
+  src: url('/fonts/Masko-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Masko';
+  src: url('/fonts/Masko-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Masko';
+  src: url('/fonts/Masko-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Masko';
+  src: url('/fonts/Masko-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Masko';
+  src: url('/fonts/Masko-Outline.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Midlandluxury';
+  src: url('/fonts/Midlandluxury-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Midlandluxury';
+  src: url('/fonts/Midlandluxury-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Midlandluxury';
+  src: url('/fonts/Midlandluxury-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Midlandluxury';
+  src: url('/fonts/Midlandluxury-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Midlandluxury';
+  src: url('/fonts/Midlandluxury-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Midlandluxury';
+  src: url('/fonts/Midlandluxury-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Midlandluxury';
+  src: url('/fonts/Midlandluxury-RegularItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Midlandluxury';
+  src: url('/fonts/Midlandluxury-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* Typography Scale */
+  --font-xs: 0.8rem;
+  --font-sm: 0.9rem;
+  --font-base: 1rem;
+  --font-md: 1.1rem;
+  --font-lg: 1.3rem;
+  --font-xl: 1.6rem;
+  --font-2xl: 2.2rem;
+  --font-3xl: 2.8rem;
+  --font-hero: clamp(2.8rem, 7vw, 5.5rem);
+  --font-display: clamp(2.2rem, 5vw, 4rem);
+  --font-title: clamp(1.5rem, 3.5vw, 2.4rem);
+  --font-body: 1rem;
+  --font-small: 0.85rem;
+  --font-tiny: 0.75rem;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-squircle: 12px;
+  --radius-round: 9999px;
+  --radius-card: 16px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-hover: 0 8px 24px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+  --shadow-elevated: 0 12px 32px rgba(0,0,0,0.1);
+  --shadow-glow-accent: 0 4px 24px rgba(196,137,58,0.35);
+  --shadow-glow-terracotta: 0 4px 24px rgba(191,122,90,0.3);
+
+  /* Colors */
+  --color-bg: #F5EDE3;
+  --color-surface: #FAF7F2;
+  --color-text: #1E2B22;
+  --color-text-secondary: #5A6A5A;
+  --color-text-tertiary: #7A8A7A;
+  --color-border: #E8E0D6;
+  --color-aqua: #C4893A;
+  --color-blue: #2D5541;
+  --color-cream: #F5EDE3;
+  --color-gold: #BF7A5A;
+
+  /* Line Heights */
+  --lh-body: 1.7;
+  --lh-heading: 1.1;
+  --lh-metric: 1;
+  --lh-label: 1.4;
+
+  /* Vertical Rhythm */
+  --rhythm-stack: 1.5rem;
+  --rhythm-stack-lg: 2.5rem;
+  --rhythm-section: 8rem;
+  --rhythm-section-lg: 12rem;
+
+  /* Spacing */
+  --space-section: 8rem;
+  --space-section-lg: 12rem;
+  --space-element: 2rem;
+  --space-grid: 1.25rem;
+}
+
+@layer base {
+  * { @apply border-[rgba(0,0,0,0.04)]; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: var(--lh-body);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.06); border-radius: 2px; }
+
+  h1, h2, h3, h4 { text-wrap: balance; letter-spacing: -0.02em; line-height: var(--lh-heading); }
+  h1 { font-family: 'ChikenSteeak', 'Masko', 'Geist', system-ui, sans-serif; font-weight: 800; }
+  h2 { font-family: 'Midlandluxury', 'Georgia', serif; font-weight: 700; }
+  h3 { font-family: 'Midlandluxury', 'Georgia', serif; font-weight: 600; }
+  p, li, .text-block { text-wrap: pretty; line-height: var(--lh-body); }
+}
+
+@layer components {
+  .font-display {
+    font-family: 'ChikenSteeak', 'Masko', 'Geist', system-ui, sans-serif;
+    letter-spacing: -0.03em;
+  }
+  .font-heading {
+    font-family: 'Midlandluxury', 'Georgia', serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .font-subhead {
+    font-family: 'Midlandluxury', 'Georgia', serif;
+    font-weight: 500;
+  }
+  .font-label-masko {
+    font-family: 'Masko', 'Geist', system-ui, sans-serif;
+    font-weight: 500;
+  }
+  .font-metric {
+    font-family: 'Geist Mono', 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .font-brand {
+    font-family: 'Masko', 'Geist', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .font-midland-display {
+    font-family: 'Midlandluxury', 'Georgia', serif;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+  }
+
+  .card {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .card-hover:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1px);
+  }
+
+  .glass-light {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.9);
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+
+  .shimmer-bg {
+    background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.03) 50%, transparent 100%);
+    background-size: 200% 100%;
+  }
+
+  .spring-transition {
+    transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .magnetic-press:active {
+    transform: scale(0.97);
+    transition: transform 0.1s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .text-label {
+    font-size: var(--font-xs);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .text-gradient-accent {
+    background: linear-gradient(135deg, #C4893A, #2D5541);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #BF7A5A, #F5EDE3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+  }
+
+  .section-divider {
+    width: 60px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #C4893A, #2D5541);
+    margin: 0 auto;
+  }
+
+  .heading-accent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .heading-accent::before,
+  .heading-accent::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, currentColor);
+    opacity: 0.2;
+  }
+
+  .heading-accent::after {
+    background: linear-gradient(90deg, currentColor, transparent);
+  }
+
+  .noise-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0.008;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+  }
+
+  /* Scroll Entrance Animation */
+  .scroll-fade-blur {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    filter: blur(4px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .scroll-fade-blur.in-view {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+
+  /* Spring Physics on Interactive Elements */
+  .spring-hover {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .spring-hover:hover {
+    transform: translateY(-2px) scale(1.01);
+  }
+  .spring-hover:active {
+    transform: scale(0.97);
+  }
+
+  /* Perpetual Micro-Animation: Float */
+  .micro-float {
+    animation: microFloat 4s ease-in-out infinite;
+  }
+  @keyframes microFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  /* Perpetual Micro-Animation: Pulse */
+  .micro-pulse {
+    animation: microPulse 3s ease-in-out infinite;
+  }
+  @keyframes microPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.03); }
+  }
+
+  /* Perpetual Micro-Animation: Shimmer for cards */
+  .micro-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .micro-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(196,137,58,0.03) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: microShimmer 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes microShimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+}
+
+.poultrix-body {
+  min-height: 100dvh;
+  background: #f8f8fa;
+}
+
+.poultrix-body-dark {
+  min-height: 100dvh;
+  background: #f8f8fa;
+  color: #1a1a24;
+}

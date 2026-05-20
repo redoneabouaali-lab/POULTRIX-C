@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  admin
+  operator
+  viewer
+}
+
+enum AlertType {
+  feed
+  water
+  temp
+  humidity
+  mortality
+  egg
+}
+
+enum Severity {
+  critical
+  high
+  medium
+  low
+  info
+}
+
+enum InsightType {
+  prediction
+  recommendation
+  alert
+  opportunity
+}
+
+enum Trend {
+  up
+  down
+  stable
+}
+
+model Farm {
+  id                 String              @id @default(uuid())
+  name               String
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  users              User[]
+  barns              Barn[]
+  financialSnapshots FinancialSnapshot[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  role      Role     @default(viewer)
+  farmId    String
+  farm      Farm     @relation(fields: [farmId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Barn {
+  id                   String                @id @default(uuid())
+  name                 String
+  farmId               String
+  farm                 Farm                  @relation(fields: [farmId], references: [id])
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  flocks               Flock[]
+  predictions          MortalityPrediction[]
+  alerts               BarnAlert[]
+}
+
+model Flock {
+  id          String   @id @default(uuid())
+  totalBirds  Int
+  activeBarns Int
+  avgAge      Int
+  breed       String
+  healthScore Float
+  barnId      String
+  barn        Barn     @relation(fields: [barnId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MortalityPrediction {
+  id             String   @id @default(uuid())
+  barnId         String
+  barn           Barn     @relation(fields: [barnId], references: [id])
+  riskLevel      Severity
+  probability    Float
+  affectedCohort String
+  recommendation String
+  confidence     Float
+  predictedAt    DateTime @default(now())
+}
+
+model BarnAlert {
+  id           String    @id @default(uuid())
+  barnId       String
+  barn         Barn      @relation(fields: [barnId], references: [id])
+  type         AlertType
+  severity     Severity
+  message      String
+  acknowledged Boolean   @default(false)
+  timestamp    DateTime  @default(now())
+}
+
+model FinancialSnapshot {
+  id                String   @id @default(uuid())
+  dailyFeedCost     Float
+  dailyWaterCost    Float
+  projectedRevenue  Float
+  profitMargin      Float
+  marginTrend       Trend
+  yoyGrowth         Float
+  farmId            String
+  farm              Farm     @relation(fields: [farmId], references: [id])
+  createdAt         DateTime @default(now())
+}
+
+model AIInsight {
+  id          String      @id @default(uuid())
+  type        InsightType
+  severity    Severity
+  title       String
+  description String
+  confidence  Float
+  actionable  Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+}
