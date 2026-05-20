@@ -52,6 +52,7 @@ model Farm {
   updatedAt          DateTime            @updatedAt
   users              User[]
   barns              Barn[]
+  flocks             Flock[]
   financialSnapshots FinancialSnapshot[]
 }
 
@@ -79,16 +80,28 @@ model Barn {
 }
 
 model Flock {
-  id          String   @id @default(uuid())
-  totalBirds  Int
-  activeBarns Int
-  avgAge      Int
-  breed       String
-  healthScore Float
-  barnId      String
-  barn        Barn     @relation(fields: [barnId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(uuid())
+  farmId       String
+  farm         Farm     @relation(fields: [farmId], references: [id])
+  name         String
+  breed        String
+  customBreed  String?
+  status       String   @default("active")
+  totalBirds   Int
+  avgAge       Int
+  healthScore  Float?
+  houseShedId  String?
+  barnId       String
+  barn         Barn     @relation(fields: [barnId], references: [id])
+  notes        String?
+  startDate    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  feedReceipts FeedReceipt[]
+  eggRecords   EggRecord[]
+  healthEvents HealthEvent[]
+  stockingRecords StockingRecord[]
+  expenses     Expense[]
 }
 
 model MortalityPrediction {
@@ -136,4 +149,182 @@ model AIInsight {
   confidence  Float
   actionable  Boolean     @default(true)
   createdAt   DateTime    @default(now())
+}
+
+model EggRecord {
+  id            String   @id @default(uuid())
+  farmId        String
+  flockId       String
+  flock         Flock    @relation(fields: [flockId], references: [id])
+  recordDate    DateTime
+  quantity      Int
+  eggsPerTray   Int      @default(30)
+  trays         Float?
+  pricePerTray  Float?
+  totalRevenue  Float?
+  sold          Boolean  @default(false)
+  notes         String?
+  createdAt     DateTime @default(now())
+}
+
+model FeedReceipt {
+  id           String   @id @default(uuid())
+  farmId       String
+  flockId      String?
+  flock        Flock?   @relation(fields: [flockId], references: [id])
+  dateReceived DateTime
+  quantity     Float
+  unit         String   @default("كغ")
+  unitCost     Float
+  totalCost    Float
+  supplier     String?
+  feedType     String?
+  notes        String?
+  createdAt    DateTime @default(now())
+}
+
+model FeedConsumption {
+  id        String   @id @default(uuid())
+  farmId    String
+  barnId    String
+  barnName  String
+  kgConsumed Float
+  cost      Float
+  feedType  String?
+  date      DateTime @default(now())
+}
+
+model InventoryItem {
+  id               String   @id @default(uuid())
+  farmId           String
+  type             String
+  name             String
+  quantity         Float
+  unit             String
+  minimumThreshold Float
+  cost             Float
+  supplier         String?
+  expiryDate       DateTime?
+  notes            String?
+  createdAt        DateTime @default(now())
+}
+
+model Product {
+  id             String   @id @default(uuid())
+  farmId         String
+  name           String
+  type           String
+  quantity       Int
+  price          Float
+  available      Boolean  @default(true)
+  quality        String   @default("standard")
+  batchNumber    String?
+  productionDate DateTime
+  expiryDate     DateTime?
+  notes          String?
+  createdAt      DateTime @default(now())
+}
+
+model Order {
+  id             String      @id @default(uuid())
+  farmId         String
+  customerName   String?
+  totalAmount    Float
+  status         String      @default("pending")
+  paymentStatus  String      @default("pending")
+  deliveryAddress String?
+  deliveryDate   DateTime?
+  notes          String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  items          OrderItem[]
+}
+
+model OrderItem {
+  id          String @id @default(uuid())
+  orderId     String
+  order       Order  @relation(fields: [orderId], references: [id])
+  productId   String
+  productName String?
+  quantity    Int
+  price       Float
+}
+
+model Invoice {
+  id              String        @id @default(uuid())
+  farmId          String
+  number          String
+  customerName    String
+  customerPhone   String?
+  customerAddress String?
+  issueDate       DateTime
+  dueDate         DateTime
+  status          String        @default("draft")
+  subtotal        Float
+  taxRate         Float         @default(0)
+  taxAmount       Float         @default(0)
+  discount        Float         @default(0)
+  total           Float
+  paidAmount      Float         @default(0)
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  items           InvoiceItem[]
+}
+
+model InvoiceItem {
+  id          String  @id @default(uuid())
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id])
+  description String
+  quantity    Int
+  unit        String  @default("قطعة")
+  unitPrice   Float
+  total       Float
+}
+
+model Expense {
+  id            String   @id @default(uuid())
+  farmId        String
+  flockId       String?
+  flock         Flock?   @relation(fields: [flockId], references: [id])
+  expenseDate   DateTime
+  category      String?
+  description   String?
+  amount        Float
+  paymentMethod String?
+  notes         String?
+  createdAt     DateTime @default(now())
+}
+
+model StockingRecord {
+  id              String   @id @default(uuid())
+  farmId          String
+  flockId         String
+  flock           Flock    @relation(fields: [flockId], references: [id])
+  recordDate      DateTime
+  birdsAdded      Int      @default(0)
+  birdsRemoved    Int      @default(0)
+  mortality       Int      @default(0)
+  currentBirdCount Int?
+  notes           String?
+  createdAt       DateTime @default(now())
+}
+
+model HealthEvent {
+  id             String   @id @default(uuid())
+  farmId         String
+  flockId        String?
+  flock          Flock?   @relation(fields: [flockId], references: [id])
+  eventDate      DateTime
+  eventType      String
+  description    String?
+  birdsAffected  Int?
+  mortalityCount Int?
+  cost           Float?
+  treatment      String?
+  performedBy    String?
+  nextFollowUp   DateTime?
+  notes          String?
+  createdAt      DateTime @default(now())
 }
