@@ -209,7 +209,7 @@ async function main() {
     },
   });
 
-  await prisma.aiInsight.create({
+  await prisma.aIInsight.create({
     data: {
       type: "prediction",
       severity: "high",
@@ -220,7 +220,7 @@ async function main() {
     },
   });
 
-  await prisma.aiInsight.create({
+  await prisma.aIInsight.create({
     data: {
       type: "opportunity",
       severity: "medium",
@@ -231,7 +231,7 @@ async function main() {
     },
   });
 
-  await prisma.aiInsight.create({
+  await prisma.aIInsight.create({
     data: {
       type: "alert",
       severity: "low",
