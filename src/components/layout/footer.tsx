@@ -107,7 +107,7 @@ export default function Footer() {
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: `${COLORS.aqua}10` }}>
                     <Mail size={15} style={{ color: COLORS.aqua }} />
                   </div>
-                  <span style={{ color: "#5A6A5A" }}>contact@poultrix.ma</span>
+                  <span style={{ color: "#5A6A5A" }}>contact@abouaaliahmed.com</span>
                 </div>
               </li>
               <li>
