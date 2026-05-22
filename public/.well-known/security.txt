@@ -1,0 +1,4 @@
+Contact: mailto:redoneabouaali14@gmail.com
+Preferred-Languages: fr, ar, en
+Canonical: https://poultrix.abouaaliahmed.com/.well-known/security.txt
+Policy: https://poultrix.abouaaliahmed.com/security
