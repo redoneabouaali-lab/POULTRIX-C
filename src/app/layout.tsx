@@ -29,6 +29,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="poultrix-body">
         <link rel="preconnect" href="https://flowing-impala-8.clerk.accounts.dev" />
         <link rel="dns-prefetch" href="https://flowing-impala-8.clerk.accounts.dev" />
+        <link rel="preload" href="/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/Geist-Bold.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <ClerkProvider>{children}</ClerkProvider>
       </body>
     </html>

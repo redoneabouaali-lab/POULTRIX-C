@@ -53,6 +53,7 @@
     "xlsx": "^0.18.5",
     "zod": "^4.4.3"
   },
+  "browserslist": ["last 2 versions", "not dead", "> 0.5%"],
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/pg": "^8.11.0",
