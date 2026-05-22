@@ -47,9 +47,9 @@ export default function BreedsPage() {
                 onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}
               >
                 <div style={{ height: "150px", background: "#f8f8fa", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}>
-                  <img src={breed.imageUrl} alt={breed.nameAr} style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }}
+                  <img src={breed.imageUrl || "/fallback-chicken.svg"} alt={breed.nameAr} referrerPolicy="no-referrer" style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }}
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='30' fill='%23e8e8ea'/><path d='M35 65 Q50 80 65 65' fill='none' stroke='%23ccc' stroke-width='2'/><circle cx='40' cy='45' r='3' fill='%23999'/><circle cx='60' cy='45' r='3' fill='%23999'/></svg>";
+                      (e.target as HTMLImageElement).src = "/fallback-chicken.svg";
                     }}
                   />
                 </div>

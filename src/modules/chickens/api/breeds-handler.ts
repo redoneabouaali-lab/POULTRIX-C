@@ -2,33 +2,23 @@ import { NextResponse } from "next/server";
 
 async function fetchWikipediaImage(breedName: string): Promise<string | null> {
   try {
-    const terms = [
-      `${breedName} chicken`,
-      `${breedName} breed`,
-      `${breedName} (chicken)`,
-      breedName,
-    ];
-    for (const term of terms) {
-      const searchRes = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(term)}&format=json&srlimit=1&origin=*`,
-        { signal: AbortSignal.timeout(5000) }
-      );
-      const searchData = await searchRes.json();
-      const pageTitle = searchData?.query?.search?.[0]?.title;
-      if (!pageTitle) continue;
+    const searchRes = await fetch(
+      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(breedName + " chicken")}&format=json&srlimit=1&origin=*`,
+      { signal: AbortSignal.timeout(3000) }
+    );
+    const searchData = await searchRes.json();
+    const pageTitle = searchData?.query?.search?.[0]?.title;
+    if (!pageTitle) return null;
 
-      const imageRes = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(pageTitle)}&prop=pageimages&format=json&pithumbsize=400&origin=*`,
-        { signal: AbortSignal.timeout(5000) }
-      );
-      const imageData = await imageRes.json();
-      const pages = imageData?.query?.pages;
-      if (!pages) continue;
-      const pageKey = Object.keys(pages)[0];
-      const src = pages[pageKey]?.thumbnail?.source;
-      if (src) return src;
-    }
-    return null;
+    const imageRes = await fetch(
+      `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(pageTitle)}&prop=pageimages&format=json&pithumbsize=400&origin=*`,
+      { signal: AbortSignal.timeout(3000) }
+    );
+    const imageData = await imageRes.json();
+    const pages = imageData?.query?.pages;
+    if (!pages) return null;
+    const pageKey = Object.keys(pages)[0];
+    return pages[pageKey]?.thumbnail?.source || null;
   } catch {
     return null;
   }
@@ -195,6 +185,12 @@ async function fetchBreeds(): Promise<any[]> {
   wikiResults.forEach((result, i) => {
     if (result.status === "fulfilled" && result.value) {
       mapped[i].imageUrl = result.value;
+    }
+  });
+
+  mapped.forEach((b: any) => {
+    if (b.imageUrl) {
+      b.imageUrl = `/api/img?url=${encodeURIComponent(b.imageUrl)}`;
     }
   });
 

@@ -37,18 +37,13 @@ export default function BreedDetailPage() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
         <div style={{ background: "#fff", borderRadius: "16px", padding: "24px", boxShadow: "0 1px 3px rgba(0,0,0,0.03), 0 4px 12px rgba(0,0,0,0.02)", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "300px" }}>
           {breed.imageUrl ? (
-            <img src={breed.imageUrl} alt={breed.nameAr} style={{ maxWidth: "100%", maxHeight: "300px", objectFit: "contain" }}
+            <img src={breed.imageUrl} alt={breed.nameAr} referrerPolicy="no-referrer" style={{ maxWidth: "100%", maxHeight: "300px", objectFit: "contain" }}
               onError={(e) => {
-                (e.target as HTMLImageElement).src = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='30' fill='%23f0f0f2'/><path d='M35 65 Q50 80 65 65' fill='none' stroke='%23ccc' stroke-width='2'/><circle cx='40' cy='45' r='3' fill='%23999'/><circle cx='60' cy='45' r='3' fill='%23999'/></svg>";
+                (e.target as HTMLImageElement).src = "/fallback-chicken.svg";
               }}
             />
           ) : (
-            <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
-              <circle cx="50" cy="50" r="30" fill="#f0f0f2" />
-              <path d="M35 65 Q50 80 65 65" fill="none" stroke="#ccc" strokeWidth="2" />
-              <circle cx="40" cy="45" r="3" fill="#999" />
-              <circle cx="60" cy="45" r="3" fill="#999" />
-            </svg>
+            <img src="/fallback-chicken.svg" alt={breed.nameAr} style={{ maxWidth: "100%", maxHeight: "300px", objectFit: "contain" }} />
           )}
         </div>
 
