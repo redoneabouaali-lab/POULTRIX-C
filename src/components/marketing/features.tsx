@@ -2,7 +2,8 @@
 
 import { motion } from "motion/react";
 import { COLORS } from "@/constants";
-import { Eye, Activity, LineChart, TrendingUp, ShieldCheck, DollarSign } from "lucide-react";
+import { Eye, Activity, TrendingUp } from "lucide-react";
+import { ScrollReveal } from "@/components/lightswind/scroll-reveal";
 
 const features = [
   {
@@ -35,17 +36,25 @@ export default function FeaturesSection() {
   return (
     <section id="services" className="relative py-28 md:py-36 overflow-hidden" dir="rtl" style={{ background: "#F5EDE3" }}>
       <div className="max-w-[1320px] mx-auto px-4 md:px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          className="text-center lg:text-right mb-16 lg:mb-20">
+        <div className="text-center lg:text-right mb-16 lg:mb-20">
           <span className="section-label block mb-3">ماذا نقدم</span>
           <div className="section-divider mb-5" />
-          <h2 className="font-heading" style={{ fontSize: "clamp(2rem, 5vw, 3.75rem)", color: "#1E2B22", lineHeight: 1.08, letterSpacing: "-0.03em" }}>
+          <ScrollReveal
+            size="xl"
+            align="center"
+            variant="default"
+            threshold={0.3}
+            baseOpacity={0}
+            baseRotation={2}
+            blurStrength={6}
+            containerClassName="w-full"
+          >
             كل ما تحتاجه لتدبير ضيعتك
-          </h2>
-          <p className="text-base md:text-lg max-w-lg" style={{ color: "#5A6A5A" }}>
+          </ScrollReveal>
+          <p className="text-base md:text-lg max-w-lg mx-auto lg:mx-0 mt-4" style={{ color: "#5A6A5A" }}>
             منصة متكاملة تجمع المراقبة، التحليل، والتدبير المالي في مكان واحد.
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {features.map((f, idx) => (
@@ -57,7 +66,6 @@ export default function FeaturesSection() {
             >
               <div className="p-[1px] rounded-[1.5rem]" style={{ background: `linear-gradient(135deg, ${f.from}30, ${f.to}15)` }}>
                 <div className="rounded-[calc(1.5rem-0.25rem)] overflow-hidden" style={{ background: "#FAF7F2" }}>
-                  {/* Visual area (colabs parallax image replacement) */}
                   <div className="relative h-48 flex items-center justify-center" style={{ background: `linear-gradient(135deg, ${f.from}10, ${f.to}08)` }}>
                     <motion.div className="w-16 h-16 rounded-2xl flex items-center justify-center"
                       style={{ background: `linear-gradient(135deg, ${f.from}20, ${f.to}15)` }}
@@ -66,7 +74,6 @@ export default function FeaturesSection() {
                     >
                       <f.icon size={28} style={{ color: f.from }} />
                     </motion.div>
-                    {/* Animated bars */}
                     <div className="absolute bottom-4 left-4 right-4 flex items-end justify-center gap-1.5 h-10 opacity-30">
                       {[40, 60, 45, 75, 55, 85, 50].map((h, i) => (
                         <motion.div key={i}
@@ -78,7 +85,6 @@ export default function FeaturesSection() {
                     </div>
                   </div>
 
-                  {/* Content */}
                   <div className="p-6 text-center lg:text-right">
                     <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full mb-3" style={{ background: `${f.from}10` }}>
                       <span className="text-[0.65rem] font-bold tracking-[0.1em]" style={{ color: f.from }}>{f.tag}</span>

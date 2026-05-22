@@ -2,13 +2,14 @@
 
 import { COLORS } from "@/constants";
 import { Cpu, BarChart3, TrendingUp, ShieldCheck, DollarSign } from "lucide-react";
+import { CountUp } from "@/components/lightswind/count-up";
 
 export default function OverviewPage() {
   const metrics = [
-    { icon: BarChart3, label: "معدل النفوق", value: "2.3%", change: "-12%", color: COLORS.aqua },
-    { icon: TrendingUp, label: "كفاءة العلف", value: "1.68", change: "-5%", color: COLORS.gold },
-    { icon: ShieldCheck, label: "صحة القطيع", value: "96.4%", change: "+3%", color: COLORS.blue },
-    { icon: DollarSign, label: "هامش الربح", value: "+34.2%", change: "+8%", color: COLORS.cream },
+    { icon: BarChart3, label: "معدل النفوق", value: 2.3, suffix: "%", change: -12, color: COLORS.aqua },
+    { icon: TrendingUp, label: "كفاءة العلف", value: 1.68, suffix: "", change: -5, color: COLORS.gold },
+    { icon: ShieldCheck, label: "صحة القطيع", value: 96.4, suffix: "%", change: 3, color: COLORS.blue },
+    { icon: DollarSign, label: "هامش الربح", value: 34.2, suffix: "%", change: 8, color: COLORS.cream },
   ];
 
   return (
@@ -30,8 +31,10 @@ export default function OverviewPage() {
                 <m.icon size={18} style={{ color: m.color }} />
               </div>
               <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>{m.label}</p>
-              <p className="text-2xl font-bold text-white mt-1">{m.value}</p>
-              <p className="text-xs font-medium mt-1" style={{ color: m.change.startsWith("-") ? COLORS.aqua : COLORS.gold }}>{m.change}</p>
+              <CountUp value={m.value} suffix={m.suffix} duration={2} decimals={m.suffix === "%" ? 1 : 2} animationStyle="energetic" numberClassName="text-2xl font-bold text-white mt-1" />
+              <p className="text-xs font-medium mt-1" style={{ color: m.change < 0 ? COLORS.aqua : COLORS.gold }}>
+                {m.change > 0 ? "+" : ""}{m.change}%
+              </p>
             </div>
           ))}
         </div>
