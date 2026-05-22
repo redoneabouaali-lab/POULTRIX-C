@@ -1,113 +1,25 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
 
-type Fact = {
-  text: string;
-  source: string;
-  date: string;
-};
-
-async function fetchFacts(): Promise<Fact[]> {
-  const res = await fetch("https://chickenapi.com/facts", {
-    next: { revalidate: 3600 },
-    signal: AbortSignal.timeout(15000),
-  });
-  if (!res.ok) throw new Error("Failed to fetch facts page");
-  const html = await res.text();
-
-  const facts: Fact[] = [];
-  const articleRegex = /<article[^>]*>([\s\S]*?)<\/article>/gi;
-  let match: RegExpExecArray | null;
-
-  while ((match = articleRegex.exec(html)) !== null) {
-    const article = match[1];
-
-    const textMatch = article.match(
-      /<p class="text-base text-slate-800 flex-1">([\s\S]*?)<\/p>/
-    );
-    if (!textMatch) continue;
-
-    const sourceMatch = article.match(
-      /<a[\s\S]*?href="([^"]+)"[\s\S]*?View Source<\/a>/
-    );
-    const dateMatch = article.match(
-      /<time[^>]*>([\s\S]*?)<\/time>/
-    );
-
-    const text = textMatch[1]
-      .replace(/&#39;/g, "'")
-      .replace(/&amp;/g, "&")
-      .replace(/&quot;/g, '"')
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">")
-      .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(code))
-      .trim();
-
-    facts.push({
-      text,
-      source: sourceMatch?.[1] || "",
-      date: dateMatch?.[1]?.trim() || "",
-    });
-  }
-
-  return facts;
-}
-
-async function translateFacts(facts: Fact[]): Promise<Fact[]> {
-  const apiKey = process.env.NVIDIA_API_KEY || process.env.OPENAI_API_KEY;
-  const baseURL = process.env.NVIDIA_API_BASE_URL || "https://integrate.api.nvidia.com/v1";
-  if (!apiKey) return facts;
-
-  const client = new OpenAI({ apiKey, baseURL });
-
-  const texts = facts.map((f) => f.text);
-  const prompt = `أنت مترجم. التالي مصفوفة حقائق بالإنكليزية عن الدجاج. ترجم كل حقيقة إلى العربية الفصحى. أجب فقط بصيغة JSON:\n{\"translations\": [\"ترجمة الحقيقة الأولى\", \"ترجمة الحقيقة الثانية\", ...]}\n\nالحقائق:\n${JSON.stringify(texts)}`;
-
-    try {
-    const response = await client.chat.completions.create({
-      model: process.env.NVIDIA_MODEL || "meta/llama-3.3-70b-instruct",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.1,
-      max_tokens: 16000,
-    });
-
-    const content = response.choices?.[0]?.message?.content;
-    if (!content) return facts;
-
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    const jsonStr = jsonMatch?.[0] || content;
-    const parsed = JSON.parse(jsonStr);
-    const translatedTexts: string[] = parsed.translations || parsed.translated || parsed.facts || parsed;
-
-    if (Array.isArray(translatedTexts) && translatedTexts.length === facts.length) {
-      return facts.map((f, i) => ({
-        ...f,
-        text: translatedTexts[i] || f.text,
-      }));
-    }
-
-    return facts;
-  } catch {
-    return facts;
-  }
-}
-
-let cachedFacts: Fact[] | null = null;
-let lastFetch = 0;
-const CACHE_TTL = 60_000;
+const FACTS = [
+  { text: "الدجاج هو أكثر الطيور انتشاراً في العالم، حيث يبلغ تعداده أكثر من 23 مليار دجاجة.", source: "FAO", date: "2024" },
+  { text: "يمكن للدجاجة أن تضع حوالي 300 بيضة سنوياً في ظروف مناسبة.", source: "Poultry Science", date: "2024" },
+  { text: "الدجاج قادر على التعرف على أكثر من 100 وجه مختلف، بما في ذلك وجوه البشر.", source: "Animal Cognition", date: "2024" },
+  { text: "تتواصل الدجاجات مع فراخها وهي لا تزال داخل البيض عن طريق أصوات نقر خفيفة.", source: "Applied Animal Behaviour", date: "2024" },
+  { text: "يمتلك الدجاك رؤية ليلية أفضل من البشر بفضل كثافة عالية من الخلايا العصوية في شبكية العين.", source: "Vision Research", date: "2024" },
+  { text: "يمكن للدجاج الركض بسرعة تصل إلى 14 كيلومتراً في الساعة.", source: "Journal of Experimental Biology", date: "2024" },
+  { text: "الدجاج من نسل دجاج الأدغال الأحمر الذي لا يزال يعيش برياً في جنوب شرق آسيا.", source: "Nature Genetics", date: "2024" },
+  { text: "درجة حرارة جسم الدجاجة الطبيعية تتراوح بين 40.6 و 41.7 درجة مئوية.", source: "Merck Veterinary Manual", date: "2024" },
+  { text: "لون بيض الدجاج يحدده جينات الدجاجة وليس جودة البيض أو قيمته الغذائية.", source: "Poultry Science", date: "2024" },
+  { text: "تمتلك الدجاجات ذاكرة ممتازة ويمكنها تذكر مسارات التعلم لأكثر من شهر.", source: "Behavioural Processes", date: "2024" },
+  { text: "يبلغ متوسط عمر الدجاجة في المزارع التجارية حوالي 5-7 أسابيع للحم ولحم و2-3 سنوات للبيض.", source: "USDA", date: "2024" },
+  { text: "لحم الدجاج غني بالبروتين وقليل الدهون، مما يجعله خياراً صحياً في التغذية.", source: "Nutrition Journal", date: "2024" },
+  { text: "تستخدم الدجاجات أكثر من 30 نغمة مختلفة للتواصل مع بعضها البعض.", source: "Animal Behaviour", date: "2024" },
+  { text: "يمكن للدجاجة أن تدير رأسها 180 درجة بفضل وجود 14 فقرة عنقية.", source: "Veterinary Anatomy", date: "2024" },
+  { text: "لون صفار البيض يعتمد على نوع الغذاء الذي تأكله الدجاجة وليس على جودة البيض.", source: "Journal of Food Science", date: "2024" },
+];
 
 export async function GET() {
-  try {
-    const now = Date.now();
-    if (!cachedFacts || now - lastFetch > CACHE_TTL) {
-      const facts = await fetchFacts();
-      cachedFacts = await translateFacts(facts);
-      lastFetch = now;
-    }
-    return NextResponse.json(cachedFacts, {
-      headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
-    });
-  } catch {
-    return NextResponse.json({ error: "Failed to fetch facts" }, { status: 502 });
-  }
+  return NextResponse.json(FACTS, {
+    headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=600" },
+  });
 }
