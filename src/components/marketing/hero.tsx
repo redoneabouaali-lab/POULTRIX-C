@@ -5,6 +5,9 @@ import { motion } from "motion/react";
 import { COLORS } from "@/constants";
 import { ArrowLeft } from "lucide-react";
 import { AuroraBackground } from "@/components/lightswind/aurora-background";
+import { AuroraTextEffect } from "@/components/lightswind/aurora-text-effect";
+import { DotPattern } from "@/components/lightswind/dot-pattern";
+import { ShineButton } from "@/components/lightswind/shine-button";
 
 export default function HeroSection() {
   const [m, setM] = useState(false);
@@ -14,23 +17,29 @@ export default function HeroSection() {
     <div dir="rtl">
       <AuroraBackground className="min-h-screen">
         <section className="relative overflow-hidden flex items-center w-full">
+          <DotPattern width={20} height={20} cx={1} cy={1} cr={0.5} className="fill-[#C4893A]/10" />
           <div className="relative z-20 max-w-[1320px] mx-auto px-4 md:px-6 w-full py-28 md:py-40">
             <div className="flex flex-col items-center text-center">
-              <motion.h1
+              <motion.div
                 initial={{ opacity: 0, y: 5, filter: "blur(8px)" }}
                 animate={m ? { opacity: 1, y: 0, filter: "blur(0px)" } : { filter: "blur(8px)" }}
                 transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display"
-                style={{
-                  fontSize: "clamp(3rem, 7vw, 5.5rem)",
-                  lineHeight: 1.08,
-                  letterSpacing: "-0.03em",
-                  color: "#1E2B22",
-                  maxWidth: 850,
-                }}
+                className="max-w-[900px]"
               >
-                زد أرباح ضيعتك بالذكاء الاصطناعي
-              </motion.h1>
+                <AuroraTextEffect
+                  text="زد أرباح ضيعتك بالذكاء الاصطناعي"
+                  className="bg-transparent"
+                  textClassName="font-display !text-[#1E2B22]"
+                  fontSize="clamp(3rem, 7vw, 5.5rem)"
+                  colors={{
+                    first: "bg-[#C4893A]",
+                    second: "bg-[#81BABA]",
+                    third: "bg-[#4A90D9]",
+                    fourth: "bg-[#D4A853]",
+                  }}
+                  blurAmount="blur-lg"
+                />
+              </motion.div>
 
               <motion.p
                 initial={{ opacity: 0, y: 8 }}
@@ -48,21 +57,12 @@ export default function HeroSection() {
                 transition={{ delay: 0.35, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="flex flex-col sm:flex-row items-center gap-4 mt-10"
               >
-                <a
-                  href="/sign-up"
-                  className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full font-bold text-sm text-black spring-hover active:scale-[0.97]"
-                  style={{
-                    background: `linear-gradient(135deg, ${COLORS.aqua}, ${COLORS.blue})`,
-                    boxShadow: "0 4px 24px rgba(196,137,58,0.35)",
-                  }}
-                >
-                  <span>ابدأ شهراً مجاناً</span>
-                  <span className="w-7 h-7 rounded-full bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:translate-x-0.5 group-hover:scale-105">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </span>
-                </a>
+                <ShineButton
+                  label="ابدأ شهراً مجاناً"
+                  size="lg"
+                  onClick={() => window.location.href = "/sign-up"}
+                  bgColor="linear-gradient(325deg, #C4893A 0%, #81BABA 55%, #C4893A 90%)"
+                />
 
                 <a
                   href="/login"

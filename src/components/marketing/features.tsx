@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { COLORS } from "@/constants";
 import { Eye, Activity, TrendingUp } from "lucide-react";
 import { ScrollReveal } from "@/components/lightswind/scroll-reveal";
+import { BorderBeam } from "@/components/lightswind/border-beam";
 
 const features = [
   {
@@ -64,7 +65,17 @@ export default function FeaturesSection() {
               viewport={{ once: true }}
               transition={{ delay: idx * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="p-[1px] rounded-[1.5rem]" style={{ background: `linear-gradient(135deg, ${f.from}30, ${f.to}15)` }}>
+              <div className="relative p-[1px] rounded-[1.5rem]" style={{ background: `linear-gradient(135deg, ${f.from}30, ${f.to}15)` }}>
+                <BorderBeam
+                  size={80}
+                  duration={8}
+                  delay={idx * 0.3}
+                  colorFrom={f.from}
+                  colorTo={f.to}
+                  borderThickness={1.5}
+                  glowIntensity={2}
+                  beamBorderRadius={24}
+                />
                 <div className="rounded-[calc(1.5rem-0.25rem)] overflow-hidden" style={{ background: "#FAF7F2" }}>
                   <div className="relative h-48 flex items-center justify-center" style={{ background: `linear-gradient(135deg, ${f.from}10, ${f.to}08)` }}>
                     <motion.div className="w-16 h-16 rounded-2xl flex items-center justify-center"

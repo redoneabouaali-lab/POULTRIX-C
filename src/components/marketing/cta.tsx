@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { COLORS } from "@/constants";
 import { Cpu, Shield, Users, Check, Sparkles } from "lucide-react";
+import { ShineButton } from "@/components/lightswind/shine-button";
 
 export default function CTASection() {
   return (
@@ -28,17 +29,12 @@ export default function CTASection() {
           <p className="text-base md:text-lg font-light max-w-lg mx-auto" style={{ color: "#5A6A5A" }}>منصة ذكاء حية. مراقبة فورية. توقعات بالذكاء الاصطناعي. دقة مالية.</p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-            <a href="/sign-up"
-              className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full font-semibold text-sm tracking-wide text-black spring-hover active:scale-[0.97]"
-              style={{ background: `linear-gradient(135deg, ${COLORS.aqua}, ${COLORS.blue})`, boxShadow: "0 4px 24px rgba(196,137,58,0.35)" }}>
-              <Cpu size={16} />
-              <span style={{ fontSize: "0.9rem" }}>ابدأ شهراً مجاناً</span>
-              <span className="w-7 h-7 rounded-full bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:translate-x-0.5 group-hover:scale-105">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </span>
-            </a>
+            <ShineButton
+              label="ابدأ شهراً مجاناً"
+              size="lg"
+              onClick={() => window.location.href = "/sign-up"}
+              bgColor="linear-gradient(325deg, #C4893A 0%, #81BABA 55%, #C4893A 90%)"
+            />
             <a href="/login"
               className="px-8 py-4 rounded-full text-sm font-medium spring-hover glass-light"
               style={{ color: "#5A6A5A" }}>
