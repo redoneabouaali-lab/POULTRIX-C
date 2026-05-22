@@ -6,9 +6,8 @@ COPY package.json package-lock.json .npmrc ./
 RUN npm ci --legacy-peer-deps
 COPY prisma.config.ts ./
 COPY prisma ./prisma
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
-RUN npx prisma generate
+ENV DATABASE_URL=postgresql://placeholder:placeholder@localhost:5432/placeholder
+RUN ./node_modules/.bin/prisma generate
 COPY . .
 RUN npm run build
 
