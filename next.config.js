@@ -6,16 +6,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "qwex.co" },
     ],
-  },
-  async rewrites() {
-    return [
-      {
-        source: "/chicken-img/:path*",
-        destination: "https://qwex.co/chicken-api/images/:path*",
-      },
-    ];
   },
   async headers() {
     return [

@@ -6,6 +6,8 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
+  if (req.nextUrl.pathname.startsWith('/api/img')) return;
+  if (req.nextUrl.pathname.startsWith('/chicken-img')) return;
   if (isProtectedRoute(req)) {
     await auth.protect();
   }
