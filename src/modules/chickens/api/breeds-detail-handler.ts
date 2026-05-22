@@ -195,7 +195,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
       fetchWikipediaImage(nameEn),
       fetchArabicDescription(nameAr),
     ]);
-    const imageUrl = wikiImage || b.imageUrl;
+    const imageUrl = wikiImage || b.imageUrl?.replace("https://qwex.co/chicken-api/images/", "/chicken-img/") || null;
 
     return NextResponse.json({
       id: breedId,

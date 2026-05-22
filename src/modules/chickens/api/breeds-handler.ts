@@ -151,7 +151,7 @@ async function fetchBreeds(): Promise<any[]> {
     temperamentEn: b.temperament,
     description: b.description,
     descriptionAr: "",
-    imageUrl: b.imageUrl,
+    imageUrl: b.imageUrl?.replace("https://qwex.co/chicken-api/images/", "/chicken-img/") || null,
     sources: b.sources || [],
   }));
 
