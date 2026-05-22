@@ -98,7 +98,7 @@ export default function ChatButton() {
   return (
     <>
       {!open && (
-        <button onClick={() => setOpen(true)} className="fixed bottom-6 left-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
+        <button onClick={() => setOpen(true)} aria-label="فتح المحادثة" className="fixed bottom-6 left-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
           style={{ background: `linear-gradient(135deg, ${COLORS.aqua}, ${COLORS.blue})` }}>
           <MessageCircle size={24} className="text-black" />
           <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-black flex items-center justify-center"><Sparkles size={10} style={{ color: COLORS.aqua }} /></span>
