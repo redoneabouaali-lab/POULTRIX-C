@@ -212,7 +212,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
       temperamentEn: b.temperament,
       description: b.description || null,
       descriptionAr,
-      imageUrl: imageUrl ? `/api/img?url=${encodeURIComponent(imageUrl)}` : null,
+      imageUrl,
       sources: b.sources || [],
     });
   } catch {
