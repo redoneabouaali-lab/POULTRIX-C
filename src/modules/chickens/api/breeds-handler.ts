@@ -5,6 +5,30 @@ function extractBreedId(b: any): number {
   return parseInt(b.links?.[0]?.href?.split("/").pop() || "0", 10);
 }
 
+async function fetchWikipediaImage(breedName: string): Promise<string | null> {
+  try {
+    const searchRes = await fetch(
+      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(breedName + " chicken")}&format=json&srlimit=1&origin=*`,
+      { signal: AbortSignal.timeout(2000) }
+    );
+    const searchData = await searchRes.json();
+    const pageTitle = searchData?.query?.search?.[0]?.title;
+    if (!pageTitle) return null;
+
+    const imageRes = await fetch(
+      `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(pageTitle)}&prop=pageimages&format=json&pithumbsize=300&origin=*`,
+      { signal: AbortSignal.timeout(2000) }
+    );
+    const imageData = await imageRes.json();
+    const pages = imageData?.query?.pages;
+    if (!pages) return null;
+    const pageKey = Object.keys(pages)[0];
+    return pages[pageKey]?.thumbnail?.source || null;
+  } catch {
+    return null;
+  }
+}
+
 const arabicNames: Record<string, string> = {
   "Leghorn": "لجهورن", "Rhode Island Red": "رود آيلاند الأحمر", "Orpington": "أوربينغتون",
   "Silkie": "سيلكي", "Plymouth Rock": "بليموث روك", "Australorp": "أسترالورب",
@@ -136,24 +160,40 @@ async function fetchBreeds(): Promise<any[]> {
   if (!res.ok) throw new Error("Failed to fetch breeds");
   const breeds = await res.json();
 
-  const mapped = breeds.map((b: any) => ({
-    id: extractBreedId(b),
-    nameAr: arabicNames[b.name] || b.name,
-    nameEn: b.name,
-    originAr: originsAr[b.origin] || b.origin,
-    originEn: b.origin,
-    eggColorAr: eggColorsAr[b.eggColor] || b.eggColor,
-    eggColorEn: b.eggColor,
-    eggSize: b.eggSize,
-    eggSizeAr: eggSizesAr[b.eggSize] || b.eggSize || "—",
-    eggNumber: b.eggNumber,
-    temperamentAr: translateTemperament(b.temperament),
-    temperamentEn: b.temperament,
-    description: b.description,
-    descriptionAr: "",
-    imageUrl: b.imageUrl ? `/api/img?url=${encodeURIComponent(b.imageUrl)}` : null,
-    sources: b.sources || [],
-  }));
+  const wikiPromises = breeds.map((b: any) =>
+    fetchWikipediaImage(b.name).then(wikiUrl => ({ id: extractBreedId(b), wikiUrl }))
+  );
+  const wikiResults = await Promise.allSettled(wikiPromises);
+  const wikiMap: Record<number, string | null> = {};
+  for (const r of wikiResults) {
+    if (r.status === "fulfilled" && r.value.wikiUrl) {
+      wikiMap[r.value.id] = r.value.wikiUrl;
+    }
+  }
+
+  const mapped = breeds.map((b: any) => {
+    const id = extractBreedId(b);
+    const wikiUrl = wikiMap[id];
+    const imageUrl = wikiUrl || b.imageUrl;
+    return {
+      id,
+      nameAr: arabicNames[b.name] || b.name,
+      nameEn: b.name,
+      originAr: originsAr[b.origin] || b.origin,
+      originEn: b.origin,
+      eggColorAr: eggColorsAr[b.eggColor] || b.eggColor,
+      eggColorEn: b.eggColor,
+      eggSize: b.eggSize,
+      eggSizeAr: eggSizesAr[b.eggSize] || b.eggSize || "—",
+      eggNumber: b.eggNumber,
+      temperamentAr: translateTemperament(b.temperament),
+      temperamentEn: b.temperament,
+      description: b.description,
+      descriptionAr: "",
+      imageUrl: imageUrl ? `/api/img?url=${encodeURIComponent(imageUrl)}` : null,
+      sources: b.sources || [],
+    };
+  });
 
   return mapped;
 }
