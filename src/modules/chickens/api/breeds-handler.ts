@@ -1,5 +1,44 @@
 import { NextResponse } from "next/server";
 
+async function fetchWikipediaImage(breedName: string): Promise<string | null> {
+  try {
+    const terms = [
+      `${breedName} chicken`,
+      `${breedName} breed`,
+      `${breedName} (chicken)`,
+      breedName,
+    ];
+    for (const term of terms) {
+      const searchRes = await fetch(
+        `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(term)}&format=json&srlimit=1&origin=*`,
+        { signal: AbortSignal.timeout(5000) }
+      );
+      const searchData = await searchRes.json();
+      const pageTitle = searchData?.query?.search?.[0]?.title;
+      if (!pageTitle) continue;
+
+      const imageRes = await fetch(
+        `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(pageTitle)}&prop=pageimages&format=json&pithumbsize=400&origin=*`,
+        { signal: AbortSignal.timeout(5000) }
+      );
+      const imageData = await imageRes.json();
+      const pages = imageData?.query?.pages;
+      if (!pages) continue;
+      const pageKey = Object.keys(pages)[0];
+      const src = pages[pageKey]?.thumbnail?.source;
+      if (src) return src;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function extractBreedId(b: any): number {
+  if (b.id) return parseInt(b.id, 10);
+  return parseInt(b.links?.[0]?.href?.split("/").pop() || "0", 10);
+}
+
 const arabicNames: Record<string, string> = {
   "Leghorn": "لجهورن", "Rhode Island Red": "رود آيلاند الأحمر", "Orpington": "أوربينغتون",
   "Silkie": "سيلكي", "Plymouth Rock": "بليموث روك", "Australorp": "أسترالورب",
@@ -130,8 +169,9 @@ async function fetchBreeds(): Promise<any[]> {
   const res = await fetch("https://chickenapi.com/api/v1/breeds/", { next: { revalidate: 3600 } });
   if (!res.ok) throw new Error("Failed to fetch breeds");
   const breeds = await res.json();
-  return breeds.map((b: any) => ({
-    id: parseInt(b.links?.[0]?.href?.split("/").pop() || "0"),
+
+  const mapped = breeds.map((b: any) => ({
+    id: extractBreedId(b),
     nameAr: arabicNames[b.name] || b.name,
     nameEn: b.name,
     originAr: originsAr[b.origin] || b.origin,
@@ -148,6 +188,17 @@ async function fetchBreeds(): Promise<any[]> {
     imageUrl: b.imageUrl,
     sources: b.sources || [],
   }));
+
+  const wikiResults = await Promise.allSettled(
+    mapped.map((b: any) => fetchWikipediaImage(b.nameEn))
+  );
+  wikiResults.forEach((result, i) => {
+    if (result.status === "fulfilled" && result.value) {
+      mapped[i].imageUrl = result.value;
+    }
+  });
+
+  return mapped;
 }
 
 export async function GET() {
