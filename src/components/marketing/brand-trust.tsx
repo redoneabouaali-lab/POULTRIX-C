@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import { Cpu, Bird, Shield, TrendingUp, Database, Cloud, Smartphone, BarChart3 } from "lucide-react";
 import { SlidingLogoMarquee } from "@/components/lightswind/sliding-logo-marquee";
 
@@ -28,7 +29,13 @@ function BrandItem({ Icon, label, color }: { Icon: any; label: string; color: st
 export default function BrandTrustSection() {
   return (
     <section dir="rtl" className="py-10 md:py-14" style={{ background: "#FAF7F2", borderTop: "1px solid rgba(0,0,0,0.04)", borderBottom: "1px solid rgba(0,0,0,0.04)" }}>
-      <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-[1320px] mx-auto px-4 md:px-6"
+      >
         <div className="text-center mb-6">
           <span className="text-xs font-bold tracking-[0.15em]" style={{ color: "#7A8A7A" }}>تقنيات المنصة</span>
         </div>
@@ -41,7 +48,7 @@ export default function BrandTrustSection() {
           showControls={false}
           backgroundColor="!transparent"
         />
-      </div>
+      </motion.div>
     </section>
   );
 }

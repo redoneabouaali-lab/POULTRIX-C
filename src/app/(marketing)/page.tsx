@@ -13,6 +13,8 @@ import TrustMetricsBar from "@/components/marketing/trust-metrics";
 import FeaturesSection from "@/components/marketing/features";
 import TestimonialsSection from "@/components/marketing/testimonials";
 import CTASection from "@/components/marketing/cta";
+import ScrollAmbient from "@/components/marketing/scroll-ambient";
+import SectionDivider from "@/components/marketing/section-divider";
 import { TopLoader } from "@/components/lightswind/top-loader";
 
 const NarrativeFlow = dynamic(() => import("@/components/marketing/narrative"), { ssr: false });
@@ -24,14 +26,22 @@ export default function MarketingPage() {
       <ErrorBoundary fallback={<PageSkeleton />}>
         <TopLoader color="#C4893A" height={3} showSpinner={false} />
         <div className="noise-overlay" />
+        <ScrollAmbient />
         <Header />
         <HeroSection />
+        <SectionDivider />
         <BrandTrustSection />
+        <SectionDivider />
         <TrustMetricsBar />
+        <SectionDivider />
         <FeaturesSection />
+        <SectionDivider />
         <NarrativeFlow />
+        <SectionDivider />
         <TestimonialsSection />
+        <SectionDivider />
         <StepsScrollSection />
+        <SectionDivider />
         <CTASection />
         <ChatButton />
         <Footer />

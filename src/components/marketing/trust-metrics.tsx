@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import { COLORS } from "@/constants";
 import { CountUp } from "@/components/lightswind/count-up";
 
@@ -13,7 +14,13 @@ const metrics = [
 export default function TrustMetricsBar() {
   return (
     <section dir="rtl" style={{ background: "#1E2B22" }}>
-      <div className="max-w-[1320px] mx-auto px-4 md:px-6 py-8 md:py-10">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-[1320px] mx-auto px-4 md:px-6 py-8 md:py-10"
+      >
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           {metrics.map((m) => (
             <div key={m.label} className="flex flex-col items-center text-center">
@@ -32,7 +39,7 @@ export default function TrustMetricsBar() {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
