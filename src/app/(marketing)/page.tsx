@@ -11,9 +11,8 @@ import HeroSection from "@/components/marketing/hero";
 import BrandTrustSection from "@/components/marketing/brand-trust";
 import TrustMetricsBar from "@/components/marketing/trust-metrics";
 import FeaturesSection from "@/components/marketing/features";
-import ServicesPricingSection from "@/components/marketing/services-pricing";
 import TestimonialsSection from "@/components/marketing/testimonials";
-import NextStepsSection from "@/components/marketing/next-steps";
+import CTASection from "@/components/marketing/cta";
 import { TopLoader } from "@/components/lightswind/top-loader";
 
 const NarrativeFlow = dynamic(() => import("@/components/marketing/narrative"), { ssr: false });
@@ -30,11 +29,10 @@ export default function MarketingPage() {
         <BrandTrustSection />
         <TrustMetricsBar />
         <FeaturesSection />
-        <ServicesPricingSection />
         <NarrativeFlow />
         <TestimonialsSection />
         <StepsScrollSection />
-        <NextStepsSection />
+        <CTASection />
         <ChatButton />
         <Footer />
       </ErrorBoundary>
