@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, useInView } from "motion/react";
 import FlowArt, { FlowSection } from "@/components/ui/story-scroll";
 import { COLORS } from "@/constants";
-import { Bird, Brain, TrendingUp, BarChart3, ShieldCheck, DollarSign, Cpu, AlertTriangle, Users, Star, Zap, ArrowLeft, Check, MessageCircle } from "lucide-react";
+import { Brain, BarChart3, ShieldCheck, AlertTriangle, Users, Zap, Check } from "lucide-react";
 
 /* ─── Double-Bezel Card ─── */
 
@@ -74,56 +74,6 @@ function BentoCard({ icon: Icon, title, desc, color, imgSrc, index }: {
           <p className="text-xs leading-relaxed" style={{ color: "#5A6A5A", fontSize: "0.7rem" }}>{desc}</p>
         </div>
       </div>
-    </motion.div>
-  );
-}
-
-/* ─── Testimonial Card ─── */
-
-function TestimonialCard({ name, location, quote, stat, statLabel, index }: {
-  name: string; location: string; quote: string; stat: string; statLabel: string; index: number;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.12, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ y: -2 }}
-    >
-      <DoubleBezelCard style={{ height: "100%" }}>
-        <div className="p-6 space-y-4">
-          <div className="flex justify-between">
-            <div className="flex items-center gap-3">
-              <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                <rect width="40" height="40" rx="20" fill={`url(#avatar-${index})`} />
-                <text x="20" y="24" textAnchor="middle" fill="#000" fontSize="16" fontWeight="700" fontFamily="Geist">{name.charAt(0)}</text>
-                <defs>
-                  <linearGradient id={`avatar-${index}`} x1="0" y1="0" x2="40" y2="40">
-                    <stop offset="0%" stopColor={COLORS.aqua} />
-                    <stop offset="100%" stopColor={COLORS.blue} />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <div>
-                <p className="text-sm font-semibold" style={{ color: "#1a1a24" }}>{name}</p>
-                <p className="text-xs" style={{ color: "#5A6A5A", fontSize: "0.75rem" }}>{location}</p>
-              </div>
-            </div>
-            <svg width="60" height="12" viewBox="0 0 60 12" fill={COLORS.gold}>
-              {[0, 12, 24, 36, 48].map(x => (
-                <polygon key={x} points={`${x + 6},0 ${x + 7.5},4 ${x + 12},4 ${x + 8.5},7 ${x + 10},12 ${x + 6},9 ${x + 2},12 ${x + 3.5},7 ${x + 0},4 ${x + 4.5},4`} />
-              ))}
-            </svg>
-          </div>
-          <p className="text-sm" style={{ color: "#5a5a64", lineHeight: 1.7 }}>{quote}</p>
-          <div className="flex items-center gap-2 pt-1">
-            <TrendingUp size={13} style={{ color: COLORS.aqua }} />
-            <span className="text-xs font-bold" style={{ color: COLORS.aqua }}>{stat}</span>
-            <span className="text-xs" style={{ color: "#a0a0aa", fontSize: "0.75rem" }}>{statLabel}</span>
-          </div>
-        </div>
-      </DoubleBezelCard>
     </motion.div>
   );
 }
@@ -295,11 +245,6 @@ export default function NarrativeFlow() {
     { icon: AlertTriangle, title: "التنبيهات الفورية", desc: "تنبيه فوري عند أي تغير في الحرارة، العلف، أو الماء — حتى فالتلفون.", color: COLORS.gold, imgSrc: WIKI_IMAGES["farmer-phone"] },
   ];
 
-  const testimonials = [
-    { name: "الحاج مصطفى", location: "الدار البيضاء", quote: "منذ بديت مع POULTRIX، النفوق نقص بزاف والأرباح زادت. الصراحة خدمة ذكية ونتائج مضمونة.", stat: "+41%", statLabel: "زيادة في الربح" },
-    { name: "سعيد الفاسي", location: "فاس", quote: "كنت نضيع الوقت كامل فالوراق والجداول. دابا كلشي تلقائي — التطبيق كيدير الحسابات وأنا فقط كندير المراقبة.", stat: "12h", statLabel: "توفير في الوقت كل أسبوع" },
-  ];
-
   const plans = [
     { name: "مجاني", price: "0", period: "دائماً", desc: "للبداية والتعرف على المنصة", features: ["حظيرة واحدة", "مؤشرات أساسية", "تاريخ 7 أيام", "تنبيهات البريد"], popular: false, color: COLORS.cream, cta: "ابدأ مجاناً" },
     { name: "Pro", price: "299", period: "DH/شهر", desc: "للمزارع المتوسطة والاحترافية", features: ["6 حظائر", "توقعات AI", "تاريخ سنة كاملة", "تقارير مالية", "تنبيهات فورية", "دعم فوري"], popular: true, color: COLORS.aqua, cta: "جرب 30 يوم مجاناً" },
@@ -399,35 +344,6 @@ export default function NarrativeFlow() {
           >
             <LiveUserCounter />
           </motion.div>
-
-          {/* Testimonials Section Label */}
-          <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="section-label block text-center mb-3"
-          >
-            آراء المزارعين
-          </motion.span>
-          <motion.div
-            initial={{ opacity: 0, scaleX: 0 }}
-            whileInView={{ opacity: 1, scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.05, duration: 0.5 }}
-            className="section-divider mb-5"
-          />
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-2xl md:text-3xl font-bold text-center mb-2"
-            style={{ color: "#1a1a24", letterSpacing: "-0.02em" }}
-          >
-            واش كيقولو اللي جربو؟
-          </motion.h2>
-          <div className="grid md:grid-cols-2 gap-4 mb-14 mt-8">
-            {testimonials.map((t, i) => <TestimonialCard key={i} {...t} index={i} />)}
-          </div>
 
           {/* Stats Counters */}
           <div className="flex items-center justify-center gap-10 md:gap-16 mb-14">

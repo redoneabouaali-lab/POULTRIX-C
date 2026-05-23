@@ -2,43 +2,46 @@
 
 import { motion } from "motion/react";
 import { COLORS } from "@/constants";
-import { Star, Quote } from "lucide-react";
+import { Quote, Star } from "lucide-react";
 
 const testimonials = [
   {
     name: "عبد الرحمن",
-    role: "صاحب ضيعة دواجن — الدار البيضاء",
-    avatar: "ع",
-    content: "من قبل كنت كنعتمد على التخمين فالتغذية والعلاج. دابا المنصة كتقطعلنا التوقعات قبل 48 ساعة، ووفرنا فلوس البيوطرة بزاف. الربح زاد ب 40% فشهر واحد.",
-    rating: 5,
-    from: COLORS.aqua,
-    highlight: "الربح زاد ب 40% فشهر واحد",
+    location: "الدار البيضاء",
+    before: "كنت كنعتمد على التخمين فالتغذية والعلاج",
+    after: "الربح زاد ب 40%",
+    stat: "+40%",
+    statLabel: "فشهر واحد",
+    quote: "من قبل، النفوق كان كايديني فلوس بزاف والبيوطري كل أسبوع. دابا المنصة كتقطعلنا التوقعات قبل 48 ساعة — وفرنا 3 جولات للبيوطري فالشهر. الصراحة خدمة ذهبية.",
+    color: COLORS.aqua,
   },
   {
     name: "فاطمة",
-    role: "مديرة مزرعة — مراكش",
-    avatar: "ف",
-    content: "كنت كنقلق على الضيعة فالسفر. دابا كنجي نشوف التطبيق ونعرف شنو كاين. التنبيهات فورية والتحليلات المالية ساعدوني نفهم فين كيخرج الفلوس.",
-    rating: 5,
-    from: COLORS.blue,
-    highlight: "التنبيهات الفورية نقصت الخسائر ب 60%",
+    location: "مراكش",
+    before: "كنت كنقلق على الضيعة كل ما نسافر",
+    after: "الخسائر نقصو ب 60%",
+    stat: "-60%",
+    statLabel: "خسائر أقل",
+    quote: "هاد التطبيق قلب حياتي. دابا كنجي نشوف التلفون ونعرف شنو كاين فالحظائر. التنبيهات الفورية والتحليلات المالية ساعدوني نفهم فين كيخرج الفلوس — وأين كندير التغيير.",
+    color: COLORS.blue,
   },
   {
-    name: "رشيد",
-    role: "مقاول فلاحي — فاس",
-    avatar: "ر",
-    content: "جربت بزاف ديال الحلول قبل، ولكن POULTRIX-C هو أول واحد شد الخدمة من đầu. الذكاء الاصطناعي ديالو مازال ما غلط فالتشخيص. والتقارير المالية كتعطيني صورة واضحة على الربحية.",
-    rating: 5,
-    from: COLORS.gold,
-    highlight: "أول حل شغل بشكل ممتاز من اليوم الأول",
+    name: "سعيد",
+    location: "فاس",
+    before: "كنت نضيع الوقت فالوراق والجداول",
+    after: "12 ساعة توفير كل أسبوع",
+    stat: "12h",
+    statLabel: "توفير فالوقت",
+    quote: "جربت بزاف ديال الحلول، ولكن POULTRIX-C هو أول واحد شد الخدمة من اليوم الأول. التطبيق كيدير الحسابات والتقارير المالية والتوقعات — وأنا فقط كندير المراقبة والقرارات.",
+    color: COLORS.gold,
   },
 ];
 
-function Stars({ count }: { count: number }) {
+function Stars() {
   return (
     <div className="flex gap-0.5">
-      {Array.from({ length: count }).map((_, i) => (
-        <Star key={i} size={14} fill={COLORS.aqua} color={COLORS.aqua} />
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star key={i} size={12} fill={COLORS.aqua} color={COLORS.aqua} />
       ))}
     </div>
   );
@@ -46,16 +49,16 @@ function Stars({ count }: { count: number }) {
 
 export default function TestimonialsSection() {
   return (
-    <section className="relative py-28 md:py-36 overflow-hidden" dir="rtl" style={{ background: "#F5EDE3" }}>
+    <section className="relative py-28 md:py-36 overflow-hidden" dir="rtl" style={{ background: "#FAF7F2" }}>
       <div className="max-w-[1320px] mx-auto px-4 md:px-6">
-        <div className="text-center mb-16">
-          <span className="section-label block mb-3">شهادات المستخدمين</span>
+        <div className="text-center mb-16 md:mb-20">
+          <span className="section-label block mb-3">آراء المزارعين</span>
           <div className="section-divider mb-5" />
           <h2 className="text-4xl md:text-6xl font-black font-display leading-[0.9] mb-4" style={{ color: "#1E2B22", letterSpacing: "-0.03em" }}>
-            هادو لي جربو، شهدو
+            هادو لي جربو راه
           </h2>
           <p className="text-base md:text-lg max-w-xl mx-auto" style={{ color: "#5A6A5A" }}>
-            أكثر من 28,000 مزرعة كتثق ف POULTRIX-C. شنو كيقولو المغاربة لي جربو المنصة؟
+            أكثر من 28,000 مزارع كيستعملو POULTRIX-C. شنو كيقولو المغاربة لي جربو؟
           </p>
         </div>
 
@@ -66,37 +69,58 @@ export default function TestimonialsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="relative"
             >
-              <div className="relative h-full p-[1px] rounded-[1.5rem]" style={{ background: `linear-gradient(135deg, ${t.from}20, transparent)` }}>
-                <div className="rounded-[calc(1.5rem-0.25rem)] h-full overflow-hidden" style={{ background: "#FFFFFF" }}>
+              {/* Double-bezel card */}
+              <div className="relative p-[1.5px] rounded-[2rem] h-full spring-transition hover:scale-[1.02]"
+                style={{ background: `linear-gradient(135deg, ${t.color}25, ${t.color}08)` }}>
+                <div className="rounded-[calc(2rem-0.375rem)] h-full overflow-hidden"
+                  style={{ background: "#FFFFFF", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.5)" }}>
                   <div className="p-6 md:p-8 flex flex-col h-full">
+
+                    {/* Star rating */}
                     <div className="mb-4">
-                      <Stars count={t.rating} />
+                      <Stars />
                     </div>
 
-                    <div className="mb-4" style={{ color: `${t.from}15` }}>
-                      <Quote size={32} />
+                    {/* Before/After contrast */}
+                    <div className="text-xs space-y-2 mb-4 pb-4" style={{ borderBottom: "1px solid rgba(0,0,0,0.04)" }}>
+                      <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#e0a0a0" }} />
+                        <span style={{ color: "#999" }}>قبل: {t.before}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#34c759" }} />
+                        <span style={{ color: "#1E2B22" }}>دابا: {t.after}</span>
+                      </div>
                     </div>
 
-                    <p className="text-sm md:text-base leading-relaxed mb-6 flex-1" style={{ color: "#5A6A5A" }}>
-                      {t.content}
-                    </p>
+                    {/* Big stat */}
+                    <div className="mb-3">
+                      <span className="text-3xl md:text-4xl font-black font-display tabular-nums"
+                        style={{ color: t.color, letterSpacing: "-0.03em" }}>
+                        {t.stat}
+                      </span>
+                      <span className="text-xs font-medium mr-1.5" style={{ color: t.color }}>
+                        {t.statLabel}
+                      </span>
+                    </div>
 
-                    <div className="p-3 rounded-xl mb-4" style={{ background: `${t.from}08` }}>
-                      <p className="text-sm font-bold" style={{ color: t.from }}>
-                        {t.highlight}
+                    {/* Quote */}
+                    <div className="flex-1">
+                      <p className="text-sm leading-relaxed" style={{ color: "#5A6A5A" }}>
+                        {t.quote}
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-3 pt-4" style={{ borderTop: "1px solid rgba(0,0,0,0.04)" }}>
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
-                        style={{ background: `${t.from}15`, color: t.from }}>
-                        {t.avatar}
+                    {/* Avatar + name */}
+                    <div className="flex items-center gap-3 pt-4 mt-4" style={{ borderTop: "1px solid rgba(0,0,0,0.04)" }}>
+                      <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold"
+                        style={{ background: `${t.color}15`, color: t.color }}>
+                        {t.name.charAt(0)}
                       </div>
                       <div>
                         <p className="text-sm font-semibold" style={{ color: "#1E2B22" }}>{t.name}</p>
-                        <p className="text-xs" style={{ color: "#7A8A7A" }}>{t.role}</p>
+                        <p className="text-xs" style={{ color: "#7A8A7A" }}>{t.location}</p>
                       </div>
                     </div>
                   </div>
