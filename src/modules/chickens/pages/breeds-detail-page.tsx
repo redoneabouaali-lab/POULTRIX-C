@@ -29,7 +29,7 @@ export default function BreedDetailPage() {
           fetch("/api/breeds/enrich", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nameEn: d.nameEn, nameAr: d.nameAr }),
+            body: JSON.stringify({ nameEn: d.nameEn, nameAr: d.nameAr, sources: d.sources }),
           })
             .then((r) => r.json())
             .then((ed) => {
