@@ -294,66 +294,81 @@ export default function BreedDetailPage() {
         </motion.div>
       </div>
 
-      {/* ═══ Enrichment Loader Component ═══ */}
+      {/* ═══ Enrichment Loader ═══ */}
       {enrichState === "loading" && (
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-2xl p-6"
-          style={{ background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,0.8)" }}
+          transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-3xl p-10 text-center"
+          style={{
+            background: "linear-gradient(135deg, #f8f8fa 0%, #f0f0f2 100%)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.8), 0 1px 3px rgba(0,0,0,0.03)",
+          }}
         >
-          <div className="flex items-center gap-2 mb-4">
+          <motion.div
+            animate={{ scale: [1, 1.08, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center"
+            style={{ background: `${COLORS.aqua}15` }}
+          >
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
             >
-              <Search size={14} style={{ color: COLORS.aqua }} />
+              <Search size={28} style={{ color: COLORS.aqua }} />
             </motion.div>
-            <h2 className="text-sm font-semibold" style={{ color: "#1a1a24" }}>
-              وصف السلالة
-            </h2>
+          </motion.div>
+
+          <h3
+            className="text-xl font-bold font-heading mb-2"
+            style={{ color: "#1a1a24" }}
+          >
+            {breed.nameAr || "جاري البحث"}
+          </h3>
+
+          <motion.div
+            className="h-1 w-24 mx-auto rounded-full mb-4"
+            style={{ background: `linear-gradient(90deg, ${COLORS.aqua}, ${COLORS.gold})` }}
+          />
+
+          <motion.p
+            className="text-sm font-medium"
+            style={{ color: "#5a6a5a" }}
+          >
             <motion.span
-              className="text-[10px] font-medium mr-auto"
-              style={{ color: "#a0a0aa" }}
+              animate={{ opacity: [1, 0.4, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
             >
-              <motion.span
-                animate={{ opacity: [1, 0, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, times: [0, 0.5, 1], ease: "linear" }}
-              >
-                جاري
-              </motion.span>
-              <motion.span
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, times: [0, 0.5, 1], ease: "linear", delay: 0.3 }}
-              >
-                {" "}البحث
-              </motion.span>
-              <motion.span
-                animate={{ opacity: [0, 0, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity, times: [0, 0.5, 1], ease: "linear", delay: 0.6 }}
-              >
-                ...
-              </motion.span>
+              يقوم الذكاء الاصطناعي بجلب معلومات شاملة عن السلالة من المصادر العالمية
             </motion.span>
-          </div>
-          <div className="space-y-3">
-            <Skeleton className="h-4 w-full rounded-md" shimmer />
-            <Skeleton className="h-4 w-[92%] rounded-md" shimmer />
-            <Skeleton className="h-4 w-[85%] rounded-md" shimmer />
-            <Skeleton className="h-4 w-[88%] rounded-md" shimmer />
-            <Skeleton className="h-4 w-[60%] rounded-md" shimmer />
-          </div>
+          </motion.p>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-            className="flex items-center gap-1.5 mt-4"
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="flex items-center justify-center gap-1.5 mt-5"
+            style={{ color: "#a0a0aa" }}
           >
-            <Clock size={10} style={{ color: "#a0a0aa" }} />
-            <span className="text-[10px]" style={{ color: "#a0a0aa" }}>
-              جلب المعلومات من المصادر ...
-            </span>
+            <motion.span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ background: COLORS.aqua }}
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ duration: 1, repeat: Infinity, delay: 0 }}
+            />
+            <motion.span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ background: COLORS.aqua }}
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
+            />
+            <motion.span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ background: COLORS.aqua }}
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
+            />
           </motion.div>
         </motion.div>
       )}
@@ -363,61 +378,86 @@ export default function BreedDetailPage() {
         {(enrichState === "success" && enrichedContent) ? (
           <motion.div
             key="enriched"
-            initial={{ opacity: 0, y: 16, filter: "blur(4px)" }}
+            initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-2xl p-6"
-            style={{ background: "#fff", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="rounded-3xl overflow-hidden"
+            style={{ background: "#fff", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.04)" }}
           >
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold flex items-center gap-2" style={{ color: "#1a1a24" }}>
-                <FileText size={16} style={{ color: COLORS.aqua }} />
-                وصف السلالة
-              </h2>
-              <a
-                href={enrichedContent.sourceUrl || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-[10px] font-medium transition-all duration-200 hover:opacity-70"
-                style={{ color: COLORS.aqua, textDecoration: "none" }}
-              >
-                <ExternalLink size={10} />
-                {enrichedContent.source || "مصدر"}
-              </a>
-            </div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.15, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <motion.p
-                className="text-sm leading-relaxed"
-                style={{ color: "#5a5a64", lineHeight: 2 }}
-              >
-                {enrichedContent.descriptionAr}
-              </motion.p>
-              {enrichedContent.enrichedFields && (
-                <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.3 }}
-                  className="flex flex-wrap gap-2 mt-4 pt-4 border-t"
-                  style={{ borderColor: "#f0f0f2" }}
+            {/* Description section */}
+            <div className="p-7">
+              <div className="flex items-center justify-between mb-4">
+                <h2
+                  className="text-base font-bold font-heading flex items-center gap-2.5"
+                  style={{ color: "#1a1a24" }}
                 >
-                  {Object.entries(enrichedContent.enrichedFields).map(
-                    ([key, val]) => (
+                  <span
+                    className="w-2 h-2 rounded-full inline-block shrink-0"
+                    style={{ background: COLORS.aqua }}
+                  />
+                  وصف السلالة
+                </h2>
+                <a
+                  href={enrichedContent.sourceUrl || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-medium transition-opacity hover:opacity-60"
+                  style={{ color: COLORS.aqua, textDecoration: "none" }}
+                >
+                  <ExternalLink size={11} />
+                  {enrichedContent.source || "مصدر"}
+                </a>
+              </div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <motion.p
+                  className="text-sm leading-[2]"
+                  style={{ color: "#5a5a64" }}
+                >
+                  {enrichedContent.descriptionAr}
+                </motion.p>
+              </motion.div>
+            </div>
+
+            {/* Facts grid */}
+            {enrichedContent.enrichedFields && Object.keys(enrichedContent.enrichedFields).length > 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.35, duration: 0.4 }}
+                className="grid grid-cols-2 sm:grid-cols-3 gap-px"
+                style={{ background: "#f0f0f2" }}
+              >
+                {Object.entries(enrichedContent.enrichedFields).map(
+                  ([key, val], i) => (
+                    <motion.div
+                      key={key}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 + i * 0.06, duration: 0.3 }}
+                      className="p-4"
+                      style={{ background: "#fff" }}
+                    >
                       <span
-                        key={key}
-                        className="text-[10px] font-medium px-2.5 py-1 rounded-full"
-                        style={{ background: `${COLORS.cream}`, color: COLORS.blue }}
+                        className="text-[10px] font-medium uppercase tracking-wider block mb-1"
+                        style={{ color: "#a0a0aa" }}
                       >
-                        {key}: {String(val)}
+                        {key}
                       </span>
-                    )
-                  )}
-                </motion.div>
-              )}
-            </motion.div>
+                      <span
+                        className="text-sm font-semibold block"
+                        style={{ color: "#1a1a24" }}
+                      >
+                        {String(val)}
+                      </span>
+                    </motion.div>
+                  )
+                )}
+              </motion.div>
+            )}
           </motion.div>
         ) : (breed.descriptionAr || breed.description) && enrichState !== "loading" ? (
           <motion.div
