@@ -1,4 +1,4 @@
-export interface MetricInputs {
+﻿export interface MetricInputs {
   feedConsumedKg: number;
   weightGainedKg: number;
   deaths: number;
