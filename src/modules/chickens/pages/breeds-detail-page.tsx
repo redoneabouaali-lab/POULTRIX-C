@@ -13,6 +13,7 @@ export default function BreedDetailPage() {
   const { id } = useParams();
   const [breed, setBreed] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [lang, setLang] = useState<"ar" | "en">("ar");
 
   useEffect(() => {
     fetch(`/api/breeds/${id}`).then(r => r.json()).then(d => { setBreed(d); setLoading(false); }).catch(() => setLoading(false));
@@ -272,19 +273,36 @@ export default function BreedDetailPage() {
           className="rounded-2xl p-6"
           style={{ background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
         >
-          <h2
-            className="text-sm font-semibold mb-3 flex items-center gap-2"
-            style={{ color: "#1a1a24" }}
-          >
-            <FileText size={16} style={{ color: COLORS.aqua }} />
-            وصف السلالة
-          </h2>
-          <p
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-semibold flex items-center gap-2" style={{ color: "#1a1a24" }}>
+              <FileText size={16} style={{ color: COLORS.aqua }} />
+              {lang === "ar" ? "وصف السلالة" : "Breed Description"}
+            </h2>
+            {breed.descriptionAr && breed.description && (
+              <button
+                onClick={() => setLang(lang === "ar" ? "en" : "ar")}
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.65rem] font-medium spring-transition hover:scale-105 active:scale-95"
+                style={{
+                  background: lang === "ar" ? `${COLORS.aqua}12` : "#f0f0f0",
+                  color: lang === "ar" ? COLORS.aqua : "#5A6A5A",
+                  border: `1px solid ${lang === "ar" ? `${COLORS.aqua}30` : "#e0e0e0"}`,
+                }}
+              >
+                <Globe size={11} />
+                {lang === "ar" ? "English" : "العربية"}
+              </button>
+            )}
+          </div>
+          <motion.p
+            key={lang}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="text-sm leading-relaxed"
             style={{ color: "#5a5a64", lineHeight: 1.9 }}
           >
-            {breed.descriptionAr || breed.description}
-          </p>
+            {lang === "ar" ? (breed.descriptionAr || breed.description) : (breed.description || breed.descriptionAr)}
+          </motion.p>
         </motion.div>
       )}
 
