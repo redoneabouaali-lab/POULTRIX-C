@@ -8,6 +8,7 @@ import ChatButton from "@/modules/ai/components/chat-button";
 import Footer from "@/components/layout/footer";
 import Header from "@/components/marketing/header";
 import HeroSection from "@/components/marketing/hero";
+import BrandTrustSection from "@/components/marketing/brand-trust";
 import TrustMetricsBar from "@/components/marketing/trust-metrics";
 import FeaturesSection from "@/components/marketing/features";
 import CTASection from "@/components/marketing/cta";
@@ -24,6 +25,7 @@ export default function MarketingPage() {
         <div className="noise-overlay" />
         <Header />
         <HeroSection />
+        <BrandTrustSection />
         <TrustMetricsBar />
         <FeaturesSection />
         <NarrativeFlow />

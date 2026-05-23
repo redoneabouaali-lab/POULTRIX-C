@@ -5,6 +5,7 @@ import { COLORS } from "@/constants";
 import { Eye, Activity, TrendingUp } from "lucide-react";
 import { ScrollReveal } from "@/components/lightswind/scroll-reveal";
 import { BorderBeam } from "@/components/lightswind/border-beam";
+import { ShinyText } from "@/components/lightswind/shiny-text";
 
 const features = [
   {
@@ -40,18 +41,27 @@ export default function FeaturesSection() {
         <div className="text-center lg:text-right mb-16 lg:mb-20">
           <span className="section-label block mb-3">ماذا نقدم</span>
           <div className="section-divider mb-5" />
-          <ScrollReveal
-            size="xl"
-            align="center"
-            variant="default"
-            threshold={0.3}
-            baseOpacity={0}
-            baseRotation={2}
-            blurStrength={6}
-            containerClassName="w-full"
+          <ShinyText
+            speed={3}
+            direction="left-to-right"
+            shineWidth={25}
+            intensity={0.3}
+            size="4xl"
+            className="!text-[#1E2B22]"
           >
-            كل ما تحتاجه لتدبير ضيعتك
-          </ScrollReveal>
+            <ScrollReveal
+              size="xl"
+              align="center"
+              variant="default"
+              threshold={0.3}
+              baseOpacity={0}
+              baseRotation={2}
+              blurStrength={6}
+              containerClassName="w-full"
+            >
+              كل ما تحتاجه لتدبير ضيعتك
+            </ScrollReveal>
+          </ShinyText>
           <p className="text-base md:text-lg max-w-lg mx-auto lg:mx-0 mt-4" style={{ color: "#5A6A5A" }}>
             منصة متكاملة تجمع المراقبة، التحليل، والتدبير المالي في مكان واحد.
           </p>
