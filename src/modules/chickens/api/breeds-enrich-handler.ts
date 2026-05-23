@@ -38,45 +38,72 @@ function parseLivestockContent(html: string, slug: string): SourceResult | null 
     .replace(/<[^>]+>/g, " ")
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#8211;/g, "-")
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8230;/g, "...")
     .replace(/&[a-z]+;/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 
-  const descMatch = text.match(
-    /Breed Facts[\s\S]*?(?:LEGHORN[^A-Z]*CHICKEN|Did you know:)/i
-  );
+  const breedName = slug
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+
+  const stopMarkers = [
+    "Did you know:",
+    "You may be interested in",
+    "Search for:",
+    "Donations submitted",
+    "&copy; Copyright",
+    "© Copyright",
+    "Page load link",
+    "Go to Top",
+    "Facebook Instagram",
+    "All Rights Reserved",
+  ];
+
+  const nameHeading = text.includes(breedName.toUpperCase())
+    ? text.toUpperCase().indexOf(breedName.toUpperCase())
+    : -1;
+
   let description = "";
-  if (descMatch) {
-    description = descMatch[0]
-      .replace(/Breed Facts/i, "")
-      .replace(/LEGHORN[^A-Z]*CHICKEN/i, "")
-      .replace(/Did you know:/i, "")
-      .trim();
+
+  if (nameHeading >= 0) {
+    const afterHeading = text.slice(nameHeading);
+    let earliestStop = afterHeading.length;
+    for (const marker of stopMarkers) {
+      const idx = afterHeading.indexOf(marker);
+      if (idx >= 0 && idx < earliestStop) earliestStop = idx;
+    }
+    const raw = afterHeading.slice(0, earliestStop).trim();
+    const headingEnd = raw.indexOf("\n");
+    description = (headingEnd >= 0 ? raw.slice(headingEnd) : raw).trim();
   }
 
-  if (!description || description.length < 100) {
+  if (description.length < 100) {
     const paragraphs = text
-      .split(/\.(?:\s+[A-Z])/)
-      .filter((p) => p.trim().length > 80);
-    if (paragraphs.length > 2) {
-      description = paragraphs.slice(0, 8).join(". ") + ".";
+      .split(/\n\n+/)
+      .map((p) => p.trim())
+      .filter((p) => p.length > 100);
+    if (paragraphs.length > 0) {
+      description = paragraphs.slice(0, 8).join("\n\n");
     }
   }
 
   if (description.length < 50) return null;
 
   const facts: Record<string, string> = {};
-  const factTable = text.match(
-    /Breed Facts\s*([\s\S]*?)(?=\n\n|\n[A-Z]|$)/i
-  );
-  if (factTable) {
-    const lines = factTable[1].split("\n");
-    for (const line of lines) {
-      const parts = line.split(/:(.+)/);
+  const factLines = text.match(/[A-Z][a-zA-Z\s]+:\s[^\n]+/g);
+  if (factLines) {
+    for (const line of factLines) {
+      const parts = line.split(/:\s(.+)/);
       if (parts.length >= 2) {
         const key = parts[0].trim();
         const val = parts[1].trim();
-        if (key && val) facts[key] = val;
+        if (key && val && key.length < 30) facts[key] = val;
       }
     }
   }
@@ -199,10 +226,14 @@ async function translateToArabic(text: string): Promise<string> {
 
   if (!apiKey) return text;
 
+  const truncated =
+    text.length > 1800 ? text.slice(0, text.lastIndexOf(".", 1800) + 1) : text;
+  if (truncated.length < 50) return text;
+
   try {
     const res = await fetch(`${baseUrl}/chat/completions`, {
       method: "POST",
-      signal: AbortSignal.timeout(15000),
+      signal: AbortSignal.timeout(20000),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
@@ -213,17 +244,18 @@ async function translateToArabic(text: string): Promise<string> {
           {
             role: "system",
             content:
-              "أنت مترجم متخصص في مجال الزراعة والدواجن. قم بترجمة النص الإنجليزي التالي عن سلالة دجاج إلى اللغة العربية الفصحى. حافظ على جميع الأرقام والقياسات وأسماء السلالات كما هي. أعد الترجمة فقط بدون شرح أو إضافات.",
+              "أنت مترجم متخصص في مجال الزراعة والدواجن. الترجمة إلى العربية الفصحى. حافظ على الأرقام والقياسات والأسماء العلمية. أعد الترجمة فقط.",
           },
-          { role: "user", content: text },
+          { role: "user", content: truncated },
         ],
-        temperature: 0.1,
-        max_tokens: 2048,
+        temperature: 0.05,
+        max_tokens: 4096,
       }),
     });
     if (!res.ok) return text;
     const data = await res.json();
-    return data.choices?.[0]?.message?.content?.trim() || text;
+    const translated = data.choices?.[0]?.message?.content?.trim();
+    return translated && translated.length > 20 ? translated : text;
   } catch {
     return text;
   }
