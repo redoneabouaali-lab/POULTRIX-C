@@ -36,6 +36,9 @@ export default function BreedDetailPage() {
               if (ed.descriptionAr) {
                 setEnrichedContent(ed);
                 setEnrichState("success");
+                if (ed.imageUrl && ed.imageUrl !== d.imageUrl) {
+                  setBreed((prev: any) => prev ? { ...prev, imageUrl: ed.imageUrl } : prev);
+                }
               } else {
                 setEnrichState("error");
               }

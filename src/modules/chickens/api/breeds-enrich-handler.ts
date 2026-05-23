@@ -111,13 +111,20 @@ function extractOGDescription(html: string): string | null {
 }
 
 function extractMainText(html: string): string | null {
-  const text = html
+  const nonContent =
+    /<(div|section)[^>]*(?:class|id)=["'][^"']*(?:nav|menu|sidebar|widget|footer|header|masthead|navigation|skip[-_]|site[-_]header|site[-_]footer|secondary|widget-area|comment|reply|search|breadcrumb|submenu|dropdown|toolbar|banner|promo|advert|cookie|popup|modal|overlay|subscribe|social|share|related|recommend)[^"']*["'][^>]*>[\s\S]*?<\/\1>/gi;
+  let clean = html.replace(nonContent, "");
+
+  clean = clean
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
     .replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, "")
     .replace(/<header[^>]*>[\s\S]*?<\/header>/gi, "")
     .replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, "")
     .replace(/<aside[^>]*>[\s\S]*?<\/aside>/gi, "")
+    .replace(/<form[^>]*>[\s\S]*?<\/form>/gi, "");
+
+  const text = clean
     .replace(/<[^>]+>/g, " ")
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
@@ -129,6 +136,7 @@ function extractMainText(html: string): string | null {
     .replace(/&[a-z]+;/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+
   if (text.length < 100) return null;
 
   const sentences = text.split(/(?<=\.)\s+/);
@@ -136,11 +144,16 @@ function extractMainText(html: string): string | null {
   return cleaned.length > 2 ? cleaned.slice(0, 40).join(" ") : text.slice(0, 2000);
 }
 
-async function scrapeGenericURL(url: string): Promise<SourceResult | null> {
+async function scrapeGenericURL(url: string, slug?: string): Promise<SourceResult | null> {
   const res = await fetchWithTimeout(url);
   if (!res) return null;
   const html = await res.text();
   if (html.length < 200) return null;
+
+  if (slug) {
+    const livestock = parseLivestockContent(html, slug);
+    if (livestock) return livestock;
+  }
 
   const imageUrl = extractOGImage(html);
   const ogDesc = extractOGDescription(html);
@@ -154,11 +167,12 @@ async function scrapeGenericURL(url: string): Promise<SourceResult | null> {
 
 /* ───────── Source-based scraper (uses breed's own المصادر) ───────── */
 
-async function scrapeSources(sources: string[]): Promise<SourceResult[]> {
+async function scrapeSources(sources: string[], nameEn: string): Promise<SourceResult[]> {
+  const slug = breedSlug(nameEn);
   const tasks = sources.map(async (url) => {
     const wikiTitle = extractWikipediaTitle(url);
     if (wikiTitle) return scrapeWikipediaByTitle(wikiTitle, url);
-    return scrapeGenericURL(url);
+    return scrapeGenericURL(url, slug);
   });
   const results = await Promise.allSettled(tasks);
   const valid: SourceResult[] = [];
@@ -364,7 +378,7 @@ export async function POST(req: Request) {
 
     /* Phase 1: use exact source URLs (المصادر) from breed data */
     if (sources && Array.isArray(sources) && sources.length > 0) {
-      validResults = await scrapeSources(sources);
+      validResults = await scrapeSources(sources, nameEn);
     }
 
     /* Phase 2: fallback to guessing URLs */
