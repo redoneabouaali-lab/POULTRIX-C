@@ -71,15 +71,18 @@ export default function AnalyticsPage() {
           <h1 className="text-lg font-bold font-heading" style={{ color: "#1a1a24", margin: 0 }}>التحليلات</h1>
           <p className="text-xs" style={{ color: "#5A6A5A", margin: "4px 0 0" }}>تحليلات شاملة لأداء الضيعة</p>
         </div>
-        <div className="flex gap-1.5" style={{ background: "#fff", borderRadius: "10px", padding: "3px", boxShadow: "0 1px 2px rgba(0,0,0,0.03)" }}>
+        <div className="flex gap-1.5" style={{ background: "#f5f5f7", borderRadius: "12px", padding: "3px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03)" }}>
           {periods.map(p => (
             <button key={p.value} onClick={() => setPeriod(p.value)}
               style={{
                 padding: "6px 14px", borderRadius: "8px", border: "none", fontSize: "0.75rem", fontWeight: "600", cursor: "pointer",
                 background: period === p.value ? COLORS.aqua : "transparent",
-                color: period === p.value ? "#000" : "#5A6A5A",
+                color: period === p.value ? "#fff" : "#5A6A5A",
+                boxShadow: period === p.value ? "0 1px 3px rgba(0,0,0,0.1)" : "none",
                 transition: "all 0.2s",
               }}
+              onMouseEnter={(e) => { if (period !== p.value) e.currentTarget.style.background = `${COLORS.aqua}12`; }}
+              onMouseLeave={(e) => { if (period !== p.value) e.currentTarget.style.background = "transparent"; }}
             >{p.label}</button>
           ))}
         </div>
@@ -97,18 +100,19 @@ export default function AnalyticsPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-            whileHover={{ y: -2 }}
-            style={{ background: "#fff", borderRadius: "16px", padding: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+            whileHover={{ y: -3, boxShadow: "0 12px 32px rgba(0,0,0,0.08)" }}
+            style={{ background: "#fff", borderRadius: "16px", padding: "16px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
           >
             <div className="flex items-center justify-between mb-2">
               <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: `${stat.color}12` }}>
                 <stat.icon size={16} style={{ color: stat.color }} />
               </div>
-              <span className="text-xs font-semibold" style={{ color: stat.trend === "up" ? "#1a7d36" : "#c41e1e" }}>
+              <span className="text-xs font-semibold flex items-center gap-1 tabular-nums font-metric" style={{ color: stat.trend === "up" ? "#1a7d36" : "#c41e1e" }}>
+                {stat.trend === "up" ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
                 {stat.trend === "up" ? "+" : "-"}{Math.round(Math.random() * 8 + 2)}%
               </span>
             </div>
-            <p className="text-xs font-medium mb-0.5" style={{ color: "#5A6A5A" }}>{stat.label}</p>
+            <p className="text-xs font-semibold mb-0.5" style={{ color: "#5A6A5A" }}>{stat.label}</p>
             <p className="text-lg font-bold tabular-nums font-metric" style={{ color: "#1a1a24" }}>{stat.value}</p>
           </motion.div>
         ))}
@@ -119,10 +123,11 @@ export default function AnalyticsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(0,0,0,0.06)" }}
+          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
         >
           <div className="flex items-center justify-between mb-4">
-            <p className="text-sm font-semibold" style={{ color: "#1a1a24" }}>اتجاه النفوق</p>
+            <p className="text-sm font-semibold font-heading" style={{ color: "#1a1a24" }}>اتجاه النفوق</p>
             <LineChart size={16} style={{ color: "#ff6b6b" }} />
           </div>
           <div style={{ display: "flex", alignItems: "flex-end", gap: "2px", height: "120px" }}>
@@ -135,7 +140,7 @@ export default function AnalyticsPage() {
                     initial={{ height: 0 }}
                     animate={{ height: `${hgt}%` }}
                     transition={{ duration: 0.6, delay: 0.3 + i * 0.02 }}
-                    style={{ width: "100%", borderRadius: "2px 2px 0 0", background: p.rate > 2.5 ? "#ff6b6b" : COLORS.aqua, minHeight: 3 }}
+                    style={{ width: "100%", borderRadius: "2px 2px 0 0", background: p.rate > 2.5 ? `linear-gradient(180deg, #ff6b6b, #c0392b)` : `linear-gradient(180deg, ${COLORS.aqua}, ${COLORS.blue})`, minHeight: 3 }}
                   />
                 </div>
               );
@@ -147,10 +152,11 @@ export default function AnalyticsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(0,0,0,0.06)" }}
+          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
         >
           <div className="flex items-center justify-between mb-4">
-            <p className="text-sm font-semibold" style={{ color: "#1a1a24" }}>إنتاج البيض (أسبوعي)</p>
+            <p className="text-sm font-semibold font-heading" style={{ color: "#1a1a24" }}>إنتاج البيض (أسبوعي)</p>
             <BarChart3 size={16} style={{ color: COLORS.gold }} />
           </div>
           <div style={{ display: "flex", alignItems: "flex-end", gap: "8px", height: "120px" }}>
@@ -177,10 +183,11 @@ export default function AnalyticsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.35 }}
-        style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+        whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(0,0,0,0.06)" }}
+        style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
       >
         <div className="flex items-center justify-between mb-4">
-          <p className="text-sm font-semibold" style={{ color: "#1a1a24" }}>الإيرادات مقابل التكاليف</p>
+          <p className="text-sm font-semibold font-heading" style={{ color: "#1a1a24" }}>الإيرادات مقابل التكاليف</p>
           <PieChart size={16} style={{ color: COLORS.blue }} />
         </div>
         <div style={{ display: "flex", alignItems: "flex-end", gap: "2px", height: "140px" }}>
@@ -194,13 +201,13 @@ export default function AnalyticsPage() {
                   initial={{ height: 0 }}
                   animate={{ height: `${revH}%` }}
                   transition={{ duration: 0.6, delay: 0.4 + i * 0.02 }}
-                  style={{ width: "100%", borderRadius: "2px 2px 0 0", background: COLORS.aqua, minHeight: 3, opacity: 0.7 }}
-                />
-                <motion.div
-                  initial={{ height: 0 }}
-                  animate={{ height: `${costH}%` }}
-                  transition={{ duration: 0.6, delay: 0.4 + i * 0.02 }}
-                  style={{ width: "100%", borderRadius: "2px 2px 0 0", background: COLORS.gold, minHeight: 3, opacity: 0.5, position: "absolute", bottom: 0 }}
+                    style={{ width: "100%", borderRadius: "2px 2px 0 0", background: `linear-gradient(180deg, ${COLORS.aqua}, ${COLORS.blue})`, minHeight: 3, opacity: 0.7 }}
+                  />
+                  <motion.div
+                    initial={{ height: 0 }}
+                    animate={{ height: `${costH}%` }}
+                    transition={{ duration: 0.6, delay: 0.4 + i * 0.02 }}
+                    style={{ width: "100%", borderRadius: "2px 2px 0 0", background: `linear-gradient(180deg, ${COLORS.gold}, ${COLORS.aqua})`, minHeight: 3, opacity: 0.5, position: "absolute", bottom: 0 }}
                 />
               </div>
             );

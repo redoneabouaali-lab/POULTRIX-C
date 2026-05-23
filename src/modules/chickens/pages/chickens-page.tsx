@@ -62,17 +62,30 @@ export default function ChickensPage() {
       </motion.div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "14px", marginBottom: "24px" }}>
-        <StatCard icon={Users} label="إجمالي الدجاج" value={flock?.totalBirds?.toLocaleString() || "—"} color="#007aff" change="+4.2%" index={0} />
-        <StatCard icon={TrendingUp} label="معدل النمو" value="+4.2%" color="#34c759" change="+1.8%" index={1} />
-        <StatCard icon={Activity} label="معدل التحويل" value="1.68" color="#03c3ec" change="-0.3%" index={2} />
-        <StatCard icon={ShieldCheck} label="مؤشر الصحة" value={flock ? `${flock.healthScore}%` : "—"} color={COLORS.gold} change={"+3.1%"} index={3} />
+        {[
+          { icon: Users, label: "إجمالي الدجاج", value: flock?.totalBirds?.toLocaleString() || "—", color: "#007aff", change: "+4.2%" },
+          { icon: TrendingUp, label: "معدل النمو", value: "+4.2%", color: "#34c759", change: "+1.8%" },
+          { icon: Activity, label: "معدل التحويل", value: "1.68", color: "#03c3ec", change: "-0.3%" },
+          { icon: ShieldCheck, label: "مؤشر الصحة", value: flock ? `${flock.healthScore}%` : "—", color: COLORS.gold, change: "+3.1%" },
+        ].map((s, i) => (
+          <motion.div
+            key={s.label}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -3, boxShadow: "0 12px 32px rgba(0,0,0,0.08)" }}
+            style={{ borderRadius: "16px" }}
+          >
+            <StatCard icon={s.icon} label={s.label} value={s.value} color={s.color} change={s.change} index={i} />
+          </motion.div>
+        ))}
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
-        style={{ background: "#fff", borderRadius: "16px", overflow: "hidden", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+        style={{ background: "#fff", borderRadius: "16px", overflow: "hidden", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
       >
         <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: "1px solid #f0f0f2" }}>
           <span className="text-sm font-semibold" style={{ color: "#1a1a24" }}>الدفعات ({batches.length})</span>
@@ -95,7 +108,7 @@ export default function ChickensPage() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 + i * 0.04 }}
                   style={{ borderBottom: "1px solid #f5f5f7", cursor: "default" }}
-                  whileHover={{ background: "#f8f8fa" }}
+                  whileHover={{ y: -1, background: "#f2f4f7", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}
                 >
                   <td style={{ padding: "12px 16px" }}>
                     <span className="text-sm font-semibold" style={{ color: "#1a1a24" }}>{b.name}</span>
@@ -106,12 +119,31 @@ export default function ChickensPage() {
                   <td className="font-metric" style={{ padding: "12px 16px", fontSize: "0.85rem", color: "#34c759" }}>{b.growth}</td>
                   <td style={{ padding: "12px 16px" }}>
                     <div className="flex items-center gap-2">
-                      <div style={{ width: 50, height: 4, borderRadius: 2, background: "#eeeef0" }}>
+                      <div style={{ width: 60, height: 6, borderRadius: 3, background: "#eeeef0", position: "relative" }}>
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${b.health}%` }}
-                          transition={{ duration: 1, delay: 0.4 + i * 0.04 }}
-                          style={{ height: "100%", borderRadius: 2, background: b.health > 96 ? "#34c759" : b.health > 94 ? "#007aff" : "#ff9f0a" }}
+                          transition={{ duration: 1, delay: 0.4 + i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                          style={{
+                            height: "100%", borderRadius: 3,
+                            background: b.health > 96
+                              ? `linear-gradient(90deg, ${COLORS.aqua}, ${COLORS.gold})`
+                              : b.health > 94
+                                ? `linear-gradient(90deg, ${COLORS.blue}, ${COLORS.aqua})`
+                                : `linear-gradient(90deg, #ff9f0a, ${COLORS.gold})`
+                          }}
+                        />
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.6 + i * 0.04, type: "spring" as const, stiffness: 300, damping: 15 }}
+                          style={{
+                            position: "absolute", left: `${b.health}%`, top: "50%",
+                            transform: "translate(-50%, -50%)",
+                            width: 10, height: 10, borderRadius: "50%",
+                            background: COLORS.gold,
+                            boxShadow: `0 0 8px ${COLORS.gold}, 0 0 16px ${COLORS.gold}40`,
+                          }}
                         />
                       </div>
                       <span className="text-xs tabular-nums font-metric" style={{ color: "#5A6A5A" }}>{b.health}%</span>
@@ -121,7 +153,7 @@ export default function ChickensPage() {
                     <motion.span
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      transition={{ delay: 0.5 + i * 0.04, type: "spring", stiffness: 200 }}
+                      transition={{ delay: 0.5 + i * 0.04, type: "spring" as const, stiffness: 200, damping: 25 }}
                       className="text-xs font-semibold px-3 py-1 rounded-md"
                       style={{ background: statusBgs[b.status], color: statusColors[b.status] }}
                     >

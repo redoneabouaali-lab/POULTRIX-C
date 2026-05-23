@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { COLORS } from "@/constants";
-import { Wheat, AlertTriangle, TrendingUp, DollarSign, Warehouse, Package } from "lucide-react";
+import { Wheat, AlertTriangle, TrendingUp, TrendingDown, DollarSign, Warehouse, Package } from "lucide-react";
+import { PageWrapper } from "@/components/ui/3d-card";
 
 interface FeedStock {
   id: string; feedType: string; currentKg: number; minThreshold: number;
@@ -46,6 +47,7 @@ export default function FeedPage() {
   );
 
   return (
+    <PageWrapper>
     <div>
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between mb-6">
         <div>
@@ -56,10 +58,10 @@ export default function FeedPage() {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "14px", marginBottom: "20px" }}>
         {[
-          { icon: Package, label: "إجمالي المخزون", value: `${totalStock.toLocaleString()} كغ`, color: COLORS.aqua },
-          { icon: TrendingUp, label: "متوسط سعر الكغ", value: `${avgCostPerKg.toFixed(2)} DH`, color: COLORS.blue },
-          { icon: DollarSign, label: "التكلفة اليومية", value: `${totalDailyCost.toLocaleString()} DH`, color: COLORS.gold },
-          { icon: Warehouse, label: "الموردون", value: `${new Set((stock ?? []).map(s => s.supplier)).size}`, color: COLORS.cream },
+          { icon: Package, label: "إجمالي المخزون", value: `${totalStock.toLocaleString()} كغ`, color: COLORS.aqua, trend: "up", change: "+5%" },
+          { icon: TrendingUp, label: "متوسط سعر الكغ", value: `${avgCostPerKg.toFixed(2)} DH`, color: COLORS.blue, trend: "up", change: "+2%" },
+          { icon: DollarSign, label: "التكلفة اليومية", value: `${totalDailyCost.toLocaleString()} DH`, color: COLORS.gold, trend: "down", change: "-3%" },
+          { icon: Warehouse, label: "الموردون", value: `${new Set((stock ?? []).map(s => s.supplier)).size}`, color: COLORS.cream, trend: "up", change: "0%" },
         ].map((stat, i) => (
           <motion.div
             key={i}
@@ -67,17 +69,19 @@ export default function FeedPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -3, boxShadow: "0 12px 32px rgba(0,0,0,0.08)" }}
-            style={{ background: "#fff", borderRadius: "16px", padding: "18px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+            style={{ background: "#fff", borderRadius: "16px", padding: "18px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between mb-2">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${stat.color}12` }}>
                 <stat.icon size={18} style={{ color: stat.color }} />
               </div>
-              <div>
-                <p className="text-xs font-medium" style={{ color: "#5A6A5A", margin: 0 }}>{stat.label}</p>
-                <p className="text-lg font-bold tabular-nums font-metric" style={{ color: "#1a1a24", margin: "2px 0 0" }}>{stat.value}</p>
-              </div>
+              <span className="text-xs font-semibold flex items-center gap-1 tabular-nums font-metric" style={{ color: stat.trend === "up" ? "#1a7d36" : "#c41e1e" }}>
+                {stat.trend === "up" ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                {stat.change}
+              </span>
             </div>
+            <p className="text-xs font-semibold" style={{ color: "#5A6A5A", margin: 0 }}>{stat.label}</p>
+            <p className="text-lg font-bold tabular-nums font-metric" style={{ color: "#1a1a24", margin: "2px 0 0" }}>{stat.value}</p>
           </motion.div>
         ))}
       </div>
@@ -87,9 +91,9 @@ export default function FeedPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
         >
-          <p className="text-sm font-semibold mb-4" style={{ color: "#1a1a24" }}>مخزون العلف</p>
+          <p className="text-sm font-semibold mb-4 font-heading" style={{ color: "#1a1a24" }}>مخزون العلف</p>
           {(stock ?? []).map((f, i) => {
             const cKg = f.currentKg ?? 0;
             const mTh = f.minThreshold ?? 1;
@@ -135,9 +139,9 @@ export default function FeedPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
         >
-          <p className="text-sm font-semibold mb-4" style={{ color: "#1a1a24" }}>الاستهلاك اليومي</p>
+          <p className="text-sm font-semibold mb-4 font-heading" style={{ color: "#1a1a24" }}>الاستهلاك اليومي</p>
           {(consumption ?? []).map((c, i) => (
             <motion.div
               key={c.barnId}
@@ -161,9 +165,9 @@ export default function FeedPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+        style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
       >
-        <p className="text-sm font-semibold mb-4" style={{ color: "#1a1a24" }}>اتجاه استهلاك العلف (آخر 14 يوم)</p>
+        <p className="text-sm font-semibold mb-4 font-heading" style={{ color: "#1a1a24" }}>اتجاه استهلاك العلف (آخر 14 يوم)</p>
         <div style={{ display: "flex", alignItems: "flex-end", gap: "4px", height: "140px" }}>
           {(history ?? []).map((h, i) => {
             const maxKg = Math.max(1, ...(history ?? []).map(x => x.totalKg ?? 0));
@@ -183,5 +187,6 @@ export default function FeedPage() {
         </div>
       </motion.div>
     </div>
+    </PageWrapper>
   );
 }

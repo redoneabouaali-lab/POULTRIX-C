@@ -29,8 +29,20 @@ function AnimatedBar({ value, max, label, delay, color }: { value: number; max: 
         initial={{ height: 0 }}
         animate={inView ? { height: `${hgt}%` } : {}}
         transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
-        style={{ width: "100%", borderRadius: "6px 6px 0 0", minHeight: 8, background: `linear-gradient(180deg, ${color}, ${color}66)` }}
-      />
+        style={{ width: "100%", borderRadius: "6px 6px 0 0", minHeight: 8, background: `linear-gradient(180deg, ${COLORS.gold}, ${COLORS.gold}44)`, position: "relative" }}
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={inView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ delay: delay + 0.4, type: "spring" as const, stiffness: 300, damping: 15 }}
+          style={{
+            position: "absolute", top: -3, left: "50%", transform: "translateX(-50%)",
+            width: 8, height: 8, borderRadius: "50%",
+            background: COLORS.gold,
+            boxShadow: `0 0 10px ${COLORS.gold}, 0 0 20px ${COLORS.gold}40`,
+          }}
+        />
+      </motion.div>
       <span className="text-[10px]" style={{ color: "#a0a0aa" }}>{label}</span>
     </div>
   );
@@ -47,17 +59,30 @@ export default function EggsPage() {
       </motion.div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "14px", marginBottom: "24px" }}>
-        <StatCard icon={Egg} label="الإنتاج اليومي" value="1,240" color="#007aff" change="+4.2%" index={0} />
-        <StatCard icon={Calendar} label="الإنتاج الأسبوعي" value={totalWeek.toLocaleString()} color="#34c759" change="+2.1%" index={1} />
-        <StatCard icon={TrendingDown} label="البيض المكسور" value="28" color="#ff9f0a" change="-1.2%" index={2} />
-        <StatCard icon={DollarSign} label="أرباح البيض" value="18,240 DH" color="#03c3ec" change="+8.3%" index={3} />
+        {[
+          { icon: Egg, label: "الإنتاج اليومي", value: "1,240", color: "#007aff", change: "+4.2%" },
+          { icon: Calendar, label: "الإنتاج الأسبوعي", value: totalWeek.toLocaleString(), color: "#34c759", change: "+2.1%" },
+          { icon: TrendingDown, label: "البيض المكسور", value: "28", color: "#ff9f0a", change: "-1.2%" },
+          { icon: DollarSign, label: "أرباح البيض", value: "18,240 DH", color: "#03c3ec", change: "+8.3%" },
+        ].map((s, i) => (
+          <motion.div
+            key={s.label}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -3, boxShadow: "0 12px 32px rgba(0,0,0,0.08)" }}
+            style={{ borderRadius: "16px" }}
+          >
+            <StatCard icon={s.icon} label={s.label} value={s.value} color={s.color} change={s.change} index={i} />
+          </motion.div>
+        ))}
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        style={{ background: "#fff", borderRadius: "16px", padding: "24px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+        style={{ background: "#fff", borderRadius: "16px", padding: "24px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
       >
         <div className="flex items-center justify-between mb-6">
           <span className="text-sm font-semibold" style={{ color: "#1a1a24" }}>الإنتاج الأسبوعي</span>
@@ -79,7 +104,7 @@ export default function EggsPage() {
               max={maxVal}
               label={days[i]}
               delay={0.3 + i * 0.06}
-              color="#007aff"
+              color={COLORS.gold}
             />
           ))}
         </div>
@@ -101,7 +126,7 @@ export default function EggsPage() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 + i * 0.06 }}
-              style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+              style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
             >
               <p className="text-xs font-medium mb-2" style={{ color: "#5A6A5A" }}>{s.label}</p>
               <p className="text-2xl font-black tabular-nums font-metric" style={{ color: s.color }}>{s.value}</p>

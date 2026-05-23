@@ -75,7 +75,7 @@ export default function ReportsPage() {
             style={{
               background: selectedType === rt.id ? "#fff" : "#f8f8fa",
               borderRadius: "16px", padding: "16px", border: selectedType === rt.id ? `2px solid ${rt.color}` : "2px solid transparent",
-              cursor: "pointer", textAlign: "right", boxShadow: selectedType === rt.id ? "0 4px 12px rgba(0,0,0,0.04)" : "none",
+              cursor: "pointer", textAlign: "right", boxShadow: selectedType === rt.id ? "0 0 0 1px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06)" : "none",
             }}
           >
             <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3" style={{ background: `${rt.color}12` }}>
@@ -91,7 +91,7 @@ export default function ReportsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
-        style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)", marginBottom: "20px" }}
+        style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)", marginBottom: "20px" }}
       >
         <p className="text-sm font-semibold mb-4" style={{ color: "#1a1a24" }}>توليد تقرير جديد</p>
 
@@ -131,7 +131,9 @@ export default function ReportsPage() {
           </div>
         </div>
 
-        <button onClick={handleGenerateOrDownload} disabled={generating}
+        <motion.button onClick={handleGenerateOrDownload} disabled={generating}
+          whileHover={{ scale: 1.02, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+          whileTap={{ scale: 0.97 }}
           style={{
             padding: "10px 24px", borderRadius: "10px", border: "none", fontSize: "0.85rem", fontWeight: "600",
             background: generating ? "#ccc" : `linear-gradient(135deg, ${COLORS.aqua}, ${COLORS.blue})`,
@@ -142,20 +144,22 @@ export default function ReportsPage() {
           }}
         >
           {generating ? (
-            <>جاري التوليد...</>
+            <motion.span initial={{ opacity: 0.6 }} animate={{ opacity: 1 }} transition={{ repeat: Infinity, duration: 0.8, ease: "easeInOut" }}>
+              جاري التوليد...
+            </motion.span>
           ) : generated ? (
             <><Download size={16} /> تحميل التقرير</>
           ) : (
             <><FileText size={16} /> توليد التقرير</>
           )}
-        </button>
+        </motion.button>
       </motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+        style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
       >
         <p className="text-sm font-semibold mb-4" style={{ color: "#1a1a24" }}>آخر التقارير</p>
         {recentReports.length === 0 ? (

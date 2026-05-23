@@ -55,7 +55,7 @@ export default function SettingsPage() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px", marginBottom: "20px" }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
         >
           <div className="flex items-center gap-2 mb-5">
             <User size={16} style={{ color: COLORS.aqua }} />
@@ -69,9 +69,11 @@ export default function SettingsPage() {
             <div key={field.label} style={{ marginBottom: 14 }}>
               <label className="text-xs font-medium mb-1.5 block" style={{ color: "#5a5a64" }}>{field.label}</label>
               <input value={field.value} onChange={e => field.setter(e.target.value)}
+                onFocus={e => { e.currentTarget.style.borderColor = COLORS.aqua; e.currentTarget.style.boxShadow = `0 0 0 3px ${COLORS.aqua}18`; }}
+                onBlur={e => { e.currentTarget.style.borderColor = "#eeeef0"; e.currentTarget.style.boxShadow = "none"; }}
                 style={{
                   width: "100%", padding: "10px 14px", borderRadius: "10px", border: "1px solid #eeeef0",
-                  fontSize: "0.85rem", color: "#1a1a24", background: "#fafafa", outline: "none",
+                  fontSize: "0.85rem", color: "#1a1a24", background: "#fafafa", outline: "none", transition: "all 0.2s",
                 }}
               />
             </div>
@@ -80,7 +82,7 @@ export default function SettingsPage() {
 
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
         >
           <div className="flex items-center gap-2 mb-5">
             <Bell size={16} style={{ color: COLORS.gold }} />
@@ -97,20 +99,25 @@ export default function SettingsPage() {
                   <p className="text-sm font-medium" style={{ color: "#1a1a24" }}>{n.label}</p>
                   <p className="text-xs" style={{ color: "#a0a0aa" }}>{n.desc}</p>
                 </div>
-                <button
+                <motion.button
                   onClick={() => setNotifs(prev => ({ ...prev, [n.key]: !prev[n.key as keyof typeof prev] }))}
+                  whileTap={{ scale: 0.92 }}
                   style={{
-                    width: 44, height: 24, borderRadius: 12, border: "none", cursor: "pointer",
-                    background: notifs[n.key as keyof typeof notifs] ? COLORS.aqua : "#ddd",
+                    width: 48, height: 26, borderRadius: 13, border: "none", cursor: "pointer",
+                    background: notifs[n.key as keyof typeof notifs] ? `linear-gradient(135deg, ${COLORS.aqua}, ${COLORS.blue})` : "#ddd",
                     transition: "all 0.3s", position: "relative", padding: 0,
                   }}
                 >
-                  <div style={{
-                    width: 20, height: 20, borderRadius: "50%", background: "#fff",
-                    position: "absolute", top: 2, left: notifs[n.key as keyof typeof notifs] ? 22 : 2,
-                    transition: "all 0.3s", boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
-                  }} />
-                </button>
+                  <motion.div
+                    animate={{ x: notifs[n.key as keyof typeof notifs] ? 24 : 2 }}
+                    transition={{ type: "spring" as const, stiffness: 300, damping: 20 }}
+                    style={{
+                      width: 22, height: 22, borderRadius: "50%", background: "#fff",
+                      position: "absolute", top: 2, left: 0,
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                    }}
+                  />
+                </motion.button>
               </div>
             </div>
           ))}
@@ -120,7 +127,7 @@ export default function SettingsPage() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px", marginBottom: "20px" }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
         >
           <div className="flex items-center gap-2 mb-5">
             <Shield size={16} style={{ color: COLORS.blue }} />
@@ -145,23 +152,24 @@ export default function SettingsPage() {
 
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
         >
           <div className="flex items-center gap-2 mb-5">
             <Trash2 size={16} style={{ color: "#ff3b30" }} />
             <p className="text-sm font-semibold" style={{ color: "#1a1a24" }}>{AR.dangerZone}</p>
           </div>
           <p className="text-xs mb-4" style={{ color: "#5A6A5A" }}>{AR.deleteWarning}</p>
-          <button style={{
-            padding: "10px 20px", borderRadius: "10px", border: "1px solid #ff3b30", background: "transparent",
-            color: "#ff3b30", fontSize: "0.85rem", fontWeight: "600", cursor: "pointer",
-            transition: "all 0.3s",
-          }}
-            onMouseEnter={e => { e.currentTarget.style.background = "#ff3b30"; e.currentTarget.style.color = "#fff"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#ff3b30"; }}
+          <motion.button
+            whileHover={{ scale: 1.03, background: "#ff3b30", color: "#fff", boxShadow: "0 8px 24px rgba(255,59,48,0.25)" }}
+            whileTap={{ scale: 0.97 }}
+            style={{
+              padding: "10px 20px", borderRadius: "10px", border: "1px solid #ff3b30", background: "transparent",
+              color: "#ff3b30", fontSize: "0.85rem", fontWeight: "600", cursor: "pointer",
+              transition: "all 0.3s",
+            }}
           >
             {AR.deleteData}
-          </button>
+          </motion.button>
         </motion.div>
       </div>
     </div>

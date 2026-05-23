@@ -65,7 +65,7 @@ export default function NotificationsPage() {
               padding: "6px 14px", borderRadius: "8px", border: "none", fontSize: "0.75rem", fontWeight: "600", cursor: "pointer",
               background: filter === f.value ? COLORS.aqua : "#fff",
               color: filter === f.value ? "#000" : "#5A6A5A",
-              boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
+              boxShadow: filter === f.value ? "0 0 0 1px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.06)" : "0 0 0 1px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03)",
               transition: "all 0.2s",
             }}
           >{f.label}</button>
@@ -81,10 +81,17 @@ export default function NotificationsPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            style={{ background: "#fff", borderRadius: "16px", padding: "60px 20px", textAlign: "center", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+            transition={{ ease: [0.16, 1, 0.3, 1] }}
+            style={{ background: "#fff", borderRadius: "16px", padding: "60px 20px", textAlign: "center", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
           >
-            <CheckCircle size={40} style={{ color: "#34c759", margin: "0 auto 12px", display: "block", opacity: 0.5 }} />
-            <p className="text-sm font-medium" style={{ color: "#5A6A5A" }}>ÙƒÙ„ Ø´ÙŠØ¡ Ù‡Ø§Ø¯Ø¦! Ù„Ø§ ØªÙˆØ¬Ø¯ ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù†Ø´ÙŠØ·Ø©.</p>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring" as const, stiffness: 200, damping: 15, delay: 0.2 }}
+            >
+              <CheckCircle size={48} style={{ color: "#34c759", margin: "0 auto 12px", display: "block" }} />
+            </motion.div>
+            <p className="text-sm font-medium" style={{ color: "#5A6A5A" }}>كل شيء هادئ! لا توجد تنبيهات نشيطة.</p>
           </motion.div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -95,11 +102,11 @@ export default function NotificationsPage() {
                 initial={{ opacity: 0, x: alert.acknowledged ? 20 : -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                transition={{ type: "spring" as const, stiffness: 200, damping: 25 }}
                 style={{
                   background: alert.acknowledged ? "#f8f8fa" : "#fff",
                   borderRadius: "12px", padding: "14px 16px",
-                  boxShadow: alert.acknowledged ? "none" : "0 1px 3px rgba(0,0,0,0.03)",
+                  boxShadow: alert.acknowledged ? "none" : "0 0 0 1px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.04)",
                   border: `1px solid ${alert.acknowledged ? "#eeeef0" : severityColors[alert.severity] + "20"}`,
                   opacity: alert.acknowledged ? 0.6 : 1,
                   cursor: "pointer",

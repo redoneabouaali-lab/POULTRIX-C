@@ -62,8 +62,8 @@ export default function FinancePage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-            whileHover={{ y: -2 }}
-            style={{ background: "#fff", borderRadius: "16px", padding: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+            whileHover={{ y: -3, boxShadow: "0 12px 32px rgba(0,0,0,0.08)" }}
+            style={{ background: "#fff", borderRadius: "16px", padding: "16px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
           >
             <div className="flex items-center justify-between mb-2">
               <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: `${stat.color}12` }}>
@@ -80,7 +80,7 @@ export default function FinancePage() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px", marginBottom: "20px" }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
         >
           <p className="text-sm font-semibold mb-4" style={{ color: "#1a1a24" }}>تفاصيل المصروفات</p>
           {(data.expenseBreakdown ?? []).map((e, i) => (
@@ -95,13 +95,25 @@ export default function FinancePage() {
                 <span className="text-xs font-medium" style={{ color: "#5a5a64" }}>{e.category}</span>
                 <span className="text-xs font-semibold tabular-nums font-metric" style={{ color: "#1a1a24" }}>{e.percentage}% ({e.amount.toFixed(0)} DH)</span>
               </div>
-              <div className="h-2 rounded-full" style={{ background: "#eeeef0" }}>
+              <div className="h-2 rounded-full" style={{ background: "#eeeef0", position: "relative" }}>
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${e.percentage}%` }}
                   transition={{ duration: 1, delay: 0.3 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
                   className="h-full rounded-full"
                   style={{ background: [COLORS.aqua, COLORS.blue, COLORS.gold, COLORS.cream, "#ff6b6b"][i] }}
+                />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.6 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    position: "absolute", right: `${100 - e.percentage}%`, top: "50%",
+                    width: 8, height: 8, borderRadius: "50%",
+                    background: [COLORS.aqua, COLORS.blue, COLORS.gold, COLORS.cream, "#ff6b6b"][i],
+                    boxShadow: `0 0 8px 2px ${[COLORS.aqua, COLORS.blue, COLORS.gold, COLORS.cream, "#ff6b6b"][i]}`,
+                    transform: "translate(50%, -50%)",
+                  }}
                 />
               </div>
             </motion.div>
@@ -110,7 +122,7 @@ export default function FinancePage() {
 
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
         >
           <p className="text-sm font-semibold mb-4" style={{ color: "#1a1a24" }}>المؤشرات الرئيسية</p>
           {[
@@ -141,7 +153,7 @@ export default function FinancePage() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px", marginBottom: "20px" }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
         >
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm font-semibold" style={{ color: "#1a1a24" }}>الميزانية مقابل الفعلي</p>
@@ -160,13 +172,13 @@ export default function FinancePage() {
                   initial={{ width: 0 }}
                   animate={{ width: `${(b.budgeted / Math.max(...(data.budgetVsActual ?? []).map(x => x.budgeted))) * 100}%` }}
                   transition={{ duration: 0.8, delay: 0.3 + i * 0.1 }}
-                  className="h-3 rounded-sm" style={{ background: COLORS.aqua, opacity: 0.7 }}
+                  className="h-3 rounded-sm" style={{ background: `linear-gradient(90deg, ${COLORS.aqua}, #40e0d0)`, opacity: 0.85 }}
                 />
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${(b.actual / Math.max(...(data.budgetVsActual ?? []).map(x => x.budgeted))) * 100}%` }}
                   transition={{ duration: 0.8, delay: 0.35 + i * 0.1 }}
-                  className="h-3 rounded-sm" style={{ background: COLORS.gold, opacity: 0.5 }}
+                  className="h-3 rounded-sm" style={{ background: `linear-gradient(90deg, ${COLORS.gold}, #ffdb58)`, opacity: 0.75 }}
                 />
               </div>
             </div>
@@ -179,7 +191,7 @@ export default function FinancePage() {
 
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
         >
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm font-semibold" style={{ color: "#1a1a24" }}>التوقعات المالية</p>
@@ -218,7 +230,7 @@ export default function FinancePage() {
 
       <motion.div
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
-        style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+        style={{ background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
       >
         <div className="flex items-center justify-between mb-4">
           <p className="text-sm font-semibold" style={{ color: "#1a1a24" }}>حاسبة نقطة التعادل</p>

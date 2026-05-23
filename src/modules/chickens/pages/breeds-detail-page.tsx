@@ -2,21 +2,48 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { COLORS } from "@/constants";
 import {
   ArrowRight, ExternalLink, Egg, MapPin, Thermometer,
-  Heart, FileText, Globe, Bird,
+  Heart, FileText, Globe, Bird, Search, Clock,
 } from "lucide-react";
+import { Skeleton } from "@/components/lightswind/skeleton";
 
 export default function BreedDetailPage() {
   const { id } = useParams();
   const [breed, setBreed] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [lang, setLang] = useState<"ar" | "en">("ar");
+  const [enrichState, setEnrichState] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [enrichedContent, setEnrichedContent] = useState<any>(null);
 
   useEffect(() => {
-    fetch(`/api/breeds/${id}`).then(r => r.json()).then(d => { setBreed(d); setLoading(false); }).catch(() => setLoading(false));
+    fetch(`/api/breeds/${id}`)
+      .then((r) => r.json())
+      .then((d) => {
+        setBreed(d);
+        setLoading(false);
+        if (d?.nameEn) {
+          setEnrichState("loading");
+          fetch("/api/breeds/enrich", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nameEn: d.nameEn, nameAr: d.nameAr }),
+          })
+            .then((r) => r.json())
+            .then((ed) => {
+              if (ed.descriptionAr) {
+                setEnrichedContent(ed);
+                setEnrichState("success");
+              } else {
+                setEnrichState("error");
+              }
+            })
+            .catch(() => setEnrichState("error"));
+        }
+      })
+      .catch(() => setLoading(false));
   }, [id]);
 
   /* ─── Loading Skeleton ─── */
@@ -264,47 +291,173 @@ export default function BreedDetailPage() {
         </motion.div>
       </div>
 
-      {/* ═══ Description ═══ */}
-      {(breed.descriptionAr || breed.description) && (
+      {/* ═══ Enrichment Loader Component ═══ */}
+      {enrichState === "loading" && (
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ delay: 0.25, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="rounded-2xl p-6"
-          style={{ background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          style={{ background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,0.8)" }}
         >
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold flex items-center gap-2" style={{ color: "#1a1a24" }}>
-              <FileText size={16} style={{ color: COLORS.aqua }} />
-              {lang === "ar" ? "وصف السلالة" : "Breed Description"}
+          <div className="flex items-center gap-2 mb-4">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            >
+              <Search size={14} style={{ color: COLORS.aqua }} />
+            </motion.div>
+            <h2 className="text-sm font-semibold" style={{ color: "#1a1a24" }}>
+              وصف السلالة
             </h2>
-            {breed.descriptionAr && breed.description && (
-              <button
-                onClick={() => setLang(lang === "ar" ? "en" : "ar")}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.65rem] font-medium spring-transition hover:scale-105 active:scale-95"
-                style={{
-                  background: lang === "ar" ? `${COLORS.aqua}12` : "#f0f0f0",
-                  color: lang === "ar" ? COLORS.aqua : "#5A6A5A",
-                  border: `1px solid ${lang === "ar" ? `${COLORS.aqua}30` : "#e0e0e0"}`,
-                }}
+            <motion.span
+              className="text-[10px] font-medium mr-auto"
+              style={{ color: "#a0a0aa" }}
+            >
+              <motion.span
+                animate={{ opacity: [1, 0, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, times: [0, 0.5, 1], ease: "linear" }}
               >
-                <Globe size={11} />
-                {lang === "ar" ? "English" : "العربية"}
-              </button>
-            )}
+                جاري
+              </motion.span>
+              <motion.span
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, times: [0, 0.5, 1], ease: "linear", delay: 0.3 }}
+              >
+                {" "}البحث
+              </motion.span>
+              <motion.span
+                animate={{ opacity: [0, 0, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity, times: [0, 0.5, 1], ease: "linear", delay: 0.6 }}
+              >
+                ...
+              </motion.span>
+            </motion.span>
           </div>
-          <motion.p
-            key={lang}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="text-sm leading-relaxed"
-            style={{ color: "#5a5a64", lineHeight: 1.9 }}
+          <div className="space-y-3">
+            <Skeleton className="h-4 w-full rounded-md" shimmer />
+            <Skeleton className="h-4 w-[92%] rounded-md" shimmer />
+            <Skeleton className="h-4 w-[85%] rounded-md" shimmer />
+            <Skeleton className="h-4 w-[88%] rounded-md" shimmer />
+            <Skeleton className="h-4 w-[60%] rounded-md" shimmer />
+          </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+            className="flex items-center gap-1.5 mt-4"
           >
-            {lang === "ar" ? (breed.descriptionAr || breed.description) : (breed.description || breed.descriptionAr)}
-          </motion.p>
+            <Clock size={10} style={{ color: "#a0a0aa" }} />
+            <span className="text-[10px]" style={{ color: "#a0a0aa" }}>
+              جلب المعلومات من المصادر ...
+            </span>
+          </motion.div>
         </motion.div>
       )}
+
+      {/* ═══ Enriched / Original Description ═══ */}
+      <AnimatePresence mode="wait">
+        {(enrichState === "success" && enrichedContent) ? (
+          <motion.div
+            key="enriched"
+            initial={{ opacity: 0, y: 16, filter: "blur(4px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="rounded-2xl p-6"
+            style={{ background: "#fff", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-semibold flex items-center gap-2" style={{ color: "#1a1a24" }}>
+                <FileText size={16} style={{ color: COLORS.aqua }} />
+                وصف السلالة
+              </h2>
+              <a
+                href={enrichedContent.sourceUrl || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[10px] font-medium transition-all duration-200 hover:opacity-70"
+                style={{ color: COLORS.aqua, textDecoration: "none" }}
+              >
+                <ExternalLink size={10} />
+                {enrichedContent.source || "مصدر"}
+              </a>
+            </div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.15, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <motion.p
+                className="text-sm leading-relaxed"
+                style={{ color: "#5a5a64", lineHeight: 2 }}
+              >
+                {enrichedContent.descriptionAr}
+              </motion.p>
+              {enrichedContent.enrichedFields && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.3 }}
+                  className="flex flex-wrap gap-2 mt-4 pt-4 border-t"
+                  style={{ borderColor: "#f0f0f2" }}
+                >
+                  {Object.entries(enrichedContent.enrichedFields).map(
+                    ([key, val]) => (
+                      <span
+                        key={key}
+                        className="text-[10px] font-medium px-2.5 py-1 rounded-full"
+                        style={{ background: `${COLORS.cream}`, color: COLORS.blue }}
+                      >
+                        {key}: {String(val)}
+                      </span>
+                    )
+                  )}
+                </motion.div>
+              )}
+            </motion.div>
+          </motion.div>
+        ) : (breed.descriptionAr || breed.description) && enrichState !== "loading" ? (
+          <motion.div
+            key="original"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="rounded-2xl p-6"
+            style={{ background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-semibold flex items-center gap-2" style={{ color: "#1a1a24" }}>
+                <FileText size={16} style={{ color: COLORS.aqua }} />
+                {lang === "ar" ? "وصف السلالة" : "Breed Description"}
+              </h2>
+              {breed.descriptionAr && breed.description && (
+                <button
+                  onClick={() => setLang(lang === "ar" ? "en" : "ar")}
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.65rem] font-medium spring-transition hover:scale-105 active:scale-95"
+                  style={{
+                    background: lang === "ar" ? `${COLORS.aqua}12` : "#f0f0f0",
+                    color: lang === "ar" ? COLORS.aqua : "#5A6A5A",
+                    border: `1px solid ${lang === "ar" ? `${COLORS.aqua}30` : "#e0e0e0"}`,
+                  }}
+                >
+                  <Globe size={11} />
+                  {lang === "ar" ? "English" : "العربية"}
+                </button>
+              )}
+            </div>
+            <motion.p
+              key={lang}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="text-sm leading-relaxed"
+              style={{ color: "#5a5a64", lineHeight: 1.9 }}
+            >
+              {lang === "ar" ? (breed.descriptionAr || breed.description) : (breed.description || breed.descriptionAr)}
+            </motion.p>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       {/* ═══ Sources ═══ */}
       {breed.sources && breed.sources.length > 0 && (
