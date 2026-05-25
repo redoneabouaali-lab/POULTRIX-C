@@ -1,0 +1,34 @@
+# POULTRIX — AI-Powered Poultry Management Platform
+
+> POULTRIX is a comprehensive AI-powered poultry management platform for farmers in Morocco and the Arab world. Built with Next.js, it offers flock tracking, AI disease prediction, FCR calculations, financial analytics, and a chicken breed encyclopedia.
+
+## Key Details
+- **URL**: https://poultrix.abouaaliahmed.com
+- **Language**: Arabic (primary), French, English
+- **Tech**: Next.js, NVIDIA AI API, Clerk Auth, PostgreSQL
+- **Target**: Poultry farmers, chicken farm managers, agricultural enterprises
+- **Region**: Morocco, MENA region
+
+## Core Features
+- Real-time flock monitoring and alerts
+- AI-powered disease prediction (48 hours early)
+- Feed Conversion Ratio (FCR) calculation
+- Egg production tracking
+- Financial analytics and reporting
+- Chicken breed encyclopedia with AI enrichment
+- Multi-language support (AR/FR/EN)
+
+## Pricing
+- Free tier: 1 barn, basic metrics, 7-day history
+- Pro: 299 MAD/month — 6 barns, AI predictions, 1-year history, financial reports
+- Enterprise: 899 MAD/month — unlimited barns, advanced AI, unlimited history, API access, SLA 99.9%
+
+## Pages
+- Homepage: https://poultrix.abouaaliahmed.com
+- Dashboard: https://poultrix.abouaaliahmed.com/dashboard (requires login)
+- Login: https://poultrix.abouaaliahmed.com/login
+- Sign Up: https://poultrix.abouaaliahmed.com/sign-up
+
+## External Resources
+- Food and Agriculture Organization (FAO) — Poultry: https://www.fao.org/poultry-production-products/en/
+- Moroccan Ministry of Agriculture: https://www.agriculture.gov.ma

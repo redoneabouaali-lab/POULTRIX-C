@@ -39,6 +39,18 @@ const jsonLd = {
       inLanguage: ["ar", "fr", "en"],
     },
     {
+      "@type": "Organization",
+      name: "POULTRIX",
+      url: "https://poultrix.abouaaliahmed.com",
+      logo: "https://poultrix.abouaaliahmed.com/og-image.svg",
+      description: "منصة ذكاء اصطناعي متكاملة لإدارة ضيعات الدواجن",
+      sameAs: [
+        "https://poultrix.abouaaliahmed.com",
+      ],
+      founder: { "@type": "Person", name: "Redone Abouaali" },
+      knowsAbout: { "@type": "Thing", name: "Poultry Management, AI, Smart Farming" },
+    },
+    {
       "@type": "FAQPage",
       mainEntity: [
         {

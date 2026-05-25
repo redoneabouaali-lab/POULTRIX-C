@@ -12,6 +12,7 @@ import BrandTrustSection from "@/components/marketing/brand-trust";
 import TrustMetricsBar from "@/components/marketing/trust-metrics";
 import FeaturesSection from "@/components/marketing/features";
 import TestimonialsSection from "@/components/marketing/testimonials";
+import FaqSection from "@/components/marketing/faq";
 import CTASection from "@/components/marketing/cta";
 import ScrollAmbient from "@/components/marketing/scroll-ambient";
 import SectionDivider from "@/components/marketing/section-divider";
@@ -39,6 +40,8 @@ export default function MarketingPage() {
         <NarrativeFlow />
         <SectionDivider />
         <TestimonialsSection />
+        <SectionDivider />
+        <FaqSection />
         <SectionDivider />
         <StepsScrollSection />
         <SectionDivider />

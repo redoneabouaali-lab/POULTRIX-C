@@ -74,6 +74,7 @@ export default function HeroSection() {
                 transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 className="max-w-[1000px]"
               >
+                <h1 className="sr-only">زد أرباح ضيعتك بالذكاء الاصطناعي — POULTRIX منصة ذكاء الدواجن لإدارة ضيعات الدجاج</h1>
                 <AuroraTextEffect
                   text="زد أرباح ضيعتك بالذكاء الاصطناعي"
                   className="bg-transparent"

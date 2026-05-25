@@ -5,12 +5,12 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
+        allow: ["/", "/llms.txt"],
         disallow: ["/api/", "/dashboard/", "/login", "/sign-up", "/sso-callback"],
       },
       {
         userAgent: "Googlebot",
-        allow: "/",
+        allow: ["/", "/llms.txt"],
         disallow: ["/api/"],
       },
     ],

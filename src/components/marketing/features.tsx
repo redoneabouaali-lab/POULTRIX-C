@@ -63,7 +63,12 @@ export default function FeaturesSection() {
             </ScrollReveal>
           </ShinyText>
           <p className="text-base md:text-lg max-w-lg mx-auto lg:mx-0 mt-4" style={{ color: "#5A6A5A" }}>
-            منصة متكاملة تجمع المراقبة، التحليل، والتدبير المالي في مكان واحد.
+            منصة متكاملة تجمع المراقبة، التحليل، والتدبير المالي في مكان واحد. تصفح{" "}
+            <a href="/dashboard" className="font-bold spring-hover" style={{ color: COLORS.aqua }}>لوحة القيادة</a>
+            {" "}واكتشف{" "}
+            <a href="/dashboard/breeds" className="font-bold spring-hover" style={{ color: COLORS.blue }}>موسوعة السلالات</a>
+            {" "}أو استشر{" "}
+            <a href="/dashboard/articles" className="font-bold spring-hover" style={{ color: COLORS.gold }}>المقالات التقنية</a>.
           </p>
         </div>
 
@@ -125,6 +130,23 @@ export default function FeaturesSection() {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        <div className="mt-16 pt-8 border-t border-[#1E2B22]/8 text-center">
+          <p className="text-xs leading-relaxed" style={{ color: "#7A8A7A" }}>
+            وفقًا لمنظمة الأغذية والزراعة (FAO)، يمكن لتقنيات التربية الذكية تحسين إنتاجية الدواجن بنسبة تصل إلى 30%.{" "}
+            <a href="https://www.fao.org/poultry-production-products/en/" target="_blank" rel="noopener noreferrer" className="font-bold spring-hover" style={{ color: COLORS.aqua }}>
+              المصدر: FAO — الإنتاج الحيواني والدواجن
+            </a>
+            {" "}|{" "}
+            <a href="https://www.agriculture.gov.ma" target="_blank" rel="noopener noreferrer" className="font-bold spring-hover" style={{ color: COLORS.blue }}>
+              وزارة الفلاحة المغربية
+            </a>
+            {" "}|{" "}
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10230963/" target="_blank" rel="noopener noreferrer" className="font-bold spring-hover" style={{ color: COLORS.gold }}>
+              دراسة: الذكاء الاصطناعي في تربية الدواجن (NCBI)
+            </a>
+          </p>
         </div>
       </div>
     </section>
