@@ -4,14 +4,18 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://poultrix.abouaaliahmed.com"),
-  title: "POULTRIX — منصة ذكاء الدواجن",
-  description: "من الفوضى إلى السيطرة. منصة ذكاء اصطناعي لإدارة ضيعات الدواجن.",
+  title: {
+    default: "POULTRIX — منصة ذكاء الدواجن",
+    template: "%s | POULTRIX",
+  },
+  description: "منصة ذكاء اصطناعي متكاملة لإدارة ضيعات الدواجن. تتبع إنتاج البيض، حساب FCR، إدارة القطيع، تشخيص بيطري بالذكاء الاصطناعي، وموسوعة سلالات الدجاج.",
+  keywords: ["إدارة ضيعات الدواجن", "برنامج إدارة الدجاج", "ذكاء اصطناعي دواجن", "poultry management", "chicken farm software", "poultry SaaS", "FCR calculator", "بيض", "دجاج", "مزرعة دواجن", "POULTRIX"],
   openGraph: {
     title: "POULTRIX — منصة ذكاء الدواجن",
     description: "من الفوضى إلى السيطرة. منصة ذكاء اصطناعي لإدارة ضيعات الدواجن.",
-    url: "/",
+    url: "https://poultrix.abouaaliahmed.com",
     siteName: "POULTRIX",
-    images: [{ url: "/fallback-chicken.svg", width: 1200, height: 630 }],
+    images: [{ url: "/og-image.svg", width: 1200, height: 630 }],
     locale: "ar_AR",
     type: "website",
   },
@@ -19,8 +23,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "POULTRIX — منصة ذكاء الدواجن",
     description: "من الفوضى إلى السيطرة. منصة ذكاء اصطناعي لإدارة ضيعات الدواجن.",
-    images: ["/fallback-chicken.svg"],
+    images: ["/og-image.svg"],
   },
+  robots: { index: true, follow: true },
+  alternates: { canonical: "https://poultrix.abouaaliahmed.com" },
+  appleWebApp: { title: "POULTRIX" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

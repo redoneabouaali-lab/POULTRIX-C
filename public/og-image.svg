@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="50%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C4893A"/>
+      <stop offset="50%" stop-color="#D4A94A"/>
+      <stop offset="100%" stop-color="#C4893A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Decorative grid dots -->
+  <g fill="#ffffff" opacity="0.03">
+    <circle cx="50" cy="50" r="2"/><circle cx="150" cy="50" r="2"/><circle cx="250" cy="50" r="2"/>
+    <circle cx="350" cy="50" r="2"/><circle cx="450" cy="50" r="2"/><circle cx="550" cy="50" r="2"/>
+    <circle cx="650" cy="50" r="2"/><circle cx="750" cy="50" r="2"/><circle cx="850" cy="50" r="2"/>
+    <circle cx="950" cy="50" r="2"/><circle cx="1050" cy="50" r="2"/><circle cx="1150" cy="50" r="2"/>
+    <circle cx="50" cy="150" r="2"/><circle cx="150" cy="150" r="2"/><circle cx="250" cy="150" r="2"/>
+    <circle cx="350" cy="150" r="2"/><circle cx="450" cy="150" r="2"/><circle cx="550" cy="150" r="2"/>
+    <circle cx="650" cy="150" r="2"/><circle cx="750" cy="150" r="2"/><circle cx="850" cy="150" r="2"/>
+    <circle cx="950" cy="150" r="2"/><circle cx="1050" cy="150" r="2"/><circle cx="1150" cy="150" r="2"/>
+    <circle cx="50" cy="250" r="2"/><circle cx="150" cy="250" r="2"/><circle cx="250" cy="250" r="2"/>
+    <circle cx="350" cy="250" r="2"/><circle cx="450" cy="250" r="2"/><circle cx="550" cy="250" r="2"/>
+    <circle cx="650" cy="250" r="2"/><circle cx="750" cy="250" r="2"/><circle cx="850" cy="250" r="2"/>
+    <circle cx="950" cy="250" r="2"/><circle cx="1050" cy="250" r="2"/><circle cx="1150" cy="250" r="2"/>
+    <circle cx="50" cy="350" r="2"/><circle cx="150" cy="350" r="2"/><circle cx="250" cy="350" r="2"/>
+    <circle cx="350" cy="350" r="2"/><circle cx="450" cy="350" r="2"/><circle cx="550" cy="350" r="2"/>
+    <circle cx="650" cy="350" r="2"/><circle cx="750" cy="350" r="2"/><circle cx="850" cy="350" r="2"/>
+    <circle cx="950" cy="350" r="2"/><circle cx="1050" cy="350" r="2"/><circle cx="1150" cy="350" r="2"/>
+    <circle cx="50" cy="450" r="2"/><circle cx="150" cy="450" r="2"/><circle cx="250" cy="450" r="2"/>
+    <circle cx="350" cy="450" r="2"/><circle cx="450" cy="450" r="2"/><circle cx="550" cy="450" r="2"/>
+    <circle cx="650" cy="450" r="2"/><circle cx="750" cy="450" r="2"/><circle cx="850" cy="450" r="2"/>
+    <circle cx="950" cy="450" r="2"/><circle cx="1050" cy="450" r="2"/><circle cx="1150" cy="450" r="2"/>
+    <circle cx="50" cy="550" r="2"/><circle cx="150" cy="550" r="2"/><circle cx="250" cy="550" r="2"/>
+    <circle cx="350" cy="550" r="2"/><circle cx="450" cy="550" r="2"/><circle cx="550" cy="550" r="2"/>
+    <circle cx="650" cy="550" r="2"/><circle cx="750" cy="550" r="2"/><circle cx="850" cy="550" r="2"/>
+    <circle cx="950" cy="550" r="2"/><circle cx="1050" cy="550" r="2"/><circle cx="1150" cy="550" r="2"/>
+  </g>
+  <!-- Gold accent bar -->
+  <rect x="0" y="0" width="1200" height="4" fill="url(#gold)"/>
+  <rect x="0" y="626" width="1200" height="4" fill="url(#gold)"/>
+  <!-- Brand mark -->
+  <text x="80" y="100" font-family="sans-serif" font-size="18" font-weight="700" fill="#C4893A" letter-spacing="3">POULTRIX</text>
+  <!-- Main title -->
+  <text x="80" y="320" font-family="sans-serif" font-size="72" font-weight="800" fill="#ffffff" letter-spacing="-1">منصة ذكاء الدواجن</text>
+  <text x="80" y="390" font-family="sans-serif" font-size="36" font-weight="300" fill="#888888" letter-spacing="0">AI-Powered Poultry Management</text>
+  <!-- Tagline -->
+  <text x="80" y="460" font-family="sans-serif" font-size="22" font-weight="400" fill="#666666">من الفوضى إلى السيطرة — From Chaos to Control</text>
+  <!-- Decorative circle -->
+  <circle cx="1000" cy="315" r="120" fill="none" stroke="#C4893A" stroke-width="1" opacity="0.2"/>
+  <circle cx="1000" cy="315" r="80" fill="none" stroke="#C4893A" stroke-width="0.5" opacity="0.15"/>
+  <!-- Chicken icon (simplified) -->
+  <g transform="translate(940, 255)" fill="none" stroke="#C4893A" stroke-width="2" opacity="0.4">
+    <ellipse cx="30" cy="40" rx="20" ry="30"/>
+    <circle cx="50" cy="25" r="12"/>
+    <path d="M58 20 L70 15 L58 25"/>
+    <path d="M58 30 L70 35 L58 25"/>
+    <path d="M10 50 L0 60 L15 50"/>
+    <path d="M50 50 L60 65 L45 50"/>
+    <path d="M50 50 L60 55 L45 50"/>
+  </g>
+</svg>
