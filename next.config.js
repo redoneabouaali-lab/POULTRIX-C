@@ -17,8 +17,7 @@ const nextConfig = {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
           { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.accounts.dev; worker-src 'self' blob: https://*.clerk.accounts.dev; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com https://img.clerk.com; connect-src 'self' https://*.clerk.accounts.dev https://clerk-telemetry.com https://integrate.api.nvidia.com https://en.wikipedia.org https://ar.wikipedia.org https://chickenapi.com; font-src 'self'; frame-src 'self' https://*.clerk.accounts.dev; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" },
-          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
-          { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
+          // Cross-Origin headers removed — they blocked AI crawler browsers
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()' },
         ],
       },
