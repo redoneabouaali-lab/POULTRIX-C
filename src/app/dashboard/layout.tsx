@@ -10,7 +10,7 @@ import { AIParticleField } from "@/components/ui/ai-effects";
 import {
   LayoutDashboard, Bird, Egg, Beef, Wheat, Brain, Settings,
   Bell, DollarSign, TrendingUp, Cpu, BookOpen, Stethoscope, Menu,
-  HeartPulse, Package,
+  HeartPulse, Package, ShoppingCart, Receipt, ArrowUpDown,
 } from "lucide-react";
 
 const navItems = [
@@ -18,6 +18,7 @@ const navItems = [
   { icon: Bird, label: "الدجاج", href: "/dashboard/chickens" },
   { icon: Egg, label: "البيض", href: "/dashboard/eggs" },
   { icon: Beef, label: "اللحم", href: "/dashboard/meat" },
+  { icon: ArrowUpDown, label: "الجرد", href: "/dashboard/stocking" },
   { icon: BookOpen, label: "سلالات الدجاج", href: "/dashboard/breeds" },
   { icon: BookOpen, label: "المقالات", href: "/dashboard/articles" },
   { icon: Wheat, label: "العلف", href: "/dashboard/feed" },
@@ -26,6 +27,8 @@ const navItems = [
   { icon: Stethoscope, label: "AI البيطري", href: "/dashboard/ai-vet" },
   { icon: Brain, label: "التحليلات", href: "/dashboard/analytics" },
   { icon: DollarSign, label: "المالية", href: "/dashboard/finance" },
+  { icon: ShoppingCart, label: "المبيعات", href: "/dashboard/sales" },
+  { icon: Receipt, label: "المصروفات", href: "/dashboard/expenses" },
   { icon: Bell, label: "التنبيهات", href: "/dashboard/notifications" },
   { icon: TrendingUp, label: "التقارير", href: "/dashboard/reports" },
   { icon: Settings, label: "الإعدادات", href: "/dashboard/settings" },
