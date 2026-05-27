@@ -67,7 +67,7 @@ export default function HealthPage() {
     setSaving(true);
     const payload = { eventType: form.eventType, flockId: form.flockId || undefined, description: form.description, birdsAffected: Number(form.birdsAffected) || undefined, mortalityCount: Number(form.mortalityCount) || 0, cost: Number(form.cost) || 0, performedBy: form.performedBy || "المربّي", treatment: form.treatment || undefined, nextFollowUp: form.nextFollowUp || undefined, notes: form.notes || undefined, eventDate: new Date().toISOString().split("T")[0] };
     const res = await api.post("/api/health-events", payload);
-    setEvents(p => [{ ...payload, id: res.data?.id || `hlth-${Date.now()}`, createdAt: new Date().toISOString() }, ...p]);
+    setEvents(p => [{ ...payload, id: (res.data as any)?.id || `hlth-${Date.now()}`, createdAt: new Date().toISOString() }, ...p]);
     setShowModal(false);
     setForm({ eventType: "vaccination", flockId: "", description: "", birdsAffected: "", mortalityCount: "0", cost: "", performedBy: "", treatment: "", nextFollowUp: "", notes: "" });
     setSaving(false);

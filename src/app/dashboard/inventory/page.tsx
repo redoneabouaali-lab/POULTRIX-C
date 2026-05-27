@@ -89,7 +89,7 @@ export default function InventoryPage() {
       setItems(p => p.map(i => i.id === editing.id ? { ...i, ...payload } : i));
     } else {
       const res = await api.post("/api/inventory", payload);
-      setItems(p => [{ ...payload, id: res.data?.id || `inv-${Date.now()}`, createdAt: new Date().toISOString() }, ...p]);
+      setItems(p => [{ ...payload, id: (res.data as any)?.id || `inv-${Date.now()}`, createdAt: new Date().toISOString() }, ...p]);
     }
     setShowModal(false); setEditing(null);
     setForm({ type: "feed", name: "", quantity: "", unit: "كغ", minimumThreshold: "", cost: "", supplier: "", expiryDate: "", notes: "" });

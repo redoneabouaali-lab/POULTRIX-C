@@ -72,7 +72,7 @@ export default function ExpensesPage() {
       setExpenses((p: any[]) => p.map(e => e.id === editing.id ? { ...e, ...payload } : e));
     } else {
       const res = await api.post("/api/expenses", payload);
-      setExpenses((p: any[]) => [{ ...payload, id: res.data?.id || `exp-${Date.now()}`, createdAt: new Date().toISOString() }, ...p]);
+      setExpenses((p: any[]) => [{ ...payload, id: (res.data as any)?.id || `exp-${Date.now()}`, createdAt: new Date().toISOString() }, ...p]);
     }
     setShowModal(false); setEditing(null);
     setForm({ category: "علف", description: "", amount: "", paymentMethod: "نقداً", flockId: "", notes: "" });

@@ -54,7 +54,7 @@ export default function StockingPage() {
     const currentBirdCount = prevCount + added - removed - mortality;
     const payload = { flockId: form.flockId, birdsAdded: added, birdsRemoved: removed, mortality, currentBirdCount, notes: form.notes, recordDate: new Date().toISOString().split("T")[0] };
     const res = await api.post("/api/stocking", payload);
-    setRecords((p: any[]) => [{ ...payload, id: res.data?.id || `stk-${Date.now()}`, createdAt: new Date().toISOString() }, ...p]);
+    setRecords((p: any[]) => [{ ...payload, id: (res.data as any)?.id || `stk-${Date.now()}`, createdAt: new Date().toISOString() }, ...p]);
     setShowModal(false); setForm({ flockId: "", birdsAdded: "0", birdsRemoved: "0", mortality: "0", notes: "" });
     setSaving(false);
   };
