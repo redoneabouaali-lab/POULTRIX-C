@@ -10,6 +10,7 @@ import { AIParticleField } from "@/components/ui/ai-effects";
 import {
   LayoutDashboard, Bird, Egg, Beef, Wheat, Brain, Settings,
   Bell, DollarSign, TrendingUp, Cpu, BookOpen, Stethoscope, Menu,
+  HeartPulse, Package,
 } from "lucide-react";
 
 const navItems = [
@@ -20,6 +21,8 @@ const navItems = [
   { icon: BookOpen, label: "سلالات الدجاج", href: "/dashboard/breeds" },
   { icon: BookOpen, label: "المقالات", href: "/dashboard/articles" },
   { icon: Wheat, label: "العلف", href: "/dashboard/feed" },
+  { icon: HeartPulse, label: "الصحة", href: "/dashboard/health" },
+  { icon: Package, label: "المخزون", href: "/dashboard/inventory" },
   { icon: Stethoscope, label: "AI البيطري", href: "/dashboard/ai-vet" },
   { icon: Brain, label: "التحليلات", href: "/dashboard/analytics" },
   { icon: DollarSign, label: "المالية", href: "/dashboard/finance" },
