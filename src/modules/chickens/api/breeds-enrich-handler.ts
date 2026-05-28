@@ -139,6 +139,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing nameEn" }, { status: 400 });
     }
 
+    /* ── Validate source URLs ── */
+    const ALLOWED_SOURCE_PATTERNS = [
+      /^https?:\/\/([a-zA-Z0-9-]+\.)?wikipedia\.org\//,
+      /^https?:\/\/([a-zA-Z0-9-]+\.)?wikimedia\.org\//,
+      /^https?:\/\/([a-zA-Z0-9-]+\.)?chickenapi\.com\//,
+    ];
+    for (const url of (sources || [])) {
+      const allowed = ALLOWED_SOURCE_PATTERNS.some((p) => p.test(url));
+      if (!allowed) {
+        return NextResponse.json({ error: `Source URL not allowed: ${url}` }, { status: 400 });
+      }
+    }
+
     /* ── Fetch all source URLs in parallel ── */
     const fetchResults = await Promise.allSettled(
       (sources || []).map(async (url: string) => {

@@ -176,6 +176,10 @@ export async function executeTool(name: string, args: any = {}): Promise<string>
   };
 
   if (name === "query_data" && args.endpoint) {
+    const ALLOWED_ENDPOINTS = ['flock', 'egg-records', 'health-events', 'inventory', 'expenses', 'stocking', 'products', 'orders', 'invoices'];
+    if (!ALLOWED_ENDPOINTS.includes(args.endpoint)) {
+      return JSON.stringify({ error: "Endpoint not allowed" });
+    }
     try {
       const res = await fetch(`${base}/${args.endpoint}`, { headers });
       const data = await res.json();

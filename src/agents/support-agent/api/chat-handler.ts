@@ -46,24 +46,8 @@ Available write tools:
 2. If user asks a question → call the appropriate read tool for real data
 3. Answer from tool results, never fabricate data
 
-=== UI COMPONENTS — ALWAYS GENERATE THESE ===
-Wrap EVERY response in OpenUI Lang. NEVER respond with plain text alone.
-Format: root = Card(title="...", Stack([...]))
-
-Components:
-- Card(title?, children) — Root glass container
-- Stack(children, gap?) — Vertical layout (gap in px)
-- Row(children, gap?) — Horizontal layout
-- Metric(label, value, change?, color?) — KPI card
-- Text(content, size?) — Paragraph text (sizes: xs/sm/md/lg)
-- Badge(label, color?) — Status pill
-- Table(headers=["Col1","Col2"], rows=[["a","b"],...]) — Data table
-- AlertItem(message, barn, severity?) — Alert notification
-
-Examples:
-- root = Card(title="المؤشرات", Stack([Row([Metric(label="معدل النفوق", value="2.3%"), Metric(label="صحة القطيع", value="96.4%")]), Text(content="الوضع مستقر ✅", size="md")]))
-- root = Card(title="مقارنة", Stack([Table(headers=["المؤشر","BARN-1","BARN-3"], rows=[["النفوق","1.8%","3.2%"],["العلف","1.62","1.74"]]), Badge(label="BARN-3 يحتاج مراقبة", color="#BF7A5A")]))
-- root = Card(title="تمت الإضافة ✅", Stack([Text(content="تمت إضافة القطيع بنجاح", size="lg"), Badge(label="القطيع أ-42", color="#2D5541")]))`;
+=== RESPONSE FORMAT ===
+Respond in plain text with proper Arabic/Darija/French/English formatting. Use markdown headings (##, ###), bullet lists, and bold/italic for emphasis. Do NOT use OpenUI Lang, JSX, or any special component syntax. Just write naturally formatted text.`;
 
 /* ─── Audio Transcription ─── */
 
@@ -128,6 +112,23 @@ async function buildMessages(rawMessages: any[]) {
 
 export async function POST(req: NextRequest) {
   const { messages } = await req.json();
+
+  if (!Array.isArray(messages)) {
+    return Response.json({ error: "Messages must be an array" }, { status: 400 });
+  }
+  if (messages.length > 20) {
+    return Response.json({ error: "Too many messages. Maximum is 20." }, { status: 400 });
+  }
+  const totalLength = messages.reduce((sum: number, m: any) => {
+    if (typeof m.content === "string") return sum + m.content.length;
+    if (Array.isArray(m.content)) {
+      return sum + m.content.reduce((s: number, p: any) => s + (typeof p.text === "string" ? p.text.length : 0), 0);
+    }
+    return sum;
+  }, 0);
+  if (totalLength > 50000) {
+    return Response.json({ error: "Total content too long. Maximum 50000 characters." }, { status: 400 });
+  }
 
   if (!process.env.NVIDIA_API_KEY) {
     return Response.json({
@@ -204,12 +205,34 @@ export async function POST(req: NextRequest) {
 
       if (pendingCalls.size > 0) {
         const { executeTool } = await import("@/agents/support-agent/tools");
+        const toolResults: { name: string; args: any; result: string }[] = [];
         for (const [, call] of pendingCalls) {
           if (!call.name) continue;
           let args: any = {};
           try { if (call.args) args = JSON.parse(call.args); } catch {}
           const result = await executeTool(call.name, args);
+          toolResults.push({ name: call.name, args, result });
           controller.enqueue(encoder.encode(`data: ${JSON.stringify({ toolResult: true, name: call.name, args, data: result })}\n\n`));
+        }
+        const toolContext = toolResults
+          .map((tr) => `Result of "${tr.name}":\n${tr.result}`)
+          .join("\n\n");
+        const secondStream = await client.chat.completions.create({
+          model: TEXT_MODEL,
+          messages: [
+            { role: "system", content: "You are POULTRIX AI. Summarize the tool execution result in a natural, helpful response. Use the same language as the user (Arabic/Darija/French/English). Be concise and clear." },
+            ...builtMessages.map((m: any) => ({ role: m.role as "user" | "assistant", content: m.content })),
+            { role: "user", content: `The tool returned the following result. Please summarize it naturally:\n\n${toolContext}` },
+          ],
+          stream: true,
+          temperature: 0.3,
+          max_tokens: 4096,
+        }) as any;
+        for await (const chunk of secondStream) {
+          const delta = chunk.choices?.[0]?.delta;
+          if (delta?.content) {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: delta.content })}\n\n`));
+          }
         }
       }
 

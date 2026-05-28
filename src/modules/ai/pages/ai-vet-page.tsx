@@ -54,7 +54,18 @@ export default function AIVetPage() {
     setMessages(prev => [...prev, userMsg]);
     setInput(""); setImages([]); setLoading(true); setStreaming("");
 
-    const payload: any = { messages: [...messages.map(m => ({ role: m.role, content: m.content })), { role: "user", content: [{ type: "text", text }] }] };
+    const payloadMsgs = messages.map(m => {
+      if (m.role === "user" && m.images && m.images.length > 0) {
+        const parts: any[] = [{ type: "text", text: m.content }];
+        for (const base64 of m.images) {
+          parts.push({ type: "image", base64: base64.split(",")[1] || base64, mime: "image/jpeg" });
+        }
+        return { role: "user", content: parts };
+      }
+      return { role: m.role, content: [{ type: "text", text: m.content }] };
+    });
+
+    const payload: any = { messages: [...payloadMsgs, { role: "user", content: [{ type: "text", text }] }] };
 
     if (images.length > 0) {
       const lastMsg = payload.messages[payload.messages.length - 1];
@@ -152,7 +163,16 @@ export default function AIVetPage() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               messages: [
-                ...messages.map(m => ({ role: m.role, content: m.content })),
+                ...messages.map(m => {
+                  if (m.role === "user" && m.images && m.images.length > 0) {
+                    const parts: any[] = [{ type: "text", text: m.content }];
+                    for (const base64 of m.images) {
+                      parts.push({ type: "image", base64: base64.split(",")[1] || base64, mime: "image/jpeg" });
+                    }
+                    return { role: "user", content: parts };
+                  }
+                  return { role: m.role, content: [{ type: "text", text: m.content }] };
+                }),
                 { role: "user", content: [{ type: "audio", base64: base64.split(",")[1] || base64, mime: "audio/webm" }] }
               ]
             }),
