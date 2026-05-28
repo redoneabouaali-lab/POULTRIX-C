@@ -83,7 +83,7 @@ export default function EggsPage() {
     const q = Number(form.quantity);
     const payload = { flockId: form.flockId, quantity: q, broken: Number(form.broken) || 0, pricePerTray: Number(form.pricePerTray) || 0, eggsPerTray: 30, notes: form.notes, recordDate: new Date().toISOString().split("T")[0], sold: true, trays: Math.round(q / 30 * 10) / 10, totalRevenue: Math.round(q / 30 * (Number(form.pricePerTray) || 0) * 100) / 100 };
     if (editing) { setRecords(p => p.map(r => r.id === editing.id ? { ...r, ...payload } : r)); }
-    else { const res = await api.post("/api/egg-records", payload); setRecords(p => [{ ...payload, id: res.data?.id || `egg-${Date.now()}` }, ...p]); }
+    else { const res = await api.post("/api/egg-records", payload); setRecords(p => [{ ...payload, id: (res.data as any)?.id || `egg-${Date.now()}` }, ...p]); }
     setShowModal(false); setEditing(null); setForm({ flockId: "", quantity: "", broken: "0", pricePerTray: "", notes: "" }); setSaving(false);
   };
 
