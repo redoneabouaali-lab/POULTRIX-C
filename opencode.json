@@ -1,0 +1,165 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "anthropic/claude-sonnet-4-6",
+  "small_model": "anthropic/claude-haiku-4-5",
+  "default_agent": "build",
+  "instructions": [
+    "AGENTS.md",
+    "../ECC/AGENTS.md",
+    "../ECC/CONTRIBUTING.md",
+    "../ECC/RULES.md",
+    "../ECC/SECURITY.md",
+    "../ECC/.opencode/instructions/INSTRUCTIONS.md"
+  ],
+  "skills": {
+    "paths": [
+      "../ECC/skills"
+    ]
+  },
+  "agent": {
+    "build": {
+      "description": "Primary coding agent for development work on POULTRIX-C",
+      "mode": "primary",
+      "model": "anthropic/claude-sonnet-4-6"
+    },
+    "planner": {
+      "description": "Expert planning specialist for complex features and refactoring",
+      "mode": "subagent",
+      "model": "anthropic/claude-opus-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/planner.txt}"
+    },
+    "architect": {
+      "description": "Software architecture specialist for system design and technical decisions",
+      "mode": "subagent",
+      "model": "anthropic/claude-opus-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/architect.txt}"
+    },
+    "code-reviewer": {
+      "description": "Expert code review specialist. Reviews code for quality, security, and maintainability",
+      "mode": "subagent",
+      "model": "anthropic/claude-opus-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/code-reviewer.txt}"
+    },
+    "security-reviewer": {
+      "description": "Security vulnerability detection and remediation specialist",
+      "mode": "subagent",
+      "model": "anthropic/claude-opus-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/security-reviewer.txt}"
+    },
+    "tdd-guide": {
+      "description": "Test-Driven Development specialist enforcing write-tests-first methodology",
+      "mode": "subagent",
+      "model": "anthropic/claude-opus-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/tdd-guide.txt}"
+    },
+    "build-error-resolver": {
+      "description": "Build and TypeScript error resolution specialist",
+      "mode": "subagent",
+      "model": "anthropic/claude-opus-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/build-error-resolver.txt}"
+    },
+    "e2e-runner": {
+      "description": "End-to-end testing specialist. Generates and runs E2E tests for critical user flows",
+      "mode": "subagent",
+      "model": "anthropic/claude-opus-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/e2e-runner.txt}"
+    },
+    "doc-updater": {
+      "description": "Documentation and codemap specialist",
+      "mode": "subagent",
+      "model": "anthropic/claude-opus-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/doc-updater.txt}"
+    },
+    "refactor-cleaner": {
+      "description": "Dead code cleanup and consolidation specialist",
+      "mode": "subagent",
+      "model": "anthropic/claude-opus-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/refactor-cleaner.txt}"
+    },
+    "python-reviewer": {
+      "description": "Expert Python code reviewer",
+      "mode": "subagent",
+      "model": "anthropic/claude-opus-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/python-reviewer.txt}"
+    },
+    "database-reviewer": {
+      "description": "Database specialist for query optimization, schema design, security",
+      "mode": "subagent",
+      "model": "anthropic/claude-opus-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/database-reviewer.txt}"
+    },
+    "harness-optimizer": {
+      "description": "Analyze and improve the local agent harness configuration",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/harness-optimizer.txt}"
+    },
+    "loop-operator": {
+      "description": "Operate autonomous agent loops and monitor progress",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-5",
+      "prompt": "{file:../ECC/.opencode/prompts/agents/loop-operator.txt}"
+    }
+  },
+  "command": {
+    "plan": {
+      "description": "Create a detailed implementation plan for complex features",
+      "template": "{file:../ECC/.opencode/commands/plan.md}\n\n$ARGUMENTS",
+      "agent": "planner",
+      "subtask": true
+    },
+    "tdd": {
+      "description": "Enforce TDD workflow with test coverage",
+      "template": "{file:../ECC/.opencode/commands/tdd.md}\n\n$ARGUMENTS",
+      "agent": "tdd-guide",
+      "subtask": true
+    },
+    "code-review": {
+      "description": "Review code for quality, security, and maintainability",
+      "template": "{file:../ECC/.opencode/commands/code-review.md}\n\n$ARGUMENTS",
+      "agent": "code-reviewer",
+      "subtask": true
+    },
+    "security": {
+      "description": "Run comprehensive security review",
+      "template": "{file:../ECC/.opencode/commands/security.md}\n\n$ARGUMENTS",
+      "agent": "security-reviewer",
+      "subtask": true
+    },
+    "build-fix": {
+      "description": "Fix build and TypeScript errors with minimal changes",
+      "template": "{file:../ECC/.opencode/commands/build-fix.md}\n\n$ARGUMENTS",
+      "agent": "build-error-resolver",
+      "subtask": true
+    },
+    "e2e": {
+      "description": "Generate and run E2E tests with Playwright",
+      "template": "{file:../ECC/.opencode/commands/e2e.md}\n\n$ARGUMENTS",
+      "agent": "e2e-runner",
+      "subtask": true
+    },
+    "refactor-clean": {
+      "description": "Remove dead code and consolidate duplicates",
+      "template": "{file:../ECC/.opencode/commands/refactor-clean.md}\n\n$ARGUMENTS",
+      "agent": "refactor-cleaner",
+      "subtask": true
+    },
+    "orchestrate": {
+      "description": "Orchestrate multiple agents for complex tasks",
+      "template": "{file:../ECC/.opencode/commands/orchestrate.md}\n\n$ARGUMENTS",
+      "agent": "planner",
+      "subtask": true
+    },
+    "test-coverage": {
+      "description": "Analyze test coverage",
+      "template": "{file:../ECC/.opencode/commands/test-coverage.md}\n\n$ARGUMENTS",
+      "agent": "tdd-guide",
+      "subtask": true
+    }
+  },
+  "permission": {
+    "edit": "allow",
+    "bash": "allow",
+    "read": "allow"
+  }
+}
