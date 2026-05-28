@@ -14,7 +14,7 @@ interface AlertItem {
 const typeIcons: Record<string, any> = { temp: Thermometer, water: Droplets, feed: Wheat };
 const severityColors: Record<string, string> = { high: "#d95c00", medium: COLORS.gold, low: COLORS.aqua };
 const severityBgs: Record<string, string> = { high: "#fff2e5", medium: "#fff8e5", low: "#e8faf5" };
-const typeLabels: Record<string, string> = { temp: "Ø­Ø±Ø§Ø±Ø©", water: "Ù…Ø§Ø¡", feed: "Ø¹Ù„Ù", humidity: "Ø±Ø·ÙˆØ¨Ø©", mortality: "Ù†ÙÙˆÙ‚", egg: "Ø¨ÙŠØ¶" };
+const typeLabels: Record<string, string> = { temp: "حرارة", water: "ماء", feed: "علف", humidity: "رطوبة", mortality: "نفوق", egg: "بيض" };
 
 export default function NotificationsPage() {
   const [alerts, setAlerts] = useState<AlertItem[]>([]);
@@ -45,20 +45,20 @@ export default function NotificationsPage() {
     <div>
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-lg font-bold font-heading" style={{ color: "#1a1a24", margin: 0 }}>Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª</h1>
+          <h1 className="text-lg font-bold font-heading" style={{ color: "#1a1a24", margin: 0 }}>التنبيهات</h1>
           <p className="text-xs" style={{ color: "#5A6A5A", margin: "4px 0 0" }}>
-            {unacknowledged > 0 ? `${unacknowledged} ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù†Ø´ÙŠØ·Ø©` : "ÙƒÙ„ Ø´ÙŠØ¡ Ù‡Ø§Ø¯Ø¦"}
+            {unacknowledged > 0 ? `${unacknowledged} تنبيهات نشيطة` : "كل شيء هادئ"}
           </p>
         </div>
       </motion.div>
 
       <div className="flex gap-1.5 mb-4 flex-wrap">
         {[
-          { value: "all", label: "Ø§Ù„ÙƒÙ„" },
-          { value: "high", label: "Ø¹Ø§Ù„ÙŠØ©" },
-          { value: "medium", label: "Ù…ØªÙˆØ³Ø·Ø©" },
-          { value: "low", label: "Ù…Ù†Ø®ÙØ¶Ø©" },
-          { value: "acknowledged", label: "ØªÙ… Ø§Ù„ØªØ£ÙƒÙŠØ¯" },
+          { value: "all", label: "الكل" },
+          { value: "high", label: "عالية" },
+          { value: "medium", label: "متوسطة" },
+          { value: "low", label: "منخفضة" },
+          { value: "acknowledged", label: "تم التأكيد" },
         ].map(f => (
           <button key={f.value} onClick={() => setFilter(f.value)}
             style={{
@@ -72,7 +72,7 @@ export default function NotificationsPage() {
         ))}
         <div style={{ flex: 1 }} />
         <span className="text-xs flex items-center gap-1" style={{ color: "#a0a0aa" }}>
-          <Filter size={12} /> ØªØµÙÙŠØ©
+          <Filter size={12} /> تصفية
         </span>
       </div>
 
@@ -131,7 +131,7 @@ export default function NotificationsPage() {
                           background: severityBgs[alert.severity],
                           color: severityColors[alert.severity],
                         }}>
-                          {alert.severity === "high" ? "Ø¹Ø§Ù„ÙŠØ©" : alert.severity === "medium" ? "Ù…ØªÙˆØ³Ø·Ø©" : "Ù…Ù†Ø®ÙØ¶Ø©"}
+                          {alert.severity === "high" ? "عالية" : alert.severity === "medium" ? "متوسطة" : "منخفضة"}
                         </span>
                       </div>
                     </div>
@@ -140,7 +140,7 @@ export default function NotificationsPage() {
                       <span className="text-xs" style={{ color: "#a0a0aa" }}>
                         {new Date(alert.timestamp).toLocaleDateString("ar-MA", { hour: "2-digit", minute: "2-digit" })}
                       </span>
-                      {alert.acknowledged && <span className="text-xs" style={{ color: "#34c759" }}>ØªÙ… Ø§Ù„ØªØ£ÙƒÙŠØ¯</span>}
+                      {alert.acknowledged && <span className="text-xs" style={{ color: "#34c759" }}>تم التأكيد</span>}
                     </div>
                   </div>
                 </div>
