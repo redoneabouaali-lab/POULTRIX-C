@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { COLORS } from "@/constants";
 
 export default function BreedsPage() {

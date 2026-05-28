@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { COLORS } from "@/constants";
 import { Eye, Activity, TrendingUp } from "lucide-react";
 import { ScrollReveal } from "@/components/lightswind/scroll-reveal";

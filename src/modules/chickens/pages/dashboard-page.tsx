@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, memo } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { COLORS } from "@/constants";
 import { api } from "@/lib/api-client";
 import { useRealtime } from "@/hooks";

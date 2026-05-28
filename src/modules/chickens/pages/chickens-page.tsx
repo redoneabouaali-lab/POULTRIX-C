@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { COLORS } from "@/constants";
 import { api } from "@/lib/api-client";
 import { PageWrapper, StatCard } from "@/components/ui/3d-card";

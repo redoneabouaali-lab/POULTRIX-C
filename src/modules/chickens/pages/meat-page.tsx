@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { COLORS } from "@/constants";
 import { PageWrapper, StatCard, TiltCard } from "@/components/ui/3d-card";
 import { Beef, TrendingUp, DollarSign, Scale, Clock, CheckCircle, ArrowUpRight } from "lucide-react";

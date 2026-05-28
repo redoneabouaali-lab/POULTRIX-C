@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { COLORS } from "@/constants";
 import {
   ArrowRight, ExternalLink, Egg, MapPin, Thermometer,

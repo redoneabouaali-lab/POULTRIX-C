@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { COLORS } from "@/constants";
 import { api } from "@/lib/api-client";
 import { Plus, X, Loader, HeartPulse, Syringe, Search, Activity, Skull, Eye, Pill, Filter } from "lucide-react";

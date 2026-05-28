@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { COLORS } from "@/constants";
 import { Cpu, Menu, X, Instagram, Facebook } from "lucide-react";
 import Link from "next/link";

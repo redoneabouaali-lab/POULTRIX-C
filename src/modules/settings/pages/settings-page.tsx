@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { COLORS } from "@/constants";
 import { Settings, User, MapPin, Bell, Shield, Copy, Eye, EyeOff, Trash2, Check } from "lucide-react";
 

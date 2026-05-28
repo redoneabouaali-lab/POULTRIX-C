@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { ExternalLink, Clock, Sparkles, ArrowLeft } from "lucide-react";
 import { articles, categories } from "@/modules/chickens/data/articles";
 import { COLORS } from "@/constants";

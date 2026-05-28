@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { motion, useInView } from "motion/react";
+import { motion, useInView } from "framer-motion";
 import FlowArt, { FlowSection } from "@/components/ui/story-scroll";
 import { COLORS } from "@/constants";
 import { Brain, BarChart3, ShieldCheck, AlertTriangle, Users, Zap, Check } from "lucide-react";

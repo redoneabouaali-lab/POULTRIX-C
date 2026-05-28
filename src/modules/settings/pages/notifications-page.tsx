@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { COLORS } from "@/constants";
 import React from "react";
 import { Bell, AlertTriangle, Droplets, Thermometer, Wheat, CheckCircle, Filter } from "lucide-react";

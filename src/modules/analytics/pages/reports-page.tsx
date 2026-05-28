@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { COLORS } from "@/constants";
 import { FileText, Download, BarChart3, Heart, Bird, DollarSign, FileSpreadsheet, File as FilePdf } from "lucide-react";
 

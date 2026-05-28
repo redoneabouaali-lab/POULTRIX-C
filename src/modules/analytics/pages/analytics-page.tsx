@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { COLORS } from "@/constants";
 import { TrendingUp, TrendingDown, Activity, BarChart3, LineChart, PieChart } from "lucide-react";
 

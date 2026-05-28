@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { COLORS } from "@/constants";
 import { Wheat, AlertTriangle, TrendingUp, TrendingDown, DollarSign, Warehouse, Package } from "lucide-react";
 import { PageWrapper } from "@/components/ui/3d-card";

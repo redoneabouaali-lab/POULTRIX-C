@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { COLORS } from "@/constants";
 import { Brain, AlertTriangle, Eye, TrendingUp } from "lucide-react";
 import type { MortalityPrediction, BarnAlert, AIInsight } from "@/types";

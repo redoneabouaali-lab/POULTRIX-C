@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { ArrowRight, Clock, Bookmark } from "lucide-react";
 import { articles } from "@/modules/chickens/data/articles";
 import { COLORS } from "@/constants";

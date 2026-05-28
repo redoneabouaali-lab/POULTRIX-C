@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { Cpu, Bird, Shield, TrendingUp, Database, Cloud, Smartphone, BarChart3 } from "lucide-react";
 import { SlidingLogoMarquee } from "@/components/lightswind/sliding-logo-marquee";
 

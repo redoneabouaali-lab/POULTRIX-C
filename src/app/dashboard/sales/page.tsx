@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { COLORS } from "@/constants";
 import { api } from "@/lib/api-client";
 import { ShoppingCart, Package, Plus, X, Loader, Search, DollarSign, TrendingUp, CheckCircle, Clock, Truck, Ban } from "lucide-react";

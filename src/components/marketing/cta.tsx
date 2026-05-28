@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { COLORS } from "@/constants";
 import { Cpu, Shield, Users, Check, Sparkles } from "lucide-react";
 import { ShineButton } from "@/components/lightswind/shine-button";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { COLORS } from "@/constants";
 import { Send, Image, Mic, Square, Bot, User, Sparkles, Volume2, ShoppingCart, Bird, HeartPulse, Package, Receipt, ArrowUpDown, Wheat, Egg, Stethoscope } from "lucide-react";
 import { PageWrapper } from "@/components/ui/3d-card";

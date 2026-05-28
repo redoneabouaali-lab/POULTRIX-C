@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "motion/react";
+import { motion, useInView } from "framer-motion";
 import { COLORS } from "@/constants";
 import { ArrowLeft, Cpu, Sparkles, Shield, TrendingUp } from "lucide-react";
 import { AuroraBackground } from "@/components/lightswind/aurora-background";

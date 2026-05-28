@@ -1,6 +1,6 @@
 "use client";
 
-import { useScroll, useMotionValueEvent, motion } from "motion/react";
+import { useScroll, useMotionValueEvent, motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { Sparkles, Cpu } from "lucide-react";
 import { COLORS } from "@/constants";

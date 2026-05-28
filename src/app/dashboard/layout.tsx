@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { useAuth, UserButton } from "@clerk/nextjs";
 import { COLORS } from "@/constants";
 import ChatButton from "@/modules/ai/components/chat-button";
