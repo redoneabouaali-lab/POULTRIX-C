@@ -1,289 +1,309 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion } from "motion/react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { COLORS } from "@/constants";
-import { Camera, Upload, AlertTriangle, CheckCircle, RefreshCw, AlertCircle, Cpu, Stethoscope } from "lucide-react";
+import { Send, Image, Mic, Square, Bot, User, Sparkles, Volume2, ShoppingCart, Bird, HeartPulse, Package, Receipt, ArrowUpDown, Wheat, Egg, Stethoscope } from "lucide-react";
 import { PageWrapper } from "@/components/ui/3d-card";
 
-const severityColors: Record<string, string> = { high: COLORS.gold, critical: COLORS.blue, low: COLORS.aqua };
-const severityBgs: Record<string, string> = { high: "rgba(191, 122, 90, 0.15)", critical: "rgba(45, 85, 65, 0.15)", low: "rgba(196, 137, 58, 0.15)" };
-const severityLabels: Record<string, string> = { high: "عالي", critical: "خطير", low: "منخفض" };
+interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+  images?: string[];
+}
+
+interface ToolCallResult {
+  name: string;
+  data: string;
+  args?: any;
+}
+
+const suggestedActions = [
+  { icon: Bird, label: "إضافة قطيع جديد", prompt: "أضف قطيع جديد اسمه القطيع أ-43، سلالة Cobb 500، 8000 طير، عمر 30 يوم" },
+  { icon: Egg, label: "تسجيل بيض", prompt: "سجل إنتاج بيض للقطيع flk-001 كمية 5000 بيضة" },
+  { icon: HeartPulse, label: "حدث صحي", prompt: "سجل حدث صحي: تطعيم للقطيع flk-001، وصف تطعيم روتيني" },
+  { icon: ShoppingCart, label: "أمر بيع", prompt: "أنشئ طلبية لزبون اسمه محمد، المبلغ 2500 درهم" },
+  { icon: Receipt, label: "مصروف", prompt: "سجل مصروف 500 درهم، فئة أعلاف، بتاريخ اليوم" },
+  { icon: Package, label: "مخزون", prompt: "أضف عنصر مخزون: علف نوع feed، اسم ذرة، 1000 كغ، 3.5 درهم/كغ، حد أدنى 200" },
+];
 
 export default function AIVetPage() {
-  const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [result, setResult] = useState<any>(null);
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    { role: "assistant", content: "مرحباً! أنا مساعد POULTRIX الذكي. أستطيع إضافة البيانات وتعديلها وعرضها. جرب إحدى الإجراءات أدناه:" }
+  ]);
+  const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [streaming, setStreaming] = useState("");
+  const [images, setImages] = useState<string[]>([]);
+  const [recording, setRecording] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(true);
+  const chatRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const audioChunks = useRef<Blob[]>([]);
 
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const f = e.target.files?.[0]; if (!f) return;
-    setFile(f); setPreview(URL.createObjectURL(f)); setResult(null); setError("");
+  useEffect(() => { chatRef.current?.scrollTo({ top: chatRef.current.scrollHeight, behavior: "smooth" }); }, [messages, streaming]);
+
+  const sendMessage = useCallback(async (overrideText?: string) => {
+    const text = (overrideText || input).trim();
+    if ((!text && images.length === 0) || loading) return;
+    setShowSuggestions(false);
+
+    const userMsg: ChatMessage = { role: "user", content: text, images: images.length > 0 ? [...images] : undefined };
+    setMessages(prev => [...prev, userMsg]);
+    setInput(""); setImages([]); setLoading(true); setStreaming("");
+
+    const payload: any = { messages: [...messages.map(m => ({ role: m.role, content: m.content })), { role: "user", content: [{ type: "text", text }] }] };
+
+    if (images.length > 0) {
+      const lastMsg = payload.messages[payload.messages.length - 1];
+      for (const base64 of images) {
+        lastMsg.content.push({ type: "image", base64: base64.split(",")[1] || base64, mime: "image/jpeg" });
+      }
+    }
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("API error");
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error("No reader");
+
+      let fullContent = "";
+      let toolResult: ToolCallResult | null = null;
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split("\n").filter(l => l.startsWith("data: "));
+        for (const line of lines) {
+          const data = line.slice(6);
+          if (data === "[DONE]") continue;
+          try {
+            const parsed = JSON.parse(data);
+            if (parsed.toolResult) {
+              toolResult = parsed;
+            } else if (parsed.content) {
+              fullContent += parsed.content;
+              setStreaming(fullContent);
+            }
+          } catch {}
+        }
+      }
+
+      if (toolResult) {
+        const isSuccess = toolResult.data && !toolResult.data.includes("error");
+        const successEmojis: Record<string, string> = {
+          add_flock: "✅", record_eggs: "🥚", add_health_event: "💉", add_inventory_item: "📦",
+          add_expense: "💰", record_stocking: "📊", add_product: "🏷️", create_order: "🛒"
+        };
+        const emoji = successEmojis[toolResult.name] || "✅";
+        let summary = `${emoji} تم بنجاح!`;
+        try {
+          const d = JSON.parse(toolResult.data);
+          if (d?.id) summary += ` (المعرف: ${d.id})`;
+        } catch {}
+        const resultText = isSuccess ? summary : `❌ فشل: ${toolResult.data}`;
+        setMessages(prev => [...prev, { role: "assistant", content: fullContent || resultText }]);
+      } else if (fullContent) {
+        setMessages(prev => [...prev, { role: "assistant", content: fullContent }]);
+      }
+    } catch {
+      setMessages(prev => [...prev, { role: "assistant", content: "⚠️ عذراً، حدث خطأ في الاتصال" }]);
+    }
+    setLoading(false); setStreaming("");
+  }, [input, images, messages, loading]);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      setImages(prev => [...prev, base64]);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
   };
 
-  const diagnose = async () => {
-    if (!file) return;
-    setLoading(true); setError(""); setResult(null);
-    const form = new FormData(); form.append("image", file);
+  const startRecording = async () => {
     try {
-      const res = await fetch("/api/diagnose", { method: "POST", body: form });
-      const data = await res.json();
-      if (!res.ok) { setError(data.error || "فشل التشخيص"); if (data.offline) setError(data.error); }
-      else { setResult(data); }
-    } catch { setError("تعذر الاتصال بالخادم"); }
-    finally { setLoading(false); }
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+      mediaRecorder.current = recorder;
+      audioChunks.current = [];
+      recorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.current.push(e.data); };
+      recorder.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        const blob = new Blob(audioChunks.current, { type: "audio/webm" });
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = reader.result as string;
+          setLoading(true);
+          fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              messages: [
+                ...messages.map(m => ({ role: m.role, content: m.content })),
+                { role: "user", content: [{ type: "audio", base64: base64.split(",")[1] || base64, mime: "audio/webm" }] }
+              ]
+            }),
+          }).then(async res => {
+            const reader = res.body?.getReader();
+            if (!reader) return;
+            let full = "";
+            const decoder = new TextDecoder();
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              const lines = decoder.decode(value, { stream: true }).split("\n").filter(l => l.startsWith("data: "));
+              for (const line of lines) {
+                try {
+                  const d = JSON.parse(line.slice(6));
+                  if (d.content) full += d.content;
+                } catch {}
+              }
+            }
+            if (full) setMessages(prev => [...prev, { role: "user", content: "🎤 [رسالة صوتية]" }, { role: "assistant", content: full }]);
+            setLoading(false);
+          }).catch(() => { setLoading(false); });
+        };
+        reader.readAsDataURL(blob);
+      };
+      recorder.start();
+      setRecording(true);
+    } catch { setRecording(false); }
+  };
+
+  const stopRecording = () => {
+    mediaRecorder.current?.stop();
+    setRecording(false);
   };
 
   return (
     <PageWrapper>
-    <div>
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        style={{ marginBottom: "24px" }}
-      >
-        <h1 className="font-heading" style={{ fontSize: "1.5rem", color: "#384551", margin: 0 }}>البيطري الذكي</h1>
-        <p style={{ fontSize: "0.9rem", color: "#7a838b", margin: "4px 0 0" }}>شخص أمراض الدجاج بالذكاء الاصطناعي من خلال الصور</p>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}
-      >
-        {/* Upload */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "24px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
-            <Camera size={20} style={{ color: COLORS.aqua }} />
-            <h2 className="font-subhead font-heading" style={{ fontSize: "1rem", color: "#384551", margin: 0 }}>صورة الدجاجة</h2>
+      <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+        <div style={{
+          background: "#fff", borderRadius: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.04)",
+          display: "flex", flexDirection: "column", height: "calc(100vh - 160px)", minHeight: "500px", overflow: "hidden",
+        }}>
+          <div style={{ padding: "16px 20px", borderBottom: "1px solid #f0f0f2", display: "flex", alignItems: "center", gap: "10px" }}>
+            <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity }} style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#34c759" }} />
+            <Bot size={20} style={{ color: COLORS.blue }} />
+            <span className="font-heading" style={{ fontWeight: "700", fontSize: "1rem", color: "#1a1a24" }}>POULTRIX AI</span>
+            <span style={{ fontSize: "0.7rem", color: "#a0a0aa", background: "#f5f5f7", padding: "2px 8px", borderRadius: "4px" }}>يدعم الصور والصوت</span>
           </div>
 
-          <motion.div
-            onClick={() => fileRef.current?.click()}
-            whileHover={{ borderColor: COLORS.aqua, background: "#f8f9fa", scale: 1.01 }}
-            style={{
-              border: "2px dashed #e4e6e8", borderRadius: "12px", padding: "40px 20px",
-              textAlign: "center", cursor: "pointer", marginBottom: "16px",
-            }}
-          >
-            <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} style={{ display: "none" }} />
-            {preview ? (
-              <motion.img
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                src={preview} alt="Preview"
-                style={{ maxHeight: "200px", maxWidth: "100%", borderRadius: "8px" }}
-              />
-            ) : (
-              <div>
-                <Upload size={40} style={{ color: "#91979f", marginBottom: "8px" }} />
-                <p style={{ fontSize: "0.9rem", color: "#7a838b", margin: 0 }}>اختر صورة الدجاجة</p>
-                <p style={{ fontSize: "0.8rem", color: "#bdc1c5", margin: "4px 0 0" }}>JPG, PNG — مقاس 256×256 بكسل</p>
-              </div>
-            )}
-          </motion.div>
+          <div ref={chatRef} style={{ flex: 1, overflowY: "auto", padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+            <AnimatePresence>
+              {messages.map((msg, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 10, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                  style={{ display: "flex", gap: "10px", flexDirection: msg.role === "user" ? "row-reverse" : "row", alignItems: "flex-start" }}
+                >
+                  <div style={{ width: "32px", height: "32px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                    background: msg.role === "user" ? COLORS.aqua + "20" : COLORS.blue + "15" }}>
+                    {msg.role === "user" ? <User size={16} style={{ color: COLORS.aqua }} /> : <Bot size={16} style={{ color: COLORS.blue }} />}
+                  </div>
+                  <div style={{ maxWidth: "80%", padding: "12px 16px", borderRadius: "14px", fontSize: "0.85rem", lineHeight: 1.6,
+                    background: msg.role === "user" ? COLORS.aqua + "12" : "#f5f5f7", color: "#1a1a24", border: msg.role === "assistant" ? "1px solid #eeeef0" : "none" }}>
+                    {msg.images?.map((img, j) => (
+                      <img key={j} src={img} alt="" style={{ maxWidth: "200px", maxHeight: "150px", borderRadius: "8px", marginBottom: "8px", display: "block" }} />
+                    ))}
+                    {msg.content}
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
 
-          <motion.button
-            onClick={diagnose} disabled={!file || loading}
-            whileHover={!file || loading ? {} : { scale: 1.02, boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}
-            whileTap={{ scale: 0.98 }}
-            style={{ width: "100%", padding: "12px", borderRadius: "10px", border: "none", fontSize: "0.9rem", fontWeight: "600",
-              background: !file || loading ? "#e9eaec" : COLORS.blue, color: !file || loading ? "#91979f" : "#fff", cursor: !file || loading ? "not-allowed" : "pointer" }}
-          >
-            {loading ? (
-              <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-                <motion.span animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
-                  <RefreshCw size={16} />
-                </motion.span>
-                جاري التحليل...
-              </span>
-            ) : "تشخيص المرض"}
-          </motion.button>
-
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, y: 8, height: 0 }}
-              animate={{ opacity: 1, y: 0, height: "auto" }}
-              style={{ marginTop: "16px", padding: "12px", borderRadius: "10px", background: `${COLORS.gold}15`, border: `1px solid ${COLORS.gold}40`, display: "flex", alignItems: "flex-start", gap: "8px", overflow: "hidden" }}
-            >
-              <AlertCircle size={16} style={{ color: COLORS.gold, flexShrink: 0, marginTop: "2px" }} />
-              <p style={{ fontSize: "0.85rem", color: COLORS.gold, margin: 0 }}>{error}</p>
-            </motion.div>
-          )}
-        </motion.div>
-
-        {/* Result */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          style={{ background: "#fff", borderRadius: "16px", padding: "24px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
-            <Stethoscope size={20} style={{ color: COLORS.blue }} />
-            <h2 className="font-subhead font-heading" style={{ fontSize: "1rem", color: "#384551", margin: 0 }}>نتيجة التشخيص</h2>
-          </div>
-
-          {!result && !loading && !error && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              style={{ textAlign: "center", padding: "40px 0", color: "#bdc1c5" }}
-            >
-              <Cpu size={48} style={{ marginBottom: "12px", opacity: 0.3 }} />
-              <p style={{ fontSize: "0.9rem", margin: 0 }}>ارفع صورة وشخص المرض</p>
-            </motion.div>
-          )}
-
-          {loading && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
-              style={{ textAlign: "center", padding: "40px 0" }}
-            >
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                style={{ width: 32, height: 32, borderRadius: "50%", border: `3px solid ${COLORS.cream}`, borderTopColor: COLORS.aqua, margin: "0 auto 12px" }}
-              />
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                style={{ fontSize: "0.9rem", color: "#7a838b" }}
-              >
-                <span className="font-brand">POULTRIX</span> AI يحلل الصورة...
-              </motion.p>
-            </motion.div>
-          )}
-
-          {result && result.disease && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 }}
-                style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}
-              >
-                {result.prediction === "healthy" ? (
-                  <CheckCircle size={28} style={{ color: COLORS.aqua }} />
-                ) : (
-                  <AlertTriangle size={28} style={{ color: COLORS.gold }} />
-                )}
-                <div>
-                  <h3 className="font-heading" style={{ fontSize: "1.2rem", color: "#384551", margin: 0 }}>{result.disease.nameAr}</h3>
-                  <span style={{ fontSize: "0.75rem", fontWeight: "600", padding: "3px 10px", borderRadius: "6px", background: severityBgs[result.disease.severity] || "#f0f1f2", color: severityColors[result.disease.severity] || "#7a838b" }}>
-                    {severityLabels[result.disease.severity] || result.disease.severity}
-                  </span>
+            {streaming && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
+                <div style={{ width: "32px", height: "32px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", background: COLORS.blue + "15" }}>
+                  <Bot size={16} style={{ color: COLORS.blue }} />
+                </div>
+                <div style={{ maxWidth: "80%", padding: "12px 16px", borderRadius: "14px", fontSize: "0.85rem", lineHeight: 1.6, background: "#f5f5f7", border: "1px solid #eeeef0" }}>
+                  {streaming}
+                  <motion.span animate={{ opacity: [0, 1] }} transition={{ duration: 0.5, repeat: Infinity }} style={{ display: "inline-block", width: "6px", height: "14px", background: COLORS.aqua, marginLeft: "2px", borderRadius: "1px" }} />
                 </div>
               </motion.div>
+            )}
 
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                style={{ fontSize: "0.85rem", color: "#4e5965", lineHeight: 1.7, marginBottom: "16px" }}
-              >
-                {result.disease.description}
-              </motion.p>
+            {loading && !streaming && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", gap: "10px", alignItems: "center", padding: "12px 16px", borderRadius: "14px", background: "#f5f5f7", width: "fit-content", border: "1px solid #eeeef0" }}>
+                <motion.div animate={{ rotate: 360 }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} style={{ width: "16px", height: "16px", borderRadius: "50%", border: "2px solid #e0e0e0", borderTopColor: COLORS.aqua }} />
+                <span style={{ fontSize: "0.8rem", color: "#a0a0aa" }}>POULTRIX AI يفكر...</span>
+              </motion.div>
+            )}
 
-              {/* Symptoms */}
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                style={{ marginBottom: "16px" }}
-              >
-                <p style={{ fontSize: "0.8rem", fontWeight: "600", color: "#384551", marginBottom: "8px" }}>الأعراض</p>
+            {showSuggestions && messages.length <= 1 && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+                <p style={{ fontSize: "0.75rem", color: "#a0a0aa", marginBottom: "8px" }}>إجراءات سريعة:</p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                  {result.disease.symptoms.map((s: string, i: number) => (
-                    <motion.span
-                      key={i}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.35 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                      style={{ fontSize: "0.8rem", padding: "4px 10px", borderRadius: "6px", background: `${COLORS.cream}`, color: "#4e5965", border: `1px solid ${COLORS.cream}` }}
-                    >{s}</motion.span>
+                  {suggestedActions.map((action, i) => (
+                    <motion.button key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.6 + i * 0.05 }}
+                      onClick={() => sendMessage(action.prompt)} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                      style={{ display: "flex", alignItems: "center", gap: "6px", padding: "8px 14px", borderRadius: "10px", border: "1px solid #eeeef0", fontSize: "0.75rem", cursor: "pointer", color: "#5a5a6a", background: "#fff" }}>
+                      <action.icon size={14} style={{ color: COLORS.aqua }} />
+                      {action.label}
+                    </motion.button>
                   ))}
                 </div>
               </motion.div>
+            )}
+          </div>
 
-              {/* Treatment */}
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                style={{ padding: "12px", borderRadius: "10px", background: `${COLORS.blue}08`, border: `1px solid ${COLORS.blue}20`, marginBottom: "12px" }}
-              >
-                <p style={{ fontSize: "0.8rem", fontWeight: "600", color: COLORS.blue, marginBottom: "4px" }}>العلاج</p>
-                <p style={{ fontSize: "0.85rem", color: "#4e5965", margin: 0, lineHeight: 1.6 }}>{result.disease.treatment}</p>
-              </motion.div>
-
-              {/* Prevention */}
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                style={{ padding: "12px", borderRadius: "10px", background: `${COLORS.aqua}10`, border: `1px solid ${COLORS.aqua}30` }}
-              >
-                <p style={{ fontSize: "0.8rem", fontWeight: "600", color: COLORS.aqua, marginBottom: "4px" }}>الوقاية</p>
-                <p style={{ fontSize: "0.85rem", color: "#7a5a2e", margin: 0, lineHeight: 1.6 }}>{result.disease.prevention}</p>
-              </motion.div>
-            </motion.div>
+          {images.length > 0 && (
+            <div style={{ padding: "8px 16px 0", display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              {images.map((img, i) => (
+                <div key={i} style={{ position: "relative", width: "60px", height: "60px" }}>
+                  <img src={img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }} />
+                  <button onClick={() => setImages(prev => prev.filter((_, j) => j !== i))}
+                    style={{ position: "absolute", top: "-4px", right: "-4px", width: "18px", height: "18px", borderRadius: "50%", border: "none", background: "#ff4444", color: "#fff", fontSize: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>×</button>
+                </div>
+              ))}
+            </div>
           )}
-        </motion.div>
-      </motion.div>
 
-      {/* How it works */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.35, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        style={{ marginTop: "24px", background: "#fff", borderRadius: "16px", padding: "20px", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03)" }}
-      >
-        <p className="font-heading" style={{ fontSize: "0.9rem", fontWeight: "600", color: "#384551", marginBottom: "12px" }}>كيف يعمل؟</p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
-          {[
-            { step: "1", title: "ارفع الصورة", desc: "صور دجاجتك بهاتفك وارفعها" },
-            { step: "2", title: "AI يحلل", desc: "نموذج ذكاء اصطناعي مدرب على آلاف الصور" },
-            { step: "3", title: "شوف النتيجة", desc: "احصل على التشخيص والعلاج فوراً" },
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -4 }}
-              style={{ textAlign: "center" }}
-            >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.45 + i * 0.1, type: "spring" as const, stiffness: 200, damping: 15 }}
-                style={{ width: "40px", height: "40px", borderRadius: "50%", background: COLORS.blue, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem", fontWeight: "700", margin: "0 auto 8px", boxShadow: `0 2px 8px ${COLORS.blue}40` }}
-              >{item.step}</motion.div>
-              <p style={{ fontSize: "0.85rem", fontWeight: "600", color: "#384551", margin: "0 0 4px" }}>{item.title}</p>
-              <p style={{ fontSize: "0.8rem", color: "#7a838b", margin: 0 }}>{item.desc}</p>
-            </motion.div>
-          ))}
+          <div style={{ padding: "12px 16px", borderTop: "1px solid #f0f0f2", display: "flex", gap: "8px", alignItems: "center" }}>
+            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => fileRef.current?.click()}
+              style={{ width: "38px", height: "38px", borderRadius: "10px", border: "1px solid #eeeef0", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Image size={18} style={{ color: "#a0a0aa" }} />
+            </motion.button>
+            <input ref={fileRef} type="file" accept="image/*" capture="environment" onChange={handleImageUpload} style={{ display: "none" }} />
+
+            <div style={{ flex: 1, position: "relative" }}>
+              <input ref={inputRef} value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
+                placeholder={recording ? "جاري التسجيل..." : "اكتب رسالة..."}
+                style={{ width: "100%", padding: "10px 14px", borderRadius: "10px", border: "1px solid #eeeef0", fontSize: "0.85rem", outline: "none", boxSizing: "border-box", background: recording ? COLORS.gold + "08" : "#fff" }} />
+            </div>
+
+            {recording ? (
+              <motion.button animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 0.8, repeat: Infinity }} onClick={stopRecording}
+                style={{ width: "38px", height: "38px", borderRadius: "10px", border: "none", background: "#ff4444", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Square size={16} style={{ color: "#fff" }} />
+              </motion.button>
+            ) : (
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={startRecording}
+                style={{ width: "38px", height: "38px", borderRadius: "10px", border: "1px solid #eeeef0", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Mic size={18} style={{ color: "#a0a0aa" }} />
+              </motion.button>
+            )}
+
+            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => sendMessage()}
+              disabled={loading || (!input.trim() && images.length === 0)}
+              style={{ width: "38px", height: "38px", borderRadius: "10px", border: "none", background: loading || (!input.trim() && images.length === 0) ? "#e9eaec" : COLORS.blue, cursor: loading || (!input.trim() && images.length === 0) ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Send size={16} style={{ color: loading || (!input.trim() && images.length === 0) ? "#bdc1c5" : "#fff" }} />
+            </motion.button>
+          </div>
         </div>
-      </motion.div>
-    </div>
+      </div>
     </PageWrapper>
   );
 }

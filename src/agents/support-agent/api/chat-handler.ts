@@ -13,29 +13,38 @@ const visionPrompt = `You are POULTRIX AI, a helpful assistant for Moroccan poul
 
 const textPrompt = `You are POULTRIX AI - the official AI assistant of the POULTRIX poultry intelligence platform for Moroccan farmers.
 
-=== APP OVERVIEW ===
-POULTRIX helps Moroccan poultry farmers:
-- Monitor live metrics: mortality rate, feed efficiency, flock health, profit margin
-- Predict mortality up to 48h before symptoms via AI
-- Receive instant barn alerts (temperature, feed, water)
-- Track finances: daily costs, projected revenue, profit margin
-- Calculate projected profit interactively
-- Pricing: Free / Pro (299 DH/mo) / Enterprise (899 DH/mo)
-- Trust: SSL encrypted, 99.9% SLA, 24/7 support, API access
-
 === LANGUAGE RULE ===
 Match the user's language exactly: Darija / Arabic / French / English. Never switch.
 
-=== CAPABILITIES & TOOLS ===
-1. get_dashboard — Live metrics (mortality, feed, health, profit)
-2. get_flock — Birds, barns, age, health score
-3. get_financial — Daily costs, revenue, profit margin
-4. get_predictions — Barn mortality risk + recommendations
-5. get_alerts — Active barn alerts
-6. get_insights — AI recommendations
+=== APP OVERVIEW ===
+POULTRIX helps Moroccan poultry farmers monitor flocks, track health, manage inventory, handle sales/orders, record expenses, and more.
 
-ALWAYS call tools for current data. Call multiple if needed. Never fabricate data.
-For general questions (pricing, features, how to start) answer from your knowledge.
+=== ACTION TOOLS — Use these to DO things ===
+When the user asks to add/create/record something, use the appropriate tool. VALIDATE required fields BEFORE calling. If any required field is missing, tell the user exactly which info is missing and ask for it. NEVER auto-fill defaults without asking.
+
+Available write tools:
+- add_flock: Add new batch (requires: name, breed, totalBirds, avgAge)
+- record_eggs: Record egg production (requires: flockId, quantity)
+- add_health_event: Record health/vaccination event (requires: eventType, description)
+- add_inventory_item: Add inventory item (requires: type, name, quantity, unit, cost, minimumThreshold)
+- add_expense: Record expense (requires: amount, expenseDate, category)
+- record_stocking: Record bird stocking change (requires: flockId)
+- add_product: Add product for sale (requires: name, type, quantity, price)
+- create_order: Create customer order (requires: customerName, totalAmount, items)
+
+=== READ TOOLS — Use these to LOOK UP data ===
+- get_dashboard: Live metrics (mortality, feed, health, profit)
+- get_flock: Flock summary (birds, barns, age, health)
+- get_financial: Daily costs, revenue, profit margin
+- get_predictions: Barn mortality risk + recommendations
+- get_alerts: Active barn alerts
+- get_insights: AI recommendations
+- query_data: Query any endpoint (flock, egg-records, health-events, inventory, expenses, stocking, products, orders, invoices)
+
+=== WORKFLOW ===
+1. If user wants to add data → VALIDATE all required fields → if anything missing, say "تحتاج إلى توفير: [list]" → only call tool when all required fields are provided
+2. If user asks a question → call the appropriate read tool for real data
+3. Answer from tool results, never fabricate data
 
 === UI COMPONENTS — ALWAYS GENERATE THESE ===
 Wrap EVERY response in OpenUI Lang. NEVER respond with plain text alone.
@@ -52,9 +61,9 @@ Components:
 - AlertItem(message, barn, severity?) — Alert notification
 
 Examples:
-- Metrics: root = Card(title="المؤشرات", Stack([Row([Metric(label="معدل النفوق", value="2.3%"), Metric(label="صحة القطيع", value="96.4%")]), Text(content="الوضع مستقر ✅", size="md")]))
-- Table: root = Card(title="مقارنة", Stack([Table(headers=["المؤشر","BARN-1","BARN-3"], rows=[["النفوق","1.8%","3.2%"],["العلف","1.62","1.74"]]), Badge(label="BARN-3 يحتاج مراقبة", color="#BF7A5A")]))
-- Alerts: root = Card(title="التنبيهات", Stack([AlertItem(message="استهلاك الماء انخفض 12%", barn="BARN-5", severity="high")]))`;
+- root = Card(title="المؤشرات", Stack([Row([Metric(label="معدل النفوق", value="2.3%"), Metric(label="صحة القطيع", value="96.4%")]), Text(content="الوضع مستقر ✅", size="md")]))
+- root = Card(title="مقارنة", Stack([Table(headers=["المؤشر","BARN-1","BARN-3"], rows=[["النفوق","1.8%","3.2%"],["العلف","1.62","1.74"]]), Badge(label="BARN-3 يحتاج مراقبة", color="#BF7A5A")]))
+- root = Card(title="تمت الإضافة ✅", Stack([Text(content="تمت إضافة القطيع بنجاح", size="lg"), Badge(label="القطيع أ-42", color="#2D5541")]))`;
 
 /* ─── Audio Transcription ─── */
 
@@ -148,7 +157,6 @@ export async function POST(req: NextRequest) {
     max_tokens: 4096,
   };
 
-  // Only send tools for text-only requests (vision models don't support tools well)
   if (!hasImage) {
     completionOpts.tools = [
       { type: "function", function: { name: "get_dashboard", description: "Get live dashboard metrics", parameters: { type: "object", properties: {} } } },
@@ -157,6 +165,15 @@ export async function POST(req: NextRequest) {
       { type: "function", function: { name: "get_predictions", description: "Get AI mortality predictions", parameters: { type: "object", properties: {} } } },
       { type: "function", function: { name: "get_alerts", description: "Get active barn alerts", parameters: { type: "object", properties: {} } } },
       { type: "function", function: { name: "get_insights", description: "Get AI insights", parameters: { type: "object", properties: {} } } },
+      { type: "function", function: { name: "query_data", description: "Query any farm data endpoint", parameters: { type: "object", properties: { endpoint: { type: "string", description: "e.g. flock, egg-records, health-events, inventory, expenses, stocking, products, orders" } }, required: ["endpoint"] } } },
+      { type: "function", function: { name: "add_flock", description: "Add a new chicken batch. VALIDATE: name, breed, totalBirds, avgAge required. If missing, tell user.", parameters: { type: "object", properties: { name: { type: "string" }, breed: { type: "string" }, totalBirds: { type: "number" }, avgAge: { type: "number" }, houseShedId: { type: "string" }, notes: { type: "string" } }, required: ["name", "breed", "totalBirds", "avgAge"] } } },
+      { type: "function", function: { name: "record_eggs", description: "Record egg production. Required: flockId, quantity.", parameters: { type: "object", properties: { flockId: { type: "string" }, quantity: { type: "number" }, pricePerTray: { type: "number" }, broken: { type: "number" }, notes: { type: "string" } }, required: ["flockId", "quantity"] } } },
+      { type: "function", function: { name: "add_health_event", description: "Record health event. Required: eventType, description.", parameters: { type: "object", properties: { eventType: { type: "string", enum: ["vaccination", "medication", "inspection", "disease", "mortality", "checkup", "treatment"] }, description: { type: "string" }, flockId: { type: "string" }, birdsAffected: { type: "number" }, mortalityCount: { type: "number" }, cost: { type: "number" }, treatment: { type: "string" }, performedBy: { type: "string" }, notes: { type: "string" } }, required: ["eventType", "description"] } } },
+      { type: "function", function: { name: "add_inventory_item", description: "Add inventory item. Required: type, name, quantity, unit, cost, minimumThreshold.", parameters: { type: "object", properties: { type: { type: "string", enum: ["feed", "medicine", "equipment", "supplies"] }, name: { type: "string" }, quantity: { type: "number" }, unit: { type: "string" }, cost: { type: "number" }, minimumThreshold: { type: "number" }, supplier: { type: "string" }, notes: { type: "string" } }, required: ["type", "name", "quantity", "unit", "cost", "minimumThreshold"] } } },
+      { type: "function", function: { name: "add_expense", description: "Record expense. Required: amount, expenseDate, category.", parameters: { type: "object", properties: { amount: { type: "number" }, expenseDate: { type: "string" }, category: { type: "string" }, description: { type: "string" }, paymentMethod: { type: "string", enum: ["نقداً", "تحويل بنكي", "شيك", "بطاقة بنكية"] }, notes: { type: "string" } }, required: ["amount", "expenseDate", "category"] } } },
+      { type: "function", function: { name: "record_stocking", description: "Record stocking change. Required: flockId.", parameters: { type: "object", properties: { flockId: { type: "string" }, birdsAdded: { type: "number" }, birdsRemoved: { type: "number" }, mortality: { type: "number" }, notes: { type: "string" } }, required: ["flockId"] } } },
+      { type: "function", function: { name: "add_product", description: "Add product for sale. Required: name, type, quantity, price.", parameters: { type: "object", properties: { name: { type: "string" }, type: { type: "string", enum: ["eggs", "meat", "chicks", "manure"] }, quantity: { type: "number" }, price: { type: "number" }, quality: { type: "string", enum: ["premium", "standard", "economy"] }, notes: { type: "string" } }, required: ["name", "type", "quantity", "price"] } } },
+      { type: "function", function: { name: "create_order", description: "Create customer order. Required: customerName, totalAmount, items.", parameters: { type: "object", properties: { customerName: { type: "string" }, totalAmount: { type: "number" }, items: { type: "array", items: { type: "object", properties: { productId: { type: "string" }, productName: { type: "string" }, quantity: { type: "number" }, price: { type: "number" } }, required: ["productId", "quantity", "price"] } }, deliveryAddress: { type: "string" }, notes: { type: "string" } }, required: ["customerName", "totalAmount", "items"] } } },
     ];
   }
 
@@ -165,16 +182,18 @@ export async function POST(req: NextRequest) {
   const encoder = new TextEncoder();
   const streamable = new ReadableStream({
     async start(controller) {
-      let fnName = "";
-      let fnArgs = "";
+      const pendingCalls = new Map<number, { name: string; args: string }>();
 
       for await (const chunk of stream) {
         const delta = chunk.choices?.[0]?.delta;
         if (!delta) continue;
         if (delta.tool_calls) {
           for (const tc of delta.tool_calls) {
-            if (tc.function?.name) fnName = tc.function.name;
-            if (tc.function?.arguments) fnArgs += tc.function.arguments;
+            const idx = tc.index ?? 0;
+            if (!pendingCalls.has(idx)) pendingCalls.set(idx, { name: "", args: "" });
+            const call = pendingCalls.get(idx)!;
+            if (tc.function?.name) call.name = tc.function.name;
+            if (tc.function?.arguments) call.args += tc.function.arguments;
           }
           continue;
         }
@@ -183,10 +202,15 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      if (fnName) {
+      if (pendingCalls.size > 0) {
         const { executeTool } = await import("@/agents/support-agent/tools");
-        const result = await executeTool(fnName);
-        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ toolResult: true, name: fnName, data: result })}\n\n`));
+        for (const [, call] of pendingCalls) {
+          if (!call.name) continue;
+          let args: any = {};
+          try { if (call.args) args = JSON.parse(call.args); } catch {}
+          const result = await executeTool(call.name, args);
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ toolResult: true, name: call.name, args, data: result })}\n\n`));
+        }
       }
 
       controller.enqueue(encoder.encode("data: [DONE]\n\n"));
