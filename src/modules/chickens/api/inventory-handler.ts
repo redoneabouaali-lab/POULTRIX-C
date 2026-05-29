@@ -26,8 +26,10 @@ export async function POST(req: Request) {
   if (!body.type || !body.name) {
     return NextResponse.json({ data: null, error: "type و name مطلوبان", meta: { timestamp: new Date().toISOString(), version: "", cached: false } }, { status: 400 });
   }
+  const newItem = { id: `inv-${Date.now()}`, ...body, createdAt: new Date().toISOString() };
+  items.push(newItem as any);
   return NextResponse.json({
-    data: { id: `inv-${Date.now()}`, ...body, createdAt: new Date().toISOString() },
+    data: newItem,
     meta: { timestamp: new Date().toISOString(), version: "", cached: false },
   }, { status: 201 });
 }

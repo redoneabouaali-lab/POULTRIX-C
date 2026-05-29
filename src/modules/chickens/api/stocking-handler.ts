@@ -23,8 +23,10 @@ export async function POST(req: Request) {
   if (!body.flockId) {
     return NextResponse.json({ data: null, error: "flockId مطلوب", meta: { timestamp: new Date().toISOString(), version: "", cached: false } }, { status: 400 });
   }
+  const newRecord = { id: `stk-${Date.now()}`, ...body, createdAt: new Date().toISOString() };
+  records.push(newRecord as any);
   return NextResponse.json({
-    data: { id: `stk-${Date.now()}`, ...body, createdAt: new Date().toISOString() },
+    data: newRecord,
     meta: { timestamp: new Date().toISOString(), version: "", cached: false },
   }, { status: 201 });
 }

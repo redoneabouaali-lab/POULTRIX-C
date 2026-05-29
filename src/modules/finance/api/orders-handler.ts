@@ -40,8 +40,10 @@ export async function POST(req: Request) {
   if (!body.customerName || !body.items?.length) {
     return NextResponse.json({ data: null, error: "customerName و items مطلوبان", meta: { timestamp: new Date().toISOString(), version: "", cached: false } }, { status: 400 });
   }
+  const newOrder = { id: `ord-${Date.now()}`, ...body, status: "pending", paymentStatus: "pending", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+  orders.push(newOrder as any);
   return NextResponse.json({
-    data: { id: `ord-${Date.now()}`, ...body, status: "pending", paymentStatus: "pending", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+    data: newOrder,
     meta: { timestamp: new Date().toISOString(), version: "", cached: false },
   }, { status: 201 });
 }

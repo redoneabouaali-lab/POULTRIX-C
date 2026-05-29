@@ -27,8 +27,10 @@ export async function POST(req: Request) {
       { status: 400 }
     );
   }
+  const newFlock = { id: `flock-${Date.now()}`, farmId: "farm-001", ...body, status: "active", startDate: new Date().toISOString().split("T")[0], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+  flocks.push(newFlock as any);
   return NextResponse.json({
-    data: { id: `flock-${Date.now()}`, farmId: "farm-001", ...body, status: "active", startDate: new Date().toISOString().split("T")[0], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+    data: newFlock,
     meta: { timestamp: new Date().toISOString(), version: "", cached: false },
   }, { status: 201 });
 }

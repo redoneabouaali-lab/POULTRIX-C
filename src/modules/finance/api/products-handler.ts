@@ -21,8 +21,10 @@ export async function POST(req: Request) {
   if (!body.name || !body.type) {
     return NextResponse.json({ data: null, error: "name و type مطلوبان", meta: { timestamp: new Date().toISOString(), version: "", cached: false } }, { status: 400 });
   }
+  const newProduct = { id: `prd-${Date.now()}`, ...body, createdAt: new Date().toISOString() };
+  products.push(newProduct as any);
   return NextResponse.json({
-    data: { id: `prd-${Date.now()}`, ...body, createdAt: new Date().toISOString() },
+    data: newProduct,
     meta: { timestamp: new Date().toISOString(), version: "", cached: false },
   }, { status: 201 });
 }

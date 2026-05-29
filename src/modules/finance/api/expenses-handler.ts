@@ -28,8 +28,10 @@ export async function POST(req: Request) {
   if (!body.amount) {
     return NextResponse.json({ data: null, error: "amount مطلوب", meta: { timestamp: new Date().toISOString(), version: "", cached: false } }, { status: 400 });
   }
+  const newExpense = { id: `exp-${Date.now()}`, ...body, createdAt: new Date().toISOString() };
+  expenses.push(newExpense as any);
   return NextResponse.json({
-    data: { id: `exp-${Date.now()}`, ...body, createdAt: new Date().toISOString() },
+    data: newExpense,
     meta: { timestamp: new Date().toISOString(), version: "", cached: false },
   }, { status: 201 });
 }

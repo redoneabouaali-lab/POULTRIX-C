@@ -21,8 +21,10 @@ export async function POST(req: Request) {
   if (!body.eventType) {
     return NextResponse.json({ data: null, error: "eventType مطلوب", meta: { timestamp: new Date().toISOString(), version: "", cached: false } }, { status: 400 });
   }
+  const newEvent = { id: `hlth-${Date.now()}`, ...body, createdAt: new Date().toISOString() };
+  events.push(newEvent as any);
   return NextResponse.json({
-    data: { id: `hlth-${Date.now()}`, ...body, createdAt: new Date().toISOString() },
+    data: newEvent,
     meta: { timestamp: new Date().toISOString(), version: "", cached: false },
   }, { status: 201 });
 }
