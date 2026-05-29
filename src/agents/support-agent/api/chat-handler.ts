@@ -103,7 +103,14 @@ async function buildMessages(rawMessages: any[]) {
           parts.push({ type: "text", text: "[User sent a video. Describe what you see based on context.]" });
         }
       }
-      result.push({ role: msg.role, content: parts.length > 0 ? parts : msg.content });
+      if (parts.length === 0) {
+        result.push({ role: msg.role, content: msg.content });
+      } else if (parts.every(p => p.type === "text")) {
+        const text = parts.map(p => p.text).join("");
+        result.push({ role: msg.role, content: text });
+      } else {
+        result.push({ role: msg.role, content: parts });
+      }
       continue;
     }
 
@@ -116,7 +123,13 @@ async function buildMessages(rawMessages: any[]) {
 /* ─── Main Route ─── */
 
 export async function POST(req: NextRequest) {
-  const { messages } = await req.json();
+  let messages: any[];
+  try {
+    const body = await req.json();
+    messages = body.messages;
+  } catch {
+    return Response.json({ error: "Invalid JSON in request body" }, { status: 400 });
+  }
 
   if (!Array.isArray(messages)) {
     return Response.json({ error: "Messages must be an array" }, { status: 400 });
