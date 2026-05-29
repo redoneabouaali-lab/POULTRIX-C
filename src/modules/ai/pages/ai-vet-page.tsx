@@ -62,7 +62,10 @@ export default function AIVetPage() {
         }
         return { role: "user", content: parts };
       }
-      return { role: m.role, content: [{ type: "text", text: m.content }] };
+      if (m.role === "assistant") {
+        return { role: "assistant", content: m.content };
+      }
+      return { role: "user", content: [{ type: "text", text: m.content }] };
     });
 
     const payload: any = { messages: [...payloadMsgs, { role: "user", content: [{ type: "text", text }] }] };
@@ -171,7 +174,10 @@ export default function AIVetPage() {
                     }
                     return { role: "user", content: parts };
                   }
-                  return { role: m.role, content: [{ type: "text", text: m.content }] };
+                  if (m.role === "assistant") {
+                    return { role: "assistant", content: m.content };
+                  }
+                  return { role: "user", content: [{ type: "text", text: m.content }] };
                 }),
                 { role: "user", content: [{ type: "audio", base64: base64.split(",")[1] || base64, mime: "audio/webm" }] }
               ]

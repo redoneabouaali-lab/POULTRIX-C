@@ -95,9 +95,9 @@ export const addExpenseTool = {
   parameters: z.object({
     amount: z.number().describe("Expense amount in DH"),
     expenseDate: z.string().describe("Date of expense YYYY-MM-DD"),
-    category: z.string().describe("Category: 'أعلاف', 'أدوية', 'تجهيزات', 'صيانة', 'كهرباء', 'مياه', 'نقل', 'عمالة', 'أخرى'"),
+    category: z.string().describe("أعلاف / أدوية / تجهيزات / صيانة / كهرباء / مياه / نقل / عمالة / أخرى"),
     description: z.string().optional().describe("Description of the expense"),
-    paymentMethod: z.string().optional().describe("Payment method: 'نقداً', 'تحويل بنكي', 'شيك', 'بطاقة بنكية'"),
+    paymentMethod: z.string().optional().describe("cash / bank_transfer / cheque / card"),
     flockId: z.string().optional().describe("Flock ID if expense is for a specific batch"),
     notes: z.string().optional().describe("Additional notes"),
   }),
