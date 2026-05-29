@@ -182,6 +182,10 @@ export async function executeTool(name: string, args: any = {}): Promise<string>
     }
     try {
       const res = await fetch(`${base}/${args.endpoint}`, { headers });
+      if (!res.headers.get('content-type')?.includes('json')) {
+        const text = await res.text();
+        return JSON.stringify({ error: `Non-JSON response: ${text.slice(0, 200)}` });
+      }
       const data = await res.json();
       return JSON.stringify(data.data || data);
     } catch (e) {
@@ -194,6 +198,10 @@ export async function executeTool(name: string, args: any = {}): Promise<string>
       const res = await fetch(`${base}${writeEndpoints[name]}`, {
         method: "POST", headers, body: JSON.stringify(args),
       });
+      if (!res.headers.get('content-type')?.includes('json')) {
+        const text = await res.text();
+        return JSON.stringify({ error: `Non-JSON response: ${text.slice(0, 200)}` });
+      }
       const data = await res.json();
       return JSON.stringify(data.data || data);
     } catch (e) {
@@ -214,6 +222,10 @@ export async function executeTool(name: string, args: any = {}): Promise<string>
 
   try {
     const res = await fetch(url, { headers });
+    if (!res.headers.get('content-type')?.includes('json')) {
+      const text = await res.text();
+      return JSON.stringify({ error: `Non-JSON response: ${text.slice(0, 200)}` });
+    }
     const data = await res.json();
     return JSON.stringify(data.data || data);
   } catch (e) {
