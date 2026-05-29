@@ -1,10 +1,16 @@
 import { NextRequest } from "next/server";
 import OpenAI from "openai";
 
-const client = new OpenAI({
-  baseURL: process.env.NVIDIA_API_BASE_URL || "https://integrate.api.nvidia.com/v1",
-  apiKey: process.env.NVIDIA_API_KEY || "",
-});
+let client: OpenAI | null = null;
+function getClient() {
+  if (!client) {
+    client = new OpenAI({
+      baseURL: process.env.NVIDIA_API_BASE_URL || "https://integrate.api.nvidia.com/v1",
+      apiKey: process.env.NVIDIA_API_KEY || "",
+    });
+  }
+  return client;
+}
 
 const VISION_MODEL = process.env.NVIDIA_VISION_MODEL || "meta/llama-3.2-90b-vision-instruct";
 const TEXT_MODEL = process.env.NVIDIA_MODEL || "meta/llama-3.3-70b-instruct";
@@ -205,16 +211,19 @@ Respond in plain text with proper Arabic/Darija/French/English formatting. Use m
 
 /* ─── Audio Transcription ─── */
 
+let whisperClient: OpenAI | null = null;
 async function transcribeAudio(audioBase64: string): Promise<string> {
   try {
-    const whisper = new OpenAI({
-      baseURL: process.env.NVIDIA_AUDIO_BASE_URL || "https://api.nvcf.nvidia.com/v1",
-      apiKey: process.env.NVIDIA_API_KEY || "",
-    });
+    if (!whisperClient) {
+      whisperClient = new OpenAI({
+        baseURL: process.env.NVIDIA_AUDIO_BASE_URL || "https://api.nvcf.nvidia.com/v1",
+        apiKey: process.env.NVIDIA_API_KEY || "",
+      });
+    }
     const buf = Buffer.from(audioBase64, "base64");
     const blob = new Blob([buf], { type: "audio/webm" });
     const file = new File([blob], "audio.webm", { type: "audio/webm" });
-    const transcript = await whisper.audio.transcriptions.create({
+    const transcript = await whisperClient.audio.transcriptions.create({
       model: process.env.NVIDIA_WHISPER_MODEL || "nvidia/parakeet-ctc-0.6b",
       file,
     });
@@ -353,14 +362,14 @@ export async function POST(req: NextRequest) {
       { type: "function", function: { name: "get_feed_data", description: "Get feed management data: stock, consumption, alerts, FCR.", parameters: { type: "object", properties: {} } } },
       { type: "function", function: { name: "get_analytics", description: "Get comprehensive analytics: mortality trend, egg production, revenue, expenses, KPI.", parameters: { type: "object", properties: {} } } },
       { type: "function", function: { name: "get_farm_profile", description: "Get farm profile: name, location, capacity, stock, certifications.", parameters: { type: "object", properties: {} } } },
-      { type: "function", function: { name: "update_farm_profile", description: "Update farm profile info: name, location, capacity, description, employeeCount.", parameters: { type: "object", properties: { name: { type: "string" }, location: { type: "string" }, capacity: { type: "number" }, description: { type: "string" }, employeeCount: { type: "number" } } } },
+      { type: "function", function: { name: "update_farm_profile", description: "Update farm profile info: name, location, capacity, description, employeeCount.", parameters: { type: "object", properties: { name: { type: "string" }, location: { type: "string" }, capacity: { type: "number" }, description: { type: "string" }, employeeCount: { type: "number" } } } } },
       { type: "function", function: { name: "update_flock", description: "Update existing flock. Required: id. Fields: name, breed, totalBirds, avgAge, healthScore, status, notes.", parameters: { type: "object", properties: { id: { type: "string" }, name: { type: "string" }, breed: { type: "string" }, totalBirds: { type: "number" }, avgAge: { type: "number" }, healthScore: { type: "number" }, status: { type: "string", enum: ["active", "sold", "depopulated"] }, notes: { type: "string" } }, required: ["id"] } } },
       { type: "function", function: { name: "calculate_profit_analysis", description: "Calculate full profit analysis: FCR, cost per bird, margin, revenue, ROI across all farm data.", parameters: { type: "object", properties: {} } } },
       { type: "function", function: { name: "what_can_i_do", description: "Show user complete list of all AI capabilities.", parameters: { type: "object", properties: {} } } },
     ];
   }
 
-  const stream = await client.chat.completions.create(completionOpts) as any;
+  const stream = await getClient().chat.completions.create(completionOpts) as any;
 
   const encoder = new TextEncoder();
   const streamable = new ReadableStream({
@@ -414,7 +423,7 @@ export async function POST(req: NextRequest) {
         const toolContext = toolResults
           .map((tr) => `Result of "${tr.name}":\n${tr.result}`)
           .join("\n\n");
-        const secondStream = await client.chat.completions.create({
+        const secondStream = await getClient().chat.completions.create({
           model: TEXT_MODEL,
           messages: [
             { role: "system", content: "You are POULTRIX AI. Summarize the tool execution result in a natural, helpful response. Use the same language as the user (Arabic/Darija/French/English). Be concise and clear." },

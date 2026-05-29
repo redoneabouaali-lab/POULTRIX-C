@@ -10,7 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^7.3.3",
+    "@clerk/backend": "^3.4.14",
+    "@clerk/nextjs": "^7.4.2",
     "@gsap/react": "^2.0.1",
     "@openuidev/react-headless": "^0.8.1",
     "@openuidev/react-lang": "^0.2.4",
