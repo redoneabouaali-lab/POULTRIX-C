@@ -34,3 +34,26 @@ export async function POST(req: Request) {
     meta: { timestamp: new Date().toISOString(), version: "", cached: false },
   }, { status: 201 });
 }
+
+export async function PATCH(req: Request) {
+  const body = await req.json();
+  if (!body.id) {
+    return NextResponse.json(
+      { data: null, error: "id مطلوب لتحديث القطيع" },
+      { status: 400 }
+    );
+  }
+  const idx = flocks.findIndex(f => f.id === body.id);
+  if (idx === -1) {
+    return NextResponse.json(
+      { data: null, error: `القطيع ${body.id} غير موجود` },
+      { status: 404 }
+    );
+  }
+  const { id, ...updates } = body;
+  flocks[idx] = { ...flocks[idx], ...updates, updatedAt: new Date().toISOString() };
+  return NextResponse.json({
+    data: flocks[idx],
+    meta: { timestamp: new Date().toISOString(), version: "", cached: false },
+  });
+}

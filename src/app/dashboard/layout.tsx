@@ -132,6 +132,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const { isLoaded, isSignedIn } = useAuth();
 
   useEffect(() => { if (isLoaded && !isSignedIn) router.push("/login"); }, [isLoaded, isSignedIn, router]);
+  useEffect(() => { if (path === "/dashboard/ai-vet") router.replace("/dashboard"); }, [path, router]);
 
   if (!isLoaded || !isSignedIn) {
     return (

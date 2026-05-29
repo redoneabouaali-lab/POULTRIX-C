@@ -1,10 +1,20 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { MessageCircle, X, Send, Cpu, Sparkles, ImagePlus, Mic, MicOff, XCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { MessageCircle, X, Send, Cpu, Sparkles, ImagePlus, Mic, MicOff, XCircle, Bot, User, Bird, Egg, HeartPulse, ShoppingCart, Receipt, Package, Stethoscope, ArrowUpDown } from "lucide-react";
 import { COLORS } from "@/constants";
 import { poultrixLibrary } from "@/agents/support-agent/library";
 import { Renderer } from "@openuidev/react-lang";
+
+const suggestedActions = [
+  { icon: Bird, label: "إضافة قطيع جديد", prompt: "أضف قطيع جديد اسمه القطيع أ-43، سلالة Cobb 500، 8000 طير، عمر 30 يوم" },
+  { icon: Egg, label: "تسجيل بيض", prompt: "سجل إنتاج بيض للقطيع flk-001 كمية 5000 بيضة" },
+  { icon: HeartPulse, label: "حدث صحي", prompt: "سجل حدث صحي: تطعيم للقطيع flk-001، وصف تطعيم روتيني" },
+  { icon: ShoppingCart, label: "أمر بيع", prompt: "أنشئ طلبية لزبون اسمه محمد، المبلغ 2500 درهم" },
+  { icon: Receipt, label: "مصروف", prompt: "سجل مصروف 500 درهم، فئة أعلاف، بتاريخ اليوم" },
+  { icon: Package, label: "مخزون", prompt: "أضف عنصر مخزون: علف نوع feed، اسم ذرة، 1000 كغ، 3.5 درهم/كغ، حد أدنى 200" },
+];
 
 function useAudioRecorder() {
   const [recording, setRecording] = useState(false);
@@ -35,7 +45,18 @@ function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve) => { const reader = new FileReader(); reader.onloadend = () => resolve((reader.result as string).split(",")[1]); reader.readAsDataURL(file); });
 }
 
+function Toast({ message, type, onClose }: { message: string; type: string; onClose: () => void }) {
+  const bg = type === "error" ? "#ff4444" : type === "warning" ? "#BF7A5A" : type === "success" ? "#2D5541" : COLORS.aqua;
+  useEffect(() => { const t = setTimeout(onClose, 4000); return () => clearTimeout(t); }, [onClose]);
+  return (
+    <div className="fixed bottom-24 left-6 z-[60] animate-slide-up" style={{ background, padding: "10px 16px", borderRadius: "12px", maxWidth: "320px", boxShadow: "0 4px 24px rgba(0,0,0,0.3)" }}>
+      <p className="text-sm text-white">{message}</p>
+    </div>
+  );
+}
+
 export default function ChatButton() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<any[]>([
     { role: "assistant", content: "مرحباً! أنا مساعد POULTRIX AI. كيقدر تسألني أي سؤال على ضيعتك." },
@@ -45,6 +66,8 @@ export default function ChatButton() {
   const [pendingImages, setPendingImages] = useState<any[]>([]);
   const [uiCode, setUiCode] = useState("");
   const [streamContent, setStreamContent] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(true);
+  const [toast, setToast] = useState<{ message: string; type: string } | null>(null);
   const accumulatedRef = useRef("");
   const chatEnd = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -54,9 +77,11 @@ export default function ChatButton() {
   useEffect(() => { chatEnd.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, streamContent]);
   useEffect(() => { if (open) inputRef.current?.focus(); }, [open]);
 
-  const sendMessage = async () => {
-    const text = input.trim();
+  const sendMessage = useCallback(async (overrideText?: string) => {
+    const text = (overrideText || input).trim();
     if ((!text && pendingImages.length === 0 && !audioBase64) || streaming) return;
+    setShowSuggestions(false);
+
     const parts: any[] = [];
     pendingImages.forEach((img) => parts.push(img));
     if (audioBase64) { parts.push({ type: "audio", base64: audioBase64, mime: "audio/webm" }); clearAudio(); }
@@ -79,13 +104,47 @@ export default function ChatButton() {
           if (!line.startsWith("data: ")) continue;
           const data = line.slice(6).trim();
           if (data === "[DONE]") continue;
-          try { const parsed = JSON.parse(data); if (parsed.content) { accumulatedRef.current += parsed.content; setStreamContent(accumulatedRef.current); if (parsed.content.includes("root =")) setUiCode((prev) => prev + parsed.content); } } catch {}
+          try {
+            const parsed = JSON.parse(data);
+            if (parsed.type === "action") {
+              if (parsed.action === "navigate" && parsed.path) router.push(parsed.path);
+              else if (parsed.action === "alert") setToast({ message: parsed.message, type: parsed.alertType || "info" });
+              else if (parsed.action === "refresh") router.refresh();
+              continue;
+            }
+            if (parsed.toolResult) {
+              try {
+                const d = JSON.parse(parsed.data);
+                if (d && !d.error) {
+                  const summaries: Record<string, string> = {
+                    add_flock: "✅ تمت إضافة القطيع بنجاح",
+                    record_eggs: "🥚 تم تسجيل البيض",
+                    add_health_event: "💉 تم تسجيل الحدث الصحي",
+                    add_inventory_item: "📦 تمت إضافة المخزون",
+                    add_expense: "💰 تم تسجيل المصروف",
+                    record_stocking: "📊 تم تسجيل الجرد",
+                    add_product: "🏷️ تمت إضافة المنتج",
+                    create_order: "🛒 تم إنشاء الطلبية",
+                    update_flock: "✅ تم تحديث القطيع",
+                    update_farm_profile: "✅ تم تحديث ملف الضيعة",
+                  };
+                  if (summaries[parsed.name]) accumulatedRef.current += summaries[parsed.name] + "\n";
+                }
+              } catch {}
+              continue;
+            }
+            if (parsed.content) {
+              accumulatedRef.current += parsed.content;
+              setStreamContent(accumulatedRef.current);
+              if (parsed.content.includes("root =")) setUiCode((prev) => prev + parsed.content);
+            }
+          } catch {}
         }
       }
       if (accumulatedRef.current) setMessages((prev) => [...prev, { role: "assistant", content: accumulatedRef.current }]);
     } catch { setMessages((prev) => [...prev, { role: "assistant", content: "⚠️ حدث خطأ" }]); }
     setStreaming(false); setStreamContent("");
-  };
+  }, [input, pendingImages, audioBase64, streaming, messages, clearAudio, router]);
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return;
@@ -97,6 +156,7 @@ export default function ChatButton() {
 
   return (
     <>
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
       {!open && (
         <button onClick={() => setOpen(true)} aria-label="فتح المحادثة" className="fixed bottom-6 left-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
           style={{ background: `linear-gradient(135deg, ${COLORS.aqua}, ${COLORS.blue})` }}>
@@ -119,14 +179,14 @@ export default function ChatButton() {
               <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[88%] rounded-xl px-4 py-2.5 text-sm leading-relaxed ${msg.role === "user" ? "text-black" : "text-white/80"}`}
                   style={{ background: msg.role === "user" ? `linear-gradient(135deg, ${COLORS.aqua}, ${COLORS.blue})` : "rgba(255,255,255,0.06)" }}>
-                  {typeof msg.content === "string" ? <p>{msg.content}</p> : <p>[محتوى متعدد]</p>}
+                  {typeof msg.content === "string" ? <p className="whitespace-pre-wrap">{msg.content}</p> : <p>[محتوى متعدد]</p>}
                 </div>
               </div>
             ))}
             {streaming && streamContent && (
               <div className="flex justify-start">
                 <div className="max-w-[88%] rounded-xl px-4 py-2.5 text-sm text-white/80" style={{ background: "rgba(255,255,255,0.06)" }}>
-                  <p>{streamContent}</p>
+                  <p className="whitespace-pre-wrap">{streamContent}</p>
                   {uiCode && <div className="mt-2"><Renderer library={poultrixLibrary} response={uiCode as any} /></div>}
                   <span className="inline-block w-2 h-4 ml-0.5 animate-pulse" style={{ background: COLORS.aqua }} />
                 </div>
@@ -140,6 +200,21 @@ export default function ChatButton() {
                     <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: COLORS.blue, animationDelay: "0.2s" }} />
                     <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: COLORS.gold, animationDelay: "0.4s" }} />
                   </div>
+                </div>
+              </div>
+            )}
+            {showSuggestions && messages.length <= 1 && !streaming && (
+              <div className="px-1">
+                <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.25)", marginBottom: "8px" }}>إجراءات سريعة:</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {suggestedActions.map((action, i) => (
+                    <button key={i} onClick={() => sendMessage(action.prompt)}
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs transition-all hover:scale-105 active:scale-95"
+                      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.5)", cursor: "pointer" }}>
+                      <action.icon size={12} style={{ color: COLORS.aqua }} />
+                      {action.label}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}
@@ -162,7 +237,7 @@ export default function ChatButton() {
               <button onClick={recording ? stop : start} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-white/5" style={{ color: recording ? COLORS.gold : "rgba(255,255,255,0.3)" }}>{recording ? <MicOff size={15} /> : <Mic size={15} />}</button>
               <input ref={inputRef} value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
                 placeholder={recording ? "جاري التسجيل..." : "اكتب سؤالك هنا..."} className="flex-1 bg-transparent py-2.5 text-sm text-white/80 placeholder-white/20 outline-none" dir="auto" disabled={recording} />
-              <button onClick={sendMessage} disabled={streaming || (!input.trim() && pendingImages.length === 0 && !audioBase64)}
+              <button onClick={() => sendMessage()} disabled={streaming || (!input.trim() && pendingImages.length === 0 && !audioBase64)}
                 className="w-8 h-8 rounded-lg flex items-center justify-center transition-all disabled:opacity-20 hover:bg-white/5" style={{ color: COLORS.aqua }}><Send size={15} /></button>
             </div>
           </div>

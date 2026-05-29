@@ -8,7 +8,7 @@ const isProtectedRoute = createRouteMatcher([
 const AI_TOOL_ROUTES = [
   '/api/flock', '/api/egg-records', '/api/health-events', '/api/inventory',
   '/api/expenses', '/api/stocking', '/api/products', '/api/orders', '/api/invoices',
-  '/api/dashboard', '/api/predictions',
+  '/api/dashboard', '/api/predictions', '/api/analytics', '/api/farms', '/api/feed',
 ];
 
 export default clerkMiddleware(

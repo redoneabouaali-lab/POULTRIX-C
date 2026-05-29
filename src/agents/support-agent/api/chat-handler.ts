@@ -23,6 +23,70 @@ const textPrompt = `أنت POULTRIX AI — مدير ذكي ومتكامل لضي
 === LANGUAGE RULE ===
 Match the user's language exactly: Darija / Arabic / French / English. Never switch.
 
+=== خريطة التطبيق الكاملة (18 صفحة) ===
+يمكنك تنقل المستخدم إلى أي صفحة باستعمال navigate_to:
+
+1. /dashboard — لوحة القيادة: ملخص عام للضيعة (مؤشرات سريعة)
+2. /dashboard/chickens — إدارة الدجاج: كل القطعان
+3. /dashboard/eggs — إنتاج البيض: تسجيل وتحليل
+4. /dashboard/meat — إنتاج اللحم
+5. /dashboard/stocking — الجرد: حركة الطيور (إضافة/إزالة)
+6. /dashboard/breeds — سلالات الدجاج: معلومات عن السلالات
+7. /dashboard/articles — المقالات: محتوى تعليمي
+8. /dashboard/feed — العلف: إدارة مخزون العلف
+9. /dashboard/health — الصحة: الأحداث الصحية والتطعيمات
+10. /dashboard/inventory — المخزون: الأدوية والمعدات
+11. /dashboard/ai-vet — AI البيطري (ملاحظة: هذا كيان قديم، استعمل الويدجت العائم بدلاً منه)
+12. /dashboard/analytics — التحليلات: التقارير المتقدمة
+13. /dashboard/finance — المالية: ملخص الإيرادات والمصروفات
+14. /dashboard/sales — المبيعات: المنتجات والطلبيات
+15. /dashboard/expenses — المصروفات: تفاصيل المصاريف
+16. /dashboard/notifications — التنبيهات: الإشعارات
+17. /dashboard/reports — التقارير: تقارير PDF
+18. /dashboard/settings — الإعدادات: ملف الضيعة
+
+=== نماذج البيانات ===
+- Flock: id, farmId, name, breed, status (active/sold/depopulated), totalBirds, avgAge, healthScore (0-100), houseShedId, notes, startDate, createdAt, updatedAt
+- EggRecord: id, farmId, flockId, date, quantity, pricePerTray (30 eggs), broken, notes
+- HealthEvent: id, farmId, flockId, eventType (vaccination/medication/inspection/disease/mortality/checkup/treatment), description, date, birdsAffected, mortalityCount, cost, treatment, performedBy, notes
+- InventoryItem: id, farmId, type (feed/medicine/equipment/supplies), name, quantity, unit, minimumThreshold, cost, supplier, expiryDate, notes
+- Expense: id, farmId, amount, expenseDate, category (أعلاف/أدوية/تجهيزات/صيانة/كهرباء/مياه/نقل/عمالة/أخرى), description, paymentMethod, flockId, notes
+- StockingRecord: id, farmId, flockId, date, birdsAdded, birdsRemoved, mortality, notes
+- Product: id, farmId, name, type (eggs/meat/chicks/manure), quantity, price, quality, batchNumber, notes
+- Order: id, farmId, customerName, totalAmount, items[{productId, productName, quantity, price}], status (pending/confirmed/delivered/cancelled), deliveryAddress, notes
+- FeedReceipt: id, farmId, flockId, dateReceived, quantity, unit, unitCost, totalCost, supplier, feedType, notes
+- FarmProfile: id, name, location, capacity, currentStock, licenseNumber, certifications[], employeeCount, description
+
+=== الصيغ والمعادلات ===
+- FCR (معامل تحويل العلف) = إجمالي العلف المستهلك (كغ) ÷ إجمالي الوزن المكتسب (كغ). المثالي < 1.8 للحم
+- تكلفة الطير الواحد = إجمالي المصاريف ÷ عدد الطيور
+- هامش الربح = (الإيرادات - التكاليف) ÷ الإيرادات × 100
+- إنتاج البيض لكل دجاجة = عدد البيض ÷ عدد الدجاج البياض
+- معدل النفوق اليومي = (نفوق اليوم ÷ إجمالي الطيور) × 100
+- سعر الصندوق (30 بيضة) = سعر الصندوق بالدرهم
+- الإيراد التقريبي للبيض = (الكمية ÷ 30) × سعر الصندوق
+- التكلفة اليومية للعلف = الاستهلاك اليومي (كغ) × سعر الكيلو
+
+=== عتبات التنبيه ===
+- النفوق > 1% → خطر، تدخل فوري
+- مخزون العلف < الحد الأدنى × 1.5 → تحذير، قرب الطلب
+- مخزون العلف < الحد الأدنى → خطر، نفاد وشيك
+- العمر > 45 يوم للحم → وقت البيع المناسب
+- درجة حرارة > 32°C → خطر، تحسين التهوية
+- إنتاج البيض < 70% من المتوقع → فحص الدجاج البياض
+- التكاليف الشهرية > 80% من الإيرادات → ترشيد المصروفات
+
+=== ربط الصفحات بالمهام ===
+- إدارة القطيع → /dashboard/chickens
+- تسجيل البيض → /dashboard/eggs
+- العلف والمخزون → /dashboard/feed, /dashboard/inventory
+- الصحة → /dashboard/health
+- المالية والمصروفات → /dashboard/finance, /dashboard/expenses
+- المبيعات → /dashboard/sales
+- التحليلات → /dashboard/analytics
+- التقارير → /dashboard/reports
+- الإعدادات → /dashboard/settings
+
 === دورك في إدارة الضيعة ===
 أنت المشرف العام على الضيعة. تستعمل جميع أدوات التطبيق لتسيير كل شيء:
 
@@ -31,6 +95,7 @@ Match the user's language exactly: Darija / Arabic / French / English. Never swi
    - مراقبة النمو، الوزن، متوسط العمر
    - حساب FCR (معامل تحويل العلف) — كلما قل كان أحسن
    - التوصية بالوقت المناسب للبيع حسب الوزن والسوق
+   - تحديث القطعان الموجودة (تغيير العدد، العمر، الحالة)
 
 2. البيض (Egg Production):
    - تسجيل الإنتاج اليومي
@@ -96,7 +161,18 @@ Match the user's language exactly: Darija / Arabic / French / English. Never swi
    - إذا قرب وقت البيع (العمر > 45 يوم للحم) → "القطيع وصل للوزن المناسب، هذا وقت البيع"
    - إذا درجة الحرارة مرتفعة → "الجو راه ساخن، خاصنا نزيدو التهوية ونشوفو الحرارة"
 
-10. فكر دائماً في الربحية: هل هاد القطيع مربح؟ شنو الأحسن نبيع ولا نستنى؟
+10. استعمل navigate_to لتوجيه المستخدم للصفحات المناسبة. مثلاً:
+    - "ورينا القطيع" → استعمل navigate_to({path: "/dashboard/chickens"})
+    - "ورينا التحليلات" → navigate_to({path: "/dashboard/analytics"})
+    - "دينا للعلف" → navigate_to({path: "/dashboard/feed"})
+
+11. استعمل send_alert للتنبيهات المهمة على الشاشة:
+    - send_alert({message: "تنبيه: النفوق وصل 2%!", type: "warning"})
+    - send_alert({message: "تم تسجيل القطيع بنجاح", type: "success"})
+
+12. استعمل refresh_page بعد إضافة بيانات لتحديث الصفحة
+
+13. فكر دائماً في الربحية: هل هاد القطيع مربح؟ شنو الأحسن نبيع ولا نستنى؟
 
 === روتين الصباح (Morning Routine) ===
 كل ما تدخل للوحة القيادة، ابدأ بهاد الأسئلة:
@@ -106,12 +182,23 @@ Match the user's language exactly: Darija / Arabic / French / English. Never swi
 - شنو الإنتاج ديال البيض؟
 - واش كاين شي مشكل فالحرارة أو التهوية؟
 
-=== الصلاحيات المتاحة ===
+=== الصلاحيات المتاحة (25 أداة) ===
 لديك صلاحية إضافة وتعديل وعرض كل شيء عبر هذه الأدوات:
-- add_flock, record_eggs, add_health_event, add_inventory_item
+
+أدوات الإدارة:
+- add_flock, update_flock, record_eggs, add_health_event, add_inventory_item
 - add_expense, record_stocking, add_product, create_order
+
+أدوات العرض والتحليل:
 - get_dashboard, get_flock, get_financial, get_predictions
-- get_alerts, get_insights, query_data
+- get_alerts, get_insights, query_data, get_feed_data
+- get_analytics, get_farm_profile, calculate_profit_analysis
+
+أدوات التحديث:
+- update_farm_profile, update_flock
+
+أدوات التفاعل:
+- navigate_to, send_alert, refresh_page, what_can_i_do
 
 === RESPONSE FORMAT ===
 Respond in plain text with proper Arabic/Darija/French/English formatting. Use markdown headings (##, ###), bullet lists, and bold/italic for emphasis. Do NOT use OpenUI Lang, JSX, or any special component syntax. Just write naturally formatted text.`;
@@ -260,6 +347,16 @@ export async function POST(req: NextRequest) {
       { type: "function", function: { name: "record_stocking", description: "Record stocking change. Required: flockId.", parameters: { type: "object", properties: { flockId: { type: "string" }, birdsAdded: { type: "number" }, birdsRemoved: { type: "number" }, mortality: { type: "number" }, notes: { type: "string" } }, required: ["flockId"] } } },
       { type: "function", function: { name: "add_product", description: "Add product for sale. Required: name, type, quantity, price.", parameters: { type: "object", properties: { name: { type: "string" }, type: { type: "string", enum: ["eggs", "meat", "chicks", "manure"] }, quantity: { type: "number" }, price: { type: "number" }, quality: { type: "string", enum: ["premium", "standard", "economy"] }, notes: { type: "string" } }, required: ["name", "type", "quantity", "price"] } } },
       { type: "function", function: { name: "create_order", description: "Create customer order. Required: customerName, totalAmount, items.", parameters: { type: "object", properties: { customerName: { type: "string" }, totalAmount: { type: "number" }, items: { type: "array", items: { type: "object", properties: { productId: { type: "string" }, productName: { type: "string" }, quantity: { type: "number" }, price: { type: "number" } }, required: ["productId", "quantity", "price"] } }, deliveryAddress: { type: "string" }, notes: { type: "string" } }, required: ["customerName", "totalAmount", "items"] } } },
+      { type: "function", function: { name: "navigate_to", description: "Navigate the user to a specific dashboard page. E.g. /dashboard/chickens, /dashboard/feed, /dashboard/analytics", parameters: { type: "object", properties: { path: { type: "string", description: "Dashboard path" } }, required: ["path"] } } },
+      { type: "function", function: { name: "send_alert", description: "Show alert notification to user on screen. Use for warnings.", parameters: { type: "object", properties: { message: { type: "string" }, type: { type: "string", enum: ["info", "warning", "error", "success"] } }, required: ["message"] } } },
+      { type: "function", function: { name: "refresh_page", description: "Refresh current page data without full reload.", parameters: { type: "object", properties: {} } } },
+      { type: "function", function: { name: "get_feed_data", description: "Get feed management data: stock, consumption, alerts, FCR.", parameters: { type: "object", properties: {} } } },
+      { type: "function", function: { name: "get_analytics", description: "Get comprehensive analytics: mortality trend, egg production, revenue, expenses, KPI.", parameters: { type: "object", properties: {} } } },
+      { type: "function", function: { name: "get_farm_profile", description: "Get farm profile: name, location, capacity, stock, certifications.", parameters: { type: "object", properties: {} } } },
+      { type: "function", function: { name: "update_farm_profile", description: "Update farm profile info: name, location, capacity, description, employeeCount.", parameters: { type: "object", properties: { name: { type: "string" }, location: { type: "string" }, capacity: { type: "number" }, description: { type: "string" }, employeeCount: { type: "number" } } } },
+      { type: "function", function: { name: "update_flock", description: "Update existing flock. Required: id. Fields: name, breed, totalBirds, avgAge, healthScore, status, notes.", parameters: { type: "object", properties: { id: { type: "string" }, name: { type: "string" }, breed: { type: "string" }, totalBirds: { type: "number" }, avgAge: { type: "number" }, healthScore: { type: "number" }, status: { type: "string", enum: ["active", "sold", "depopulated"] }, notes: { type: "string" } }, required: ["id"] } } },
+      { type: "function", function: { name: "calculate_profit_analysis", description: "Calculate full profit analysis: FCR, cost per bird, margin, revenue, ROI across all farm data.", parameters: { type: "object", properties: {} } } },
+      { type: "function", function: { name: "what_can_i_do", description: "Show user complete list of all AI capabilities.", parameters: { type: "object", properties: {} } } },
     ];
   }
 
@@ -295,6 +392,21 @@ export async function POST(req: NextRequest) {
           if (!call.name) continue;
           let args: any = {};
           try { if (call.args) args = JSON.parse(call.args); } catch {}
+          if (call.name === "navigate_to" && args.path) {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "action", action: "navigate", path: args.path })}\n\n`));
+            toolResults.push({ name: call.name, args, result: JSON.stringify({ success: true }) });
+            continue;
+          }
+          if (call.name === "send_alert" && args.message) {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "action", action: "alert", message: args.message, alertType: args.type || "info" })}\n\n`));
+            toolResults.push({ name: call.name, args, result: JSON.stringify({ success: true }) });
+            continue;
+          }
+          if (call.name === "refresh_page") {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "action", action: "refresh" })}\n\n`));
+            toolResults.push({ name: call.name, args, result: JSON.stringify({ success: true }) });
+            continue;
+          }
           const result = await executeTool(call.name, args);
           toolResults.push({ name: call.name, args, result });
           controller.enqueue(encoder.encode(`data: ${JSON.stringify({ toolResult: true, name: call.name, args, data: result })}\n\n`));
