@@ -10,10 +10,11 @@ import { AIParticleField } from "@/components/ui/ai-effects";
 import {
   LayoutDashboard, Bird, Egg, Beef, Wheat, Brain, Settings,
   Bell, DollarSign, TrendingUp, Cpu, BookOpen, Stethoscope, Menu,
-  HeartPulse, Package, ShoppingCart, Receipt, ArrowUpDown,
+  HeartPulse, Package, ShoppingCart, Receipt, ArrowUpDown, Activity,
 } from "lucide-react";
 
 const navItems = [
+  { icon: Activity, label: "نظرة عامة", href: "/dashboard/overview" },
   { icon: LayoutDashboard, label: "لوحة القيادة", href: "/dashboard" },
   { icon: Bird, label: "الدجاج", href: "/dashboard/chickens" },
   { icon: Egg, label: "البيض", href: "/dashboard/eggs" },
