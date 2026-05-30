@@ -69,7 +69,7 @@ function BentoCard({ icon: Icon, title, desc, color, imgSrc, index }: {
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: `${color}20` }}>
               <Icon size={13} style={{ color }} />
             </div>
-            <p className="text-sm font-bold" style={{ color: "#1a1a24" }}>{title}</p>
+            <p className="text-sm font-bold" style={{ color: "#1E2B22" }}>{title}</p>
           </div>
           <p className="text-xs leading-relaxed" style={{ color: "#5A6A5A", fontSize: "0.7rem" }}>{desc}</p>
         </div>
@@ -102,18 +102,18 @@ function PricingCard({ name, price, period, desc, features, popular, color, cta,
       <DoubleBezelCard style={{ height: "100%" }}>
         <div className="p-6 flex flex-col h-full" style={{ background: popular ? `${COLORS.aqua}04` : "#fff" }}>
           <div className="space-y-3 mb-6">
-            <p className="text-lg font-bold" style={{ color: "#1a1a24" }}>{name}</p>
+            <p className="text-lg font-bold" style={{ color: "#1E2B22" }}>{name}</p>
             <p className="text-xs" style={{ color: "#5A6A5A", fontSize: "0.75rem" }}>{desc}</p>
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black tabular-nums font-metric" style={{ color: "#1a1a24" }}>{price}</span>
-              <span className="text-xs" style={{ color: "#a0a0aa" }}>{period}</span>
+              <span className="text-3xl font-black tabular-nums font-metric" style={{ color: "#1E2B22" }}>{price}</span>
+              <span className="text-xs" style={{ color: "#7A8A7A" }}>{period}</span>
             </div>
           </div>
           <ul className="space-y-2 flex-1">
             {features.map((f, j) => (
               <li key={j} className="flex items-center gap-2 text-sm">
                 <Check size={13} style={{ color }} />
-                <span style={{ color: "#5a5a64", fontSize: "0.75rem" }}>{f}</span>
+                <span style={{ color: "#5A6A5A", fontSize: "0.75rem" }}>{f}</span>
               </li>
             ))}
           </ul>
@@ -121,7 +121,7 @@ function PricingCard({ name, price, period, desc, features, popular, color, cta,
             <a href="/sign-up" className="group relative inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-full text-sm font-bold spring-transition hover:scale-[1.02] active:scale-[0.97]"
               style={{
                 background: popular ? `linear-gradient(135deg, ${COLORS.aqua}, ${COLORS.blue})` : "rgba(0,0,0,0.04)",
-                color: popular ? "#000" : "#5a5a64",
+                color: popular ? "#000" : "#5A6A5A",
                 border: popular ? "none" : "1px solid rgba(0,0,0,0.06)",
               }}>
               <span>{cta}</span>
@@ -167,7 +167,7 @@ function InfiniteMarquee() {
             <svg width="6" height="6" viewBox="0 0 6 6" fill={colors[i % colors.length]}>
               <circle cx="3" cy="3" r="3" />
             </svg>
-            <span className="text-xs font-semibold tracking-wide" style={{ color: "#5a5a64" }}>
+            <span className="text-xs font-semibold tracking-wide" style={{ color: "#5A6A5A" }}>
               {name}
             </span>
           </div>
@@ -196,8 +196,8 @@ function LiveUserCounter() {
         animate={{ opacity: [0.3, 1, 0.3] }}
         transition={{ duration: 2, repeat: Infinity }}
       />
-      <Users size={12} style={{ color: "#5a5a64" }} />
-      <span className="tabular-nums font-bold font-metric" style={{ color: "#1a1a24" }}>{mounted ? count.toLocaleString("ar-MA") : "28,470"}</span>
+      <Users size={12} style={{ color: "#5A6A5A" }} />
+      <span className="tabular-nums font-bold font-metric" style={{ color: "#1E2B22" }}>{mounted ? count.toLocaleString("ar-MA") : "28,470"}</span>
       <span style={{ color: "#5A6A5A" }}>مزارع يستخدمون POULTRIX الآن</span>
     </div>
   );
@@ -220,7 +220,7 @@ function ScarcityBadge() {
         animate={{ scale: [1, 1.3, 1] }}
         transition={{ duration: 1.5, repeat: Infinity }}
       />
-      <span className="text-xs font-bold tabular-nums font-metric" style={{ color: "#b8860b", fontSize: "0.7rem" }}>
+      <span className="text-xs font-bold tabular-nums font-metric" style={{ color: COLORS.gold, fontSize: "0.7rem" }}>
         {spots} بقعة متبقية بسعر الـ Pro — 30% خصم مدى الحياة
       </span>
     </div>
@@ -255,7 +255,7 @@ export default function NarrativeFlow() {
     <FlowArt>
       {/* ────── SLIDE 1: المشكلة والحل (Problem + Solution) ────── */}
       <FlowSection aria-label="المشكلة والحل" style={{
-        background: `linear-gradient(180deg, #faf8f5 0%, #f8f8fa 50%, #f5f8fa 100%)`
+        background: `linear-gradient(180deg, #FAF7F2 0%, #F5EDE3 100%)`
       }}>
         <div className="relative z-10 flex-1 flex flex-col justify-center w-full max-w-[1320px] mx-auto py-16 md:py-28">
           {/* Eyebrow */}
@@ -266,8 +266,8 @@ export default function NarrativeFlow() {
             className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full mb-6 mx-auto"
             style={{ background: `${COLORS.gold}15` }}
           >
-            <Zap size={10} style={{ color: "#b8860b" }} />
-            <span className="section-label" style={{ color: "#b8860b" }}>الذكاء الاصطناعي لتدبير الضيعات</span>
+            <Zap size={10} style={{ color: COLORS.gold }} />
+            <span className="section-label" style={{ color: COLORS.gold }}>الذكاء الاصطناعي لتدبير الضيعات</span>
           </motion.div>
 
           {/* Decorative divider */}
@@ -288,7 +288,7 @@ export default function NarrativeFlow() {
             className="text-center mb-4 w-full max-w-5xl mx-auto"
             style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", lineHeight: 1.1, letterSpacing: "-0.03em" }}
           >
-            <span className="block font-display" style={{ color: "#1a1a24" }}>37% من أرباحك تضيع ونتا ما كتعرفش</span>
+            <span className="block font-display" style={{ color: "#1E2B22" }}>37% من أرباحك تضيع ونتا ما كتعرفش</span>
             <span className="block mt-1 font-display text-gradient-accent">POULTRIX كتحل المشكل بالذكاء الاصطناعي</span>
           </motion.h2>
 
@@ -305,9 +305,9 @@ export default function NarrativeFlow() {
 
           {/* Animated Counters */}
           <div className="flex items-center justify-center gap-10 md:gap-16 mb-14">
-            <AnimatedCounter value={12} label="معدل النفوق السنوي" color="#ff6b6b" suffix="%" />
-            <AnimatedCounter value={847} label="تكلفة كل طير (درهم)" color="#b8860b" suffix="" />
-            <AnimatedCounter value={42} label="هدر في العلف يومياً" color="#d95c00" suffix="%" />
+            <AnimatedCounter value={12} label="معدل النفوق السنوي" color={COLORS.gold} suffix="%" />
+            <AnimatedCounter value={847} label="تكلفة كل طير (درهم)" color={COLORS.gold} suffix="" />
+            <AnimatedCounter value={42} label="هدر في العلف يومياً" color={COLORS.gold} suffix="%" />
           </div>
 
           {/* Bento Feature Cards */}
@@ -332,7 +332,7 @@ export default function NarrativeFlow() {
 
       {/* ────── SLIDE 2: النتائج وابدأ دابا (Results + Action) ────── */}
       <FlowSection aria-label="النتائج والتسعير" style={{
-        background: `linear-gradient(180deg, #f5f8fa 0%, #faf8f5 40%, #f8f8fa 100%)`
+        background: `linear-gradient(180deg, #FAF7F2 0%, #F5EDE3 100%)`
       }}>
         <div className="relative z-10 flex-1 flex flex-col justify-center w-full max-w-[1320px] mx-auto py-16 md:py-28">
           {/* Live User Counter */}
@@ -349,7 +349,7 @@ export default function NarrativeFlow() {
           <div className="flex items-center justify-center gap-10 md:gap-16 mb-14">
             <AnimatedCounter value={28470} label="مزارع يثقو فينا" color={COLORS.aqua} suffix="+" />
             <AnimatedCounter value={97} label="دقة التوقعات" color={COLORS.blue} suffix="%" />
-            <AnimatedCounter value={34} label="زيادة الربح" color="#b8860b" suffix="%" />
+            <AnimatedCounter value={34} label="زيادة الربح" color={COLORS.gold} suffix="%" />
           </div>
 
           {/* Infinite Marquee Partners */}
@@ -391,7 +391,7 @@ export default function NarrativeFlow() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="text-2xl md:text-3xl font-bold mt-2 mb-4"
-              style={{ color: "#1a1a24", letterSpacing: "-0.02em" }}
+              style={{ color: "#1E2B22", letterSpacing: "-0.02em" }}
             >
               ابدأ الرحلة — اختر خطتك
             </motion.h3>
@@ -411,8 +411,8 @@ export default function NarrativeFlow() {
                     <polygon points="6,0 7.5,4 12,4 8.5,7 10,12 6,9 2,12 3.5,7 0,4 4.5,4" />
                   </svg>
                 ))}
-                <span className="text-xs font-bold" style={{ color: "#b8860b" }}>4.9/5</span>
-                <span className="text-xs" style={{ color: "#a0a0aa" }}>من 2,847 مزارع</span>
+                <span className="text-xs font-bold" style={{ color: COLORS.gold }}>4.9/5</span>
+                <span className="text-xs" style={{ color: "#7A8A7A" }}>من 2,847 مزارع</span>
               </div>
             </motion.div>
           </div>
@@ -429,12 +429,12 @@ export default function NarrativeFlow() {
             viewport={{ once: true }}
             transition={{ delay: 0.5 }}
             className="flex flex-wrap items-center justify-center gap-4 text-xs"
-            style={{ color: "#a0a0aa" }}
+            style={{ color: "#7A8A7A" }}
           >
             <div className="flex items-center gap-1.5"><ShieldCheck size={12} style={{ color: COLORS.aqua }} /> SSL مشفر</div>
-            <div className="flex items-center gap-1.5"><Zap size={12} style={{ color: "#b8860b" }} /> 99.9% Uptime</div>
+            <div className="flex items-center gap-1.5"><Zap size={12} style={{ color: COLORS.gold }} /> 99.9% Uptime</div>
             <div className="flex items-center gap-1.5"><Users size={12} style={{ color: COLORS.blue }} /> دعم 24/7</div>
-            <div className="flex items-center gap-1.5"><Check size={12} style={{ color: "#34c759" }} /> إلغاء في أي وقت</div>
+            <div className="flex items-center gap-1.5"><Check size={12} style={{ color: COLORS.blue }} /> إلغاء في أي وقت</div>
           </motion.div>
         </div>
       </FlowSection>

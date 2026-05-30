@@ -166,6 +166,9 @@ const HeroSection = () => {
             بدون بطاقة بنكية — جرب المنصة كاملة
           </p>
         </div>
+
+        {/* Gradient bridge to next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#FAF7F2] pointer-events-none" />
       </div>
     </>
   );
