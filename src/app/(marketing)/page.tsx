@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import ChatButton from "@/modules/ai/components/chat-button";
 import Footer from "@/components/layout/footer";
 import Header from "@/components/marketing/header";
-import HeroSection from "@/components/marketing/hero";
+import HeroSection from "@/components/ui/dynamic-animated-hero-section-with-gradient";
 import BrandTrustSection from "@/components/marketing/brand-trust";
 import TrustMetricsBar from "@/components/marketing/trust-metrics";
 import FeaturesSection from "@/components/marketing/features";
