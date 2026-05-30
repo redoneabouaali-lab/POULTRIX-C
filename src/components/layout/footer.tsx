@@ -43,7 +43,7 @@ export default function Footer() {
                 background: `linear-gradient(135deg, ${COLORS.aqua}, ${COLORS.blue})`,
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
-                <Cpu size={15} style={{ color: "#000" }} />
+                <Cpu size={15} style={{ color: "#1E2B22" }} />
               </div>
               <span className="text-xl font-bold font-brand" style={{ color: "#1E2B22", letterSpacing: "-0.02em" }}>POULTRIX</span>
             </div>

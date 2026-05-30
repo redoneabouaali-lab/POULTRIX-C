@@ -51,7 +51,7 @@ const HeroSection = () => {
           animation: patternScroll 20s linear infinite;
         }
         .gradient-text {
-          background: linear-gradient(270deg, #C4893A, #81BABA, #4A90D9, #D4A853, #C4893A);
+          background: linear-gradient(270deg, #C4893A, #BF7A5A, #2D5541, #C4893A);
           background-size: 600% 600%;
           -webkit-background-clip: text;
           background-clip: text;

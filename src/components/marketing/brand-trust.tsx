@@ -3,16 +3,17 @@
 import { motion } from "framer-motion";
 import { Cpu, Bird, Shield, TrendingUp, Database, Cloud, Smartphone, BarChart3 } from "lucide-react";
 import { SlidingLogoMarquee } from "@/components/lightswind/sliding-logo-marquee";
+import { COLORS } from "@/constants";
 
 const brandItems = [
-  { id: "1", content: <BrandItem Icon={Cpu} label="ذكاء اصطناعي" color="#C4893A" /> },
-  { id: "2", content: <BrandItem Icon={Bird} label="دواجن" color="#2D5541" /> },
-  { id: "3", content: <BrandItem Icon={Shield} label="مراقبة" color="#BF7A5A" /> },
-  { id: "4", content: <BrandItem Icon={TrendingUp} label="أرباح" color="#2D5541" /> },
-  { id: "5", content: <BrandItem Icon={Database} label="بيانات" color="#4A90D9" /> },
-  { id: "6", content: <BrandItem Icon={Cloud} label="سحابة" color="#81BABA" /> },
-  { id: "7", content: <BrandItem Icon={Smartphone} label="تطبيق" color="#C4893A" /> },
-  { id: "8", content: <BrandItem Icon={BarChart3} label="تحليلات" color="#2D5541" /> },
+  { id: "1", content: <BrandItem Icon={Cpu} label="ذكاء اصطناعي" color={COLORS.aqua} /> },
+  { id: "2", content: <BrandItem Icon={Bird} label="دواجن" color={COLORS.blue} /> },
+  { id: "3", content: <BrandItem Icon={Shield} label="مراقبة" color={COLORS.gold} /> },
+  { id: "4", content: <BrandItem Icon={TrendingUp} label="أرباح" color={COLORS.blue} /> },
+  { id: "5", content: <BrandItem Icon={Database} label="بيانات" color={COLORS.gold} /> },
+  { id: "6", content: <BrandItem Icon={Cloud} label="سحابة" color={COLORS.aqua} /> },
+  { id: "7", content: <BrandItem Icon={Smartphone} label="تطبيق" color={COLORS.aqua} /> },
+  { id: "8", content: <BrandItem Icon={BarChart3} label="تحليلات" color={COLORS.blue} /> },
 ];
 
 function BrandItem({ Icon, label, color }: { Icon: any; label: string; color: string }) {
