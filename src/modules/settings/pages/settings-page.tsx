@@ -38,7 +38,7 @@ export default function SettingsPage() {
   const [notifs, setNotifs] = useState({ email: true, push: true, sms: false });
 
   const copyApiKey = () => {
-    navigator.clipboard.writeText("plx_api_8f3a2b7c9d1e4f5a6b7c8d9e0f1a2b3c");
+    navigator.clipboard.writeText(process.env.NEXT_PUBLIC_API_KEY || "plx_api_fallback_key_rotate_me");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
