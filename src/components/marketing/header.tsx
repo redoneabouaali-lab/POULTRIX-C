@@ -38,7 +38,7 @@ export default function Header() {
               background: `linear-gradient(135deg, ${COLORS.aqua}, ${COLORS.blue})`,
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>
-              <Cpu size={14} style={{ color: "#000" }} />
+              <Cpu size={14} style={{ color: "#1E2B22" }} />
             </div>
             <span className="text-base font-brand" style={{ color: "#1E2B22", letterSpacing: "-0.02em" }}>POULTRIX</span>
           </Link>
@@ -58,11 +58,11 @@ export default function Header() {
 
           <div className="flex items-center gap-2">
             <div className="hidden md:flex items-center gap-1">
-              <a href="#" className="w-8 h-8 rounded-full flex items-center justify-center spring-hover" style={{ color: "#7A8A7A" }}>
-                <Instagram size={15} />
+              <a href="https://instagram.com/poultrix" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full flex items-center justify-center spring-hover" style={{ color: "#7A8A7A" }} aria-label="Instagram">
+                <Instagram size={15} aria-hidden="true" />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full flex items-center justify-center spring-hover" style={{ color: "#7A8A7A" }}>
-                <Facebook size={15} />
+              <a href="https://facebook.com/poultrix" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full flex items-center justify-center spring-hover" style={{ color: "#7A8A7A" }} aria-label="Facebook">
+                <Facebook size={15} aria-hidden="true" />
               </a>
             </div>
             <button

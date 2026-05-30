@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import Script from "next/script";
+import { Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
+
+const notoArabic = Noto_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-noto-arabic",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://poultrix.abouaaliahmed.com"),
@@ -39,7 +47,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ar" dir="rtl">
-      <body className="poultrix-body">
+      <body className={`poultrix-body ${notoArabic.variable}`}>
         <link rel="preconnect" href="https://clerk.accounts.dev" />
         <link rel="dns-prefetch" href="https://clerk.accounts.dev" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />

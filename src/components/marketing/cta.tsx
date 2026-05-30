@@ -45,7 +45,7 @@ export default function CTASection() {
           <div className="flex items-center justify-center gap-6 text-xs flex-wrap" style={{ color: "#7A8A7A" }}>
             <div className="flex items-center gap-1.5"><Shield size={12} style={{ color: COLORS.aqua }} /> بدون بطاقة بنكية</div>
             <div className="flex items-center gap-1.5"><Users size={12} style={{ color: COLORS.gold }} /> إلغاء في أي وقت</div>
-            <div className="flex items-center gap-1.5"><Check size={12} style={{ color: "#34c759" }} /> دعم فوري</div>
+            <div className="flex items-center gap-1.5"><Check size={12} style={{ color: "#2D5541" }} /> دعم فوري</div>
           </div>
         </motion.div>
       </div>

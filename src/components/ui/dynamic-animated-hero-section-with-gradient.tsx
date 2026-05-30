@@ -71,6 +71,13 @@ const HeroSection = () => {
         .pulse-animation {
           animation: pulse 2s infinite;
         }
+        @media (prefers-reduced-motion: reduce) {
+          .animate-fadeIn { animation: none; opacity: 1; transform: none; }
+          .animate-patternScroll { animation: none; }
+          .gradient-text { animation: none; }
+          .pulse-animation { animation: none; box-shadow: none; }
+          .animation-line { stroke-dashoffset: 0 !important; transition: none !important; }
+        }
       `}</style>
 
       <div
@@ -101,11 +108,12 @@ const HeroSection = () => {
         />
 
         {/* Animated SVG Lines */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
           <svg
             className="absolute w-full h-full"
             viewBox="0 0 177 159"
             preserveAspectRatio="none"
+            aria-hidden="true"
           >
             <path
               className="animation-line"
@@ -116,6 +124,7 @@ const HeroSection = () => {
             className="absolute w-full h-full"
             viewBox="0 0 176 59"
             preserveAspectRatio="none"
+            aria-hidden="true"
           >
             <path
               className="animation-line"
@@ -139,10 +148,10 @@ const HeroSection = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
             <a
               href="/sign-up"
-              className="inline-flex items-center gap-2 px-10 py-4 bg-white text-black rounded-full text-lg font-medium transition-all duration-300 hover:shadow-[0_0_30px_rgba(196,137,58,0.4)] hover:scale-105 pulse-animation"
+              className="inline-flex items-center gap-2 px-10 py-4 bg-white text-black rounded-full text-lg font-medium transition-[transform,box-shadow] duration-300 hover:shadow-[0_0_30px_rgba(196,137,58,0.4)] hover:scale-105 pulse-animation"
             >
               ابدأ شهراً مجاناً
-              <ArrowLeft size={18} />
+              <ArrowLeft size={18} aria-hidden="true" />
             </a>
 
             <a

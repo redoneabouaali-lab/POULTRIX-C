@@ -85,11 +85,11 @@ export default function TestimonialsSection() {
                     {/* Before/After contrast */}
                     <div className="text-xs space-y-2 mb-4 pb-4" style={{ borderBottom: "1px solid rgba(0,0,0,0.04)" }}>
                       <div className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#e0a0a0" }} />
-                        <span style={{ color: "#999" }}>قبل: {t.before}</span>
+                        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#BF7A5A" }} />
+                        <span style={{ color: "#7A8A7A" }}>قبل: {t.before}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#34c759" }} />
+                        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#2D5541" }} />
                         <span style={{ color: "#1E2B22" }}>دابا: {t.after}</span>
                       </div>
                     </div>

@@ -275,7 +275,7 @@ export default function DashboardPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.08, duration: 0.3 }}
-            className="font-label-masko"
+            className="text-sm"
             style={{ color: "#5A6A5A", margin: "4px 0 0", fontSize: "0.75rem", fontWeight: 400, letterSpacing: "0.01em" }}
           >
             نظرة شاملة على ضيعتك — كل المؤشرات في لمحة

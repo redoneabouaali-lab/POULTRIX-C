@@ -58,150 +58,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'Masko';
-  src: url('/fonts/Masko-Thin.otf') format('opentype');
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Masko';
-  src: url('/fonts/Masko-ExtraLight.otf') format('opentype');
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Masko';
-  src: url('/fonts/Masko-Light.otf') format('opentype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Masko';
-  src: url('/fonts/Masko-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Masko';
-  src: url('/fonts/Masko-Medium.otf') format('opentype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Masko';
-  src: url('/fonts/Masko-SemiBold.otf') format('opentype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Masko';
-  src: url('/fonts/Masko-Bold.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Masko';
-  src: url('/fonts/Masko-ExtraBold.otf') format('opentype');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Masko';
-  src: url('/fonts/Masko-Black.otf') format('opentype');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Masko';
-  src: url('/fonts/Masko-Outline.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Midlandluxury';
-  src: url('/fonts/Midlandluxury-Light.otf') format('opentype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Midlandluxury';
-  src: url('/fonts/Midlandluxury-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Midlandluxury';
-  src: url('/fonts/Midlandluxury-Medium.otf') format('opentype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Midlandluxury';
-  src: url('/fonts/Midlandluxury-SemiBold.otf') format('opentype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Midlandluxury';
-  src: url('/fonts/Midlandluxury-Bold.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Midlandluxury';
-  src: url('/fonts/Midlandluxury-Black.otf') format('opentype');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Midlandluxury';
-  src: url('/fonts/Midlandluxury-RegularItalic.otf') format('opentype');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Midlandluxury';
-  src: url('/fonts/Midlandluxury-BoldItalic.otf') format('opentype');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-
 :root {
   /* Typography Scale */
   --font-xs: 0.8rem;
@@ -271,7 +127,7 @@
   * { @apply border-[rgba(0,0,0,0.04)]; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: 'Geist', system-ui, sans-serif;
+    font-family: 'Geist', var(--font-noto-arabic), system-ui, sans-serif;
     font-size: 1rem;
     line-height: var(--lh-body);
     overflow-x: hidden;
@@ -285,28 +141,24 @@
   ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.06); border-radius: 2px; }
 
   h1, h2, h3, h4 { text-wrap: balance; letter-spacing: -0.02em; line-height: var(--lh-heading); }
-  h1 { font-family: 'ChikenSteeak', 'Masko', 'Geist', system-ui, sans-serif; font-weight: 800; }
-  h2 { font-family: 'Midlandluxury', 'Georgia', serif; font-weight: 700; }
-  h3 { font-family: 'Midlandluxury', 'Georgia', serif; font-weight: 600; }
+  h1 { font-family: 'ChikenSteeak', var(--font-noto-arabic), system-ui, sans-serif; font-weight: 800; }
+  h2 { font-family: var(--font-noto-arabic), 'Georgia', serif; font-weight: 700; }
+  h3 { font-family: var(--font-noto-arabic), 'Georgia', serif; font-weight: 600; }
   p, li, .text-block { text-wrap: pretty; line-height: var(--lh-body); }
 }
 
 @layer components {
   .font-display {
-    font-family: 'ChikenSteeak', 'Masko', 'Geist', system-ui, sans-serif;
+    font-family: 'ChikenSteeak', var(--font-noto-arabic), system-ui, sans-serif;
     letter-spacing: -0.03em;
   }
   .font-heading {
-    font-family: 'Midlandluxury', 'Georgia', serif;
+    font-family: var(--font-noto-arabic), 'Georgia', serif;
     font-weight: 700;
     letter-spacing: -0.02em;
   }
   .font-subhead {
-    font-family: 'Midlandluxury', 'Georgia', serif;
-    font-weight: 500;
-  }
-  .font-label-masko {
-    font-family: 'Masko', 'Geist', system-ui, sans-serif;
+    font-family: var(--font-noto-arabic), 'Georgia', serif;
     font-weight: 500;
   }
   .font-metric {
@@ -314,21 +166,18 @@
     font-variant-numeric: tabular-nums;
   }
   .font-brand {
-    font-family: 'Masko', 'Geist', system-ui, sans-serif;
+    font-family: 'Geist', var(--font-noto-arabic), system-ui, sans-serif;
     font-weight: 800;
     letter-spacing: -0.02em;
-  }
-  .font-midland-display {
-    font-family: 'Midlandluxury', 'Georgia', serif;
-    font-weight: 900;
-    letter-spacing: -0.03em;
   }
 
   .card {
     background: var(--color-surface);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-property: box-shadow, transform, background-color;
+    transition-duration: 0.3s;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .card-hover:hover {
@@ -356,7 +205,9 @@
   }
 
   .spring-transition {
-    transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+    transition-property: transform, box-shadow, opacity, background-color;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
   }
 
   .magnetic-press:active {
@@ -466,6 +317,23 @@
     transform: scale(0.97);
   }
 
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-fade-blur,
+    .scroll-fade-blur.in-view {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      transition: none;
+    }
+    .noise-overlay { opacity: 0; }
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   /* Perpetual Micro-Animation: Float */
   .micro-float {
     animation: microFloat 4s ease-in-out infinite;
@@ -507,10 +375,4 @@
 .poultrix-body {
   min-height: 100dvh;
   background: #f8f8fa;
-}
-
-.poultrix-body-dark {
-  min-height: 100dvh;
-  background: #f8f8fa;
-  color: #1a1a24;
 }
